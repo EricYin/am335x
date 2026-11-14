@@ -1,0 +1,68 @@
+name: Modernize Legacy AM335x DTS
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'bak/board_orig.dts'
+
+jobs:
+  modernize-dts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install DTC and Python YAML dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y device-tree-compiler python3-yaml curl
+
+      - name: Download & Modernize DTS
+        run: |
+          mkdir -p modernized
+          curl -sSL "https://raw.githubusercontent.com/EricYin/am335x/refs/heads/main/bak/board_orig.dts" -o board_orig.dts
+
+          # 1. 利用 dtc 自动将数字 phandle (<0x24>) 还原为符号引用 (&edma) 并标准化格式
+          # -I dts -O dts 会自动剥离冗余的 linux,phandle 并重建符号标签
+          dtc -I dts -O dts -s -o modernized/board_step1.dts board_orig.dts
+
+          # 2. 使用 Python 脚本清理早期 3.x 内核遗留语法并同步生成现代 YAML 规范文件
+          python3 - << 'EOF'
+          import re, subprocess, yaml, json
+
+          with open("modernized/board_step1.dts", "r") as f:
+              dts_content = f.read()
+
+          # 替换遗留的十六进制单元地址 (如 sgx@0x56000000 -> sgx@56000000)
+          dts_content = re.sub(r'@0x([0-9a-fA-F]+)', r'@\1', dts_content)
+          # 统一节点地址小写 (如 mailbox@480C8000 -> mailbox@480c8000)
+          dts_content = re.sub(r'@([0-9a-fA-F]+)', lambda m: '@' + m.group(1).lower(), dts_content)
+
+          # 注释掉现代主线内核已废弃的 ti,hwmods 属性 (现代内核改用标准 clocks/power-domains)
+          dts_content = re.sub(r'(\s+ti,hwmods\s*=.*?;)', r' /* 已废弃的旧属性:\1 */', dts_content)
+
+          # 清理残留的纯数字 phandle 声明
+          dts_content = re.sub(r'\s+(linux,)?phandle\s*=\s*<0x[0-9a-fA-F]+>;', '', dts_content)
+
+          with open("modernized/am335x-board-modern.dts", "w") as f:
+              f.write(dts_content)
+
+          # 3. 同步转换为现代内核 dt-schema 兼容的 YAML 和 JSON 格式
+          subprocess.run([
+              "dtc", "-I", "dts", "-O", "yaml",
+              "modernized/am335x-board-modern.dts",
+              "-o", "modernized/am335x-board-modern.yaml"
+          ], check=True)
+
+          with open("modernized/am335x-board-modern.yaml", "r") as yf:
+              yaml_data = yaml.safe_load(yf)
+          with open("modernized/am335x-board-modern.json", "w") as jf:
+              json.dump(yaml_data, jf, indent=2)
+          EOF
+
+      - name: Upload Modernized Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: modernized-am335x-dts
+          path: modernized/
