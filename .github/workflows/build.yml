@@ -20,7 +20,7 @@ jobs:
       - name: 1. 检出自定义 DTS 与 files 仓库
         uses: actions/checkout@v4
         with:
-          path: custom_repo
+          path: c3000a_repo
 
       - name: 2. 安装 OpenWrt 编译环境依赖
         run: |
@@ -45,11 +45,10 @@ jobs:
           ./scripts/feeds update -a
           ./scripts/feeds install -a
       
-      - name: 6. 生成编译配置 (.config)
-        working-directory: openwrt
+      - name: 6. 复制 configs/am335x.config 生成编译配置 (.config)
         run: |
-          cp ../configs/am335x.config .config
-          make defconfig
+          cp -v c3000a_repo/configs/am335x.config openwrt/.config         
+          cd openwrt && make defconfig
 
       - name: 7. 预下载源码包并刷新内核补丁
         working-directory: openwrt
