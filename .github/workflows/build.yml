@@ -50,24 +50,32 @@ jobs:
         run: |
           cp -v c3000a_repo/configs/am335x.config openwrt/.config         
           cd openwrt && make defconfig
+          [ -e .config ] && cp .config defconfig-final.config
 
-      - name: 7. 预下载源码包并刷新内核补丁
+      - name: 6. 上传 config files
+        uses: actions/upload-artifact@v6
+        with:
+          name: build-config
+          path: |
+            openwrt/defconfig-final.config
+
+      - name: 8. 预下载源码包并刷新内核补丁
         working-directory: openwrt
         run: |
           make download -j8
           find dl -size -1024c -exec ls -l {} \; -exec rm -f {} \;
           make target/linux/prepare V=s
 
-      - name: 8. 编译固件
+      - name: 9. 编译固件
         working-directory: openwrt
         run: |
           make -j$(nproc) || make -j1 V=s
 
-      - name: 9. 整理并上传 SD 卡固件到 Artifacts
+      - name: 10. 整理并上传 SD 卡固件到 Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: openwrt-am335x-c3000a-sdcard
           path: |
             openwrt/bin/targets/omap/generic/*ti_am335x-c3000a*
             openwrt/bin/targets/omap/generic/sha256sums
-          retention-days: 14
+          
