@@ -1,0 +1,573 @@
+Broadcast message from root (ttyO0) (Mon Dec 24 22:38:39 2035):
+
+The system is going down for reboot NOW!
+INIT: root@am335x:~# Sending processes the TERM signal
+Stopping telnet daemon.
+Stopping system message bus: stopped process in pidfile '/var/run/dbus/pid' (pid 2733)
+dbus.
+Stopping thttpd.
+ALSA: Storing mixer settings...
+Deconfiguring network interfaces... ifdown: interface lo not configured
+ifdown: interface eth0 not configured
+done.
+Stopping syslogd/klogd: stopped syslogd (pid 2751)
+stopped klogd (pid 2752)
+done
+Sending all processes the TERM signal...
+Sending all processes the KILL signal...
+Unmounting remote filesystems...
+Deactivating swap...
+Unmounting local filesystems...
+[   81.043113] UBIFS: background thread "ubifs_bgt0_0" stops
+Rebooting... [   83.130052] musb-hdrc musb-hdrc.1.auto: remove, state 1
+[   83.135694] usb usb2: USB disconnect, device number 1
+[   83.141088] usb 2-1: USB disconnect, device number 2
+[   83.146341] usb 2-1.3: USB disconnect, device number 3
+[   83.152773] ftdi_sio ttyUSB0: FTDI USB Serial Device converter now disconnected from ttyUSB0
+[   83.161843] ftdi_sio 2-1.3:1.0: device disconnected
+[   83.167851] ftdi_sio ttyUSB1: FTDI USB Serial Device converter now disconnected from ttyUSB1
+[   83.176875] ftdi_sio 2-1.3:1.1: device disconnected
+[   83.182918] ftdi_sio ttyUSB2: FTDI USB Serial Device converter now disconnected from ttyUSB2
+[   83.191937] ftdi_sio 2-1.3:1.2: device disconnected
+[   83.197941] ftdi_sio ttyUSB3: FTDI USB Serial Device converter now disconnected from ttyUSB3
+[   83.206964] ftdi_sio 2-1.3:1.3: device disconnected
+[   83.213095] usb 2-1.4: USB disconnect, device number 4
+[   83.225610] musb-hdrc musb-hdrc.1.auto: USB bus 2 deregistered
+[   83.232076] musb-hdrc musb-hdrc.0.auto: remove, state 4
+[   83.237687] usb usb1: USB disconnect, device number 1
+[   83.244337] musb-hdrc musb-hdrc.0.auto: USB bus 1 deregistered
+[   83.251750] reboot: Restarting system
+
+U-Boot SPL 2014.07 (Mar 08 2017 - 18:22:06)
+
+
+U-Boot 2014.07 (Mar 08 2017 - 18:22:06)
+
+I2C:   ready
+DRAM:  512 MiB
+NAND:  1024 MiB
+MMC:   OMAP SD/MMC: 0
+*** Warning - bad CRC, using default environment
+
+Net:   <ethaddr> not set. Validating first E-fuse MAC
+cpsw, usb_ether
+Hit any key to stop autoboot:  0
+Card did not respond to voltage select!
+Card did not respond to voltage select!
+MMC Device 1 not found
+no mmc device at slot 1
+Card did not respond to voltage select!
+Booting from nand ...
+
+NAND read: device 0 offset 0x80000, size 0x40000
+ 262144 bytes read: OK
+
+NAND read: device 0 offset 0x200000, size 0x800000
+ 8388608 bytes read: OK
+Kernel image @ 0x82000000 [ 0x000000 - 0x45d758 ]
+## Flattened Device Tree blob at 88000000
+   Booting using the fdt blob at 0x88000000
+   Loading Device Tree to 8fff3000, end 8ffff492 ... OK
+
+Starting kernel ...
+
+[    0.000000] Booting Linux on physical CPU 0x0
+[    0.000000] Linux version 3.14.28-g7e5eb61-dirty (laiqy@laiqy-virtual-machine) (gcc version 4.8.3 20140320 (prerelease) (Sourcery CodeBench Lite 2014.05-29) ) #145 Thu Jul 12 16:53:17 CST 2018
+[    0.000000] CPU: ARMv7 Processor [413fc082] revision 2 (ARMv7), cr=10c5387d
+[    0.000000] CPU: PIPT / VIPT nonaliasing data cache, VIPT aliasing instruction cache
+[    0.000000] Machine model: TI AM335x EVM
+[    0.000000] cma: CMA: reserved 24 MiB at 9e000000
+[    0.000000] Memory policy: Data cache writeback
+[    0.000000] CPU: All CPU(s) started in SVC mode.
+[    0.000000] AM335X ES2.1 (sgx neon )
+[    0.000000] Built 1 zonelists in Zone order, mobility grouping on.  Total pages: 129536
+[    0.000000] Kernel command line: console=ttyO0,115200n8 root=ubi0:rootfs rw ubi.mtd=NAND.file-system,2048 rootfstype=ubifs rootwait=1
+[    0.000000] PID hash table entries: 2048 (order: 1, 8192 bytes)
+[    0.000000] Dentry cache hash table entries: 65536 (order: 6, 262144 bytes)
+[    0.000000] Inode-cache hash table entries: 32768 (order: 5, 131072 bytes)
+[    0.000000] Memory: 483408K/522240K available (6323K kernel code, 341K rwdata, 2344K rodata, 276K init, 242K bss, 38832K reserved, 0K highmem)
+[    0.000000] Virtual kernel memory layout:
+[    0.000000]     vector  : 0xffff0000 - 0xffff1000   (   4 kB)
+[    0.000000]     fixmap  : 0xfff00000 - 0xfffe0000   ( 896 kB)
+[    0.000000]     vmalloc : 0xe0800000 - 0xff000000   ( 488 MB)
+[    0.000000]     lowmem  : 0xc0000000 - 0xe0000000   ( 512 MB)
+[    0.000000]     pkmap   : 0xbfe00000 - 0xc0000000   (   2 MB)
+[    0.000000]     modules : 0xbf000000 - 0xbfe00000   (  14 MB)
+[    0.000000]       .text : 0xc0008000 - 0xc087f01c   (8669 kB)
+[    0.000000]       .init : 0xc0880000 - 0xc08c538c   ( 277 kB)
+[    0.000000]       .data : 0xc08c6000 - 0xc091b590   ( 342 kB)
+[    0.000000]        .bss : 0xc091b590 - 0xc0957ed8   ( 243 kB)
+[    0.000000] NR_IRQS:16 nr_irqs:16 16
+[    0.000000] IRQ: Found an INTC at 0xfa200000 (revision 5.0) with 128 interrupts
+[    0.000000] Total of 128 interrupts on 1 active controller
+[    0.000000] OMAP clockevent source: timer2 at 24000000 Hz
+[    0.000017] sched_clock: 32 bits at 24MHz, resolution 41ns, wraps every 178956969942ns
+[    0.000036] OMAP clocksource: timer1 at 24000000 Hz
+[    0.000292] Console: colour dummy device 80x30
+[    0.000326] Calibrating delay loop... 795.44 BogoMIPS (lpj=3977216)
+[    0.089411] pid_max: default: 32768 minimum: 301
+[    0.089521] Security Framework initialized
+[    0.089581] Mount-cache hash table entries: 1024 (order: 0, 4096 bytes)
+[    0.089591] Mountpoint-cache hash table entries: 1024 (order: 0, 4096 bytes)
+[    0.097620] CPU: Testing write buffer coherency: ok
+[    0.098057] Setting up static identity map for 0x80632a08 - 0x80632a60
+[    0.099057] devtmpfs: initialized
+[    0.100957] VFP support v0.3: implementor 41 architecture 3 part 30 variant c rev 3
+[    0.108141] omap_hwmod: tptc0 using broken dt data from edma
+[    0.108224] omap_hwmod: tptc1 using broken dt data from edma
+[    0.108299] omap_hwmod: tptc2 using broken dt data from edma
+[    0.112508] omap_hwmod: debugss: _wait_target_disable failed
+[    0.167990] pinctrl core: initialized pinctrl subsystem
+[    0.169055] regulator-dummy: no parameters
+[    0.171633] NET: Registered protocol family 16
+[    0.173811] DMA: preallocated 256 KiB pool for atomic coherent allocations
+[    0.176407] cpuidle: using governor ladder
+[    0.176426] cpuidle: using governor menu
+[    0.183192] syscon 44e10000.control_module: regmap [mem 0x44e10000-0x44e107fb] registered
+[    0.184649] platform 49000000.edma: alias fck already exists
+[    0.184673] platform 49000000.edma: alias fck already exists
+[    0.184687] platform 49000000.edma: alias fck already exists
+[    0.185847] OMAP GPIO hardware version 0.1
+[    0.198036] omap-gpmc 50000000.gpmc: could not find pctldev for node /pinmux@44e10800/nandflash_pins_default, deferring probe
+[    0.198075] platform 50000000.gpmc: Driver omap-gpmc requests probe deferral
+[    0.203050] No ATAGs?
+[    0.203074] hw-breakpoint: debug architecture 0x4 unsupported.
+[    0.230190] bio: create slab <bio-0> at 0
+[    0.245760] edma-dma-engine edma-dma-engine.0: TI EDMA DMA engine driver
+[    0.246860] vbat: 5000 mV
+[    0.247269] lis3_reg: no parameters
+[    0.250600] vgaarb: loaded
+[    0.251121] i2c-core: driver [palmas] using legacy suspend method
+[    0.251132] i2c-core: driver [palmas] using legacy resume method
+[    0.251864] SCSI subsystem initialized
+[    0.253335] usbcore: registered new interface driver usbfs
+[    0.253528] usbcore: registered new interface driver hub
+[    0.253733] usbcore: registered new device driver usb
+[    0.254766] omap_i2c 44e0b000.i2c: could not find pctldev for node /pinmux@44e10800/pinmux_i2c0_pins, deferring probe
+[    0.254797] platform 44e0b000.i2c: Driver omap_i2c requests probe deferral
+[    0.255078] media: Linux media interface: v0.10
+[    0.255252] Linux video capture interface: v2.00
+[    0.255504] pps_core: LinuxPPS API ver. 1 registered
+[    0.255513] pps_core: Software ver. 5.3.6 - Copyright 2005-2007 Rodolfo Giometti <giometti@linux.it>
+[    0.255637] PTP clock support registered
+[    0.257655] omap-mailbox 480c8000.mailbox: omap mailbox rev 0x400
+[    0.258824] Advanced Linux Sound Architecture Driver Initialized.
+[    0.260562] Switched to clocksource timer1
+[    0.279702] NET: Registered protocol family 2
+[    0.280744] TCP established hash table entries: 4096 (order: 2, 16384 bytes)
+[    0.280798] TCP bind hash table entries: 4096 (order: 2, 16384 bytes)
+[    0.280845] TCP: Hash tables configured (established 4096 bind 4096)
+[    0.280923] TCP: reno registered
+[    0.280936] UDP hash table entries: 256 (order: 0, 4096 bytes)
+[    0.280956] UDP-Lite hash table entries: 256 (order: 0, 4096 bytes)
+[    0.281158] NET: Registered protocol family 1
+[    0.281554] RPC: Registered named UNIX socket transport module.
+[    0.281567] RPC: Registered udp transport module.
+[    0.281573] RPC: Registered tcp transport module.
+[    0.281579] RPC: Registered tcp NFSv4.1 backchannel transport module.
+[    0.282788] hw perfevents: enabled with ARMv7 Cortex-A8 PMU driver, 5 counters available
+[    0.285688] futex hash table entries: 256 (order: -1, 3072 bytes)
+[    0.466792] VFS: Disk quotas dquot_6.5.2
+[    0.466866] Dquot-cache hash table entries: 1024 (order 0, 4096 bytes)
+[    0.467410] NFS: Registering the id_resolver key type
+[    0.467501] Key type id_resolver registered
+[    0.467510] Key type id_legacy registered
+[    0.467548] jffs2: version 2.2. (NAND) (SUMMARY)  漏 2001-2006 Red Hat, Inc.
+[    0.467733] msgmni has been set to 992
+[    0.469143] NET: Registered protocol family 38
+[    0.469188] io scheduler noop registered
+[    0.469195] io scheduler deadline registered
+[    0.469218] io scheduler cfq registered (default)
+[    0.471127] pinctrl-single 44e10800.pinmux: 142 pins at pa f9e10800 size 568
+[    0.474828] backlight.11 supply power not found, using dummy regulator
+[    0.478630] Serial: 8250/16550 driver, 4 ports, IRQ sharing enabled
+[    0.481986] omap_uart 44e09000.serial: no wakeirq for uart0
+[    0.482148] 44e09000.serial: ttyO0 at MMIO 0x44e09000 (irq = 88, base_baud = 3000000) is a OMAP UART0
+[    1.160956] console [ttyO0] enabled
+[    1.165309] omap_uart 48024000.serial: no wakeirq for uart0
+[    1.171386] 48024000.serial: ttyO2 at MMIO 0x48024000 (irq = 90, base_baud = 3000000) is a OMAP UART2
+[    1.181665] omap_uart 481a6000.serial: no wakeirq for uart0
+[    1.187625] 481a6000.serial: ttyO3 at MMIO 0x481a6000 (irq = 60, base_baud = 3000000) is a OMAP UART3
+[    1.197955] omap_uart 481a8000.serial: no wakeirq for uart0
+[    1.203991] 481a8000.serial: ttyO4 at MMIO 0x481a8000 (irq = 61, base_baud = 3000000) is a OMAP UART4
+[    1.214247] omap_uart 481aa000.serial: no wakeirq for uart0
+[    1.220204] 481aa000.serial: ttyO5 at MMIO 0x481aa000 (irq = 62, base_baud = 3000000) is a OMAP UART5
+[    1.231409] omap_rng 48310000.rng: OMAP Random Number Generator ver. 20
+[    1.238763] [drm] Initialized drm 1.1.0 20060810
+[    1.254434] brd: module loaded
+[    1.263404] loop: module loaded
+[    1.267141] (stk) :sysfs entries created
+[    1.271415] (stk) : debugfs entries created
+[    1.275949] (hci_tty): inside hci_tty_init
+[    1.280945] (hci_tty): allocated 247, 0
+[    1.285208] am335x_buzzer: probe...
+[    1.490858] am335x buzzer driver
+[    1.494688] am335x_gprs: probe...
+[    1.499107] am335x gprs driver
+[    1.502750] am335x_lcd: probe...
+[    1.610804] am335x lcd driver
+[    1.614304] am335x_led: probe...
+[    1.618308] am335x led driver
+[    1.624307] mtdoops: mtd device (mtddev=name/number) must be supplied
+[    1.633711] vcan: Virtual CAN interface driver
+[    1.638392] CAN device driver interface
+[    1.643837] c_can_platform 481cc000.can: c_can_platform device registered (regs=fa1cc000, irq=68)
+[    1.654360] c_can_platform 481d0000.can: c_can_platform device registered (regs=fa1d0000, irq=71)
+[    1.665468] PPP generic driver version 2.4.2
+[    1.670426] PPP BSD Compression module registered
+[    1.675410] PPP Deflate Compression module registered
+[    1.680785] PPP MPPE Compression module registered
+[    1.685812] NET: Registered protocol family 24
+[    1.690774] usbcore: registered new interface driver asix
+[    1.696682] usbcore: registered new interface driver ax88179_178a
+[    1.703246] usbcore: registered new interface driver cdc_ether
+[    1.709573] usbcore: registered new interface driver smsc95xx
+[    1.715765] usbcore: registered new interface driver net1080
+[    1.721891] usbcore: registered new interface driver cdc_subset
+[    1.728276] usbcore: registered new interface driver zaurus
+[    1.734347] usbcore: registered new interface driver cdc_ncm
+[    1.740289] ehci_hcd: USB 2.0 'Enhanced' Host Controller (EHCI) Driver
+[    1.747159] ehci-pci: EHCI PCI platform driver
+[    1.752017] ehci-omap: OMAP-EHCI Host Controller driver
+[    1.757858] ohci_hcd: USB 1.1 'Open' Host Controller (OHCI) Driver
+[    1.764401] ohci-pci: OHCI PCI platform driver
+[    1.769233] ohci-platform: OHCI generic platform driver
+[    1.775152] usbcore: registered new interface driver cdc_acm
+[    1.781117] cdc_acm: USB Abstract Control Model driver for USB modems and ISDN adapters
+[    1.789716] usbcore: registered new interface driver usb-storage
+[    1.796423] usbcore: registered new interface driver usbserial
+[    1.802725] usbcore: registered new interface driver usbserial_generic
+[    1.809752] usbserial: USB Serial support registered for generic
+[    1.816203] usbcore: registered new interface driver ftdi_sio
+[    1.822392] usbserial: USB Serial support registered for FTDI USB Serial Device
+[    1.830230] usbcore: registered new interface driver option
+[    1.836214] usbserial: USB Serial support registered for GSM modem (1-port)
+[    1.843686] usbcore: registered new interface driver qcserial
+[    1.849878] usbserial: USB Serial support registered for Qualcomm USB modem
+[    1.859747] 47401300.usb-phy supply vcc not found, using dummy regulator
+[    1.869628] musb-hdrc musb-hdrc.0.auto: Failed to request rx1.
+[    1.875955] musb-hdrc musb-hdrc.0.auto: musb_init_controller failed with status -517
+[    1.884149] platform musb-hdrc.0.auto: Driver musb-hdrc requests probe deferral
+[    1.892689] 47401b00.usb-phy supply vcc not found, using dummy regulator
+[    1.902413] musb-hdrc musb-hdrc.1.auto: Failed to request rx1.
+[    1.908597] musb-hdrc musb-hdrc.1.auto: musb_init_controller failed with status -517
+[    1.916877] platform musb-hdrc.1.auto: Driver musb-hdrc requests probe deferral
+[    1.939163] i2c-core: driver [rtc-ds1307] using legacy suspend method
+[    1.946000] i2c-core: driver [rtc-ds1307] using legacy resume method
+[    1.953197] i2c /dev entries driver
+[    1.957918] usbcore: registered new interface driver uvcvideo
+[    1.963990] USB Video Class driver (1.1.1)
+[    1.968287] Driver for 1-wire Dallas network protocol.
+[    1.976126] omap_wdt: OMAP Watchdog Timer Rev 0x01: initial timeout 60 sec
+[    1.989583] omap_hsmmc 48060000.mmc: unable to get vmmc regulator -517
+[    1.996745] platform 48060000.mmc: Driver omap_hsmmc requests probe deferral
+[    2.004943] ledtrig-cpu: registered to indicate activity on CPUs
+[    2.011644] omap-aes 53500000.aes: OMAP AES hw accel rev: 3.2
+[    2.019053] omap-sham 53100000.sham: hw accel on OMAP rev 4.3
+[    2.026381] hidraw: raw HID events driver (C) Jiri Kosina
+[    2.032731] usbcore: registered new interface driver usbhid
+[    2.038584] usbhid: USB HID core driver
+[    2.043098] platform 44d00000.wkup_m3: Driver wkup_m3 requests probe deferral
+[    2.055634] davinci_evm sound.15: ASoC: CODEC (null) not registered
+[    2.062401] davinci_evm sound.15: snd_soc_register_card failed (-517)
+[    2.069182] platform sound.15: Driver davinci_evm requests probe deferral
+[    2.078052] oprofile: using arm/armv7
+[    2.082321] TCP: cubic registered
+[    2.085802] Initializing XFRM netlink socket
+[    2.090296] NET: Registered protocol family 17
+[    2.095032] NET: Registered protocol family 15
+[    2.099818] Bridge firewalling registered
+[    2.104054] can: controller area network core (rev 20120528 abi 9)
+[    2.110615] NET: Registered protocol family 29
+[    2.115316] can: raw protocol (rev 20120528)
+[    2.119792] can: broadcast manager protocol (rev 20120528 t)
+[    2.125748] can: netlink gateway (rev 20130117) max_hops=1
+[    2.131624] Key type dns_resolver registered
+[    2.136947] cpu cpu0: of_pm_voltdm_notifier_register: Failed to get cpu0 regulator/voltdm: -517
+[    2.146141] cpu cpu0: cpu0 clock notifier not ready, retry
+[    2.152011] platform cpufreq-cpu0.0: Driver cpufreq-cpu0 requests probe deferral
+[    2.160481] PM: could not locate rtc hwmod
+[    2.164836] ThumbEE CPU extension supported.
+[    2.169428] Registering SWP/SWPB emulation handler
+[    2.176140] lis3_reg: disabling
+[    2.179448] vbat: disabling
+[    2.182491] regulator-dummy: disabling
+[    2.187922] panel panel.12: pins are not configured
+[    2.195344] [drm] Supports vblank timestamp caching Rev 2 (21.10.2013).
+[    2.202348] [drm] No driver support for vblank timestamp query.
+[    2.256824] Console: switching to colour frame buffer device 100x30
+[    2.268673] tilcdc 4830e000.lcdc: fb0:  frame buffer device
+[    2.274536] tilcdc 4830e000.lcdc: registered panic notifier
+[    2.280397] [drm] Initialized tilcdc 1.0.0 20121205 on minor 0
+[    2.287420] omap-gpmc 50000000.gpmc: GPMC revision 6.0
+[    2.292881] gpmc_mem_init: disabling cs 0 mapped at 0x0-0x1000000
+[    2.300461] nand: device found, Manufacturer ID: 0xec, Chip ID: 0xd3
+[    2.307183] nand: Samsung NAND 1GiB 3,3V 8-bit
+[    2.311856] nand: 1024MiB, SLC, page size: 2048, OOB size: 64
+[    2.317891] nand: using OMAP_ECC_BCH8_CODE_HW ECC scheme
+[    2.323684] 10 ofpart partitions found on MTD device omap2-nand.0
+[    2.330082] Creating 10 MTD partitions on "omap2-nand.0":
+[    2.335779] 0x000000000000-0x000000020000 : "NAND.SPL"
+[    2.343048] 0x000000020000-0x000000040000 : "NAND.SPL.backup1"
+[    2.350831] 0x000000040000-0x000000060000 : "NAND.SPL.backup2"
+[    2.358478] 0x000000060000-0x000000080000 : "NAND.SPL.backup3"
+[    2.366208] 0x000000080000-0x0000000c0000 : "NAND.u-boot-spl-os"
+[    2.374194] 0x0000000c0000-0x0000001c0000 : "NAND.u-boot"
+[    2.382239] 0x0000001c0000-0x0000001e0000 : "NAND.u-boot-env"
+[    2.389818] 0x0000001e0000-0x000000200000 : "NAND.u-boot-env.backup1"
+[    2.398215] 0x000000200000-0x000000a00000 : "NAND.kernel"
+[    2.412062] 0x000000a00000-0x000040000000 : "NAND.file-system"
+[    3.252382] tps65910 1-002d: No interrupt support, no core IRQ
+[    3.270588] vrtc: 1800 mV
+[    3.273726] vrtc: supplied by vbat
+[    3.280594] vio: at 1500 mV
+[    3.283713] vio: supplied by vbat
+[    3.290859] vdd_mpu: 912 <--> 1375 mV at 1262 mV
+[    3.295875] vdd_mpu: supplied by vbat
+[    3.310854] vdd_core: 912 <--> 1150 mV at 1137 mV
+[    3.315956] vdd_core: supplied by vbat
+[    3.330579] vdd3: 5000 mV
+[    3.340581] vdig1: at 1800 mV
+[    3.343862] vdig1: supplied by vbat
+[    3.350582] vdig2: at 1800 mV
+[    3.353863] vdig2: supplied by vbat
+[    3.360582] vpll: at 1800 mV
+[    3.363774] vpll: supplied by vbat
+[    3.370583] vdac: at 1800 mV
+[    3.373776] vdac: supplied by vbat
+[    3.380584] vaux1: at 1800 mV
+[    3.383868] vaux1: supplied by vbat
+[    3.390582] vaux2: at 3300 mV
+[    3.393856] vaux2: supplied by vbat
+[    3.400580] vaux33: at 3300 mV
+[    3.403951] vaux33: supplied by vbat
+[    3.410644] vmmc: 1800 <--> 3300 mV at 3300 mV
+[    3.415484] vmmc: supplied by vbat
+[    3.420906] rtc-ds1307 1-0032: power-on detected
+[    3.425859] rtc-ds1307 1-0032: voltage drop detected
+[    3.432157] rtc-ds1307 1-0032: rtc core: registered rx8025 as rtc0
+[    3.440440] stone............pca953x_probe
+[    3.445654] omap_i2c 44e0b000.i2c: bus 1 rev0.11 at 400 kHz
+[    3.455365] musb-hdrc musb-hdrc.0.auto: MUSB HDRC host driver
+[    3.461434] musb-hdrc musb-hdrc.0.auto: new USB bus registered, assigned bus number 1
+[    3.469798] usb usb1: New USB device found, idVendor=1d6b, idProduct=0002
+[    3.476895] usb usb1: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+[    3.484434] usb usb1: Product: MUSB HDRC host driver
+[    3.489606] usb usb1: Manufacturer: Linux 3.14.28-g7e5eb61-dirty musb-hcd
+[    3.496687] usb usb1: SerialNumber: musb-hdrc.0.auto
+[    3.503099] hub 1-0:1.0: USB hub found
+[    3.507125] hub 1-0:1.0: 1 port detected
+[    3.515807] musb-hdrc musb-hdrc.1.auto: MUSB HDRC host driver
+[    3.522052] musb-hdrc musb-hdrc.1.auto: new USB bus registered, assigned bus number 2
+[    3.530442] usb usb2: New USB device found, idVendor=1d6b, idProduct=0002
+[    3.537587] usb usb2: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+[    3.545177] usb usb2: Product: MUSB HDRC host driver
+[    3.550385] usb usb2: Manufacturer: Linux 3.14.28-g7e5eb61-dirty musb-hcd
+[    3.557513] usb usb2: SerialNumber: musb-hdrc.1.auto
+[    3.563871] hub 2-0:1.0: USB hub found
+[    3.567878] hub 2-0:1.0: 1 port detected
+[    3.611379] platform 44d00000.wkup_m3: Driver wkup_m3 requests probe deferral
+[    3.623215] ALSA sound/core/control.c:357 control 2:0:0:PCM Playback Volume:0 is already present
+[    3.632503] tlv320aic3x-codec 1-0018: ASoC: Failed to add PCM Playback Volume: -16
+[    3.642215] davinci_evm sound.15: tlv320aic3x-hifi <-> 48038000.mcasp mapping ok
+[    3.650046] davinci_evm sound.15: ASoC: no source widget found for Mic Bias 2V
+[    3.657685] davinci_evm sound.15: ASoC: Failed to add route Mic Bias 2V -> direct -> MIC3L
+[    3.666373] davinci_evm sound.15: ASoC: no source widget found for Mic Bias 2V
+[    3.673978] davinci_evm sound.15: ASoC: Failed to add route Mic Bias 2V -> direct -> MIC3R
+[    3.682664] davinci_evm sound.15: ASoC: no sink widget found for Mic Bias 2V
+[    3.690062] davinci_evm sound.15: ASoC: Failed to add route Mic Jack -> direct -> Mic Bias 2V
+[    3.706602] cpu cpu0: of_pm_voltdm_notifier_register: Fail calculating voltage latency[950000<->1260000]:-22
+[    3.717822] platform 44d00000.wkup_m3: Driver wkup_m3 requests probe deferral
+[    3.726335] UBI: attaching mtd9 to ubi0
+[    3.970712] usb 2-1: new high-speed USB device number 2 using musb-hdrc
+[    4.132897] usb 2-1: device v0424 p2514 is not supported
+[    4.138483] usb 2-1: New USB device found, idVendor=0424, idProduct=2514
+[    4.145540] usb 2-1: New USB device strings: Mfr=0, Product=0, SerialNumber=0
+[    4.182154] hub 2-1:1.0: USB hub found
+[    4.186223] hub 2-1:1.0: 4 ports detected
+[    4.203242] platform 44d00000.wkup_m3: Driver wkup_m3 requests probe deferral
+[    4.221222] platform 44d00000.wkup_m3: Driver wkup_m3 requests probe deferral
+[    4.491161] usb 2-1.3: new high-speed USB device number 3 using musb-hdrc
+[    4.621180] usb 2-1.3: device v0403 p6011 is not supported
+[    4.626947] usb 2-1.3: New USB device found, idVendor=0403, idProduct=6011
+[    4.634172] usb 2-1.3: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+[    4.641850] usb 2-1.3: Product: Quad RS232-HS
+[    4.646419] usb 2-1.3: Manufacturer: FTDI
+[    4.690937] ftdi_sio 2-1.3:1.0: FTDI USB Serial Device converter detected
+[    4.698491] usb 2-1.3: Detected FT4232H
+[    4.702558] usb 2-1.3: Number of endpoints 2
+[    4.707043] usb 2-1.3: Endpoint 1 MaxPacketSize 512
+[    4.712170] usb 2-1.3: Endpoint 2 MaxPacketSize 512
+[    4.717285] usb 2-1.3: Setting MaxPacketSize 512
+[    4.760841] usb 2-1.3: FTDI USB Serial Device converter now attached to ttyUSB0
+[    4.769025] platform 44d00000.wkup_m3: Driver wkup_m3 requests probe deferral
+[    4.777424] platform 44d00000.wkup_m3: Driver wkup_m3 requests probe deferral
+[    4.785407] ftdi_sio 2-1.3:1.1: FTDI USB Serial Device converter detected
+[    4.801014] usb 2-1.3: Detected FT4232H
+[    4.805058] usb 2-1.3: Number of endpoints 2
+[    4.809536] usb 2-1.3: Endpoint 1 MaxPacketSize 512
+[    4.814690] usb 2-1.3: Endpoint 2 MaxPacketSize 512
+[    4.819809] usb 2-1.3: Setting MaxPacketSize 512
+[    4.850754] usb 2-1.3: FTDI USB Serial Device converter now attached to ttyUSB1
+[    4.858896] platform 44d00000.wkup_m3: Driver wkup_m3 requests probe deferral
+[    4.867231] platform 44d00000.wkup_m3: Driver wkup_m3 requests probe deferral
+[    4.875194] ftdi_sio 2-1.3:1.2: FTDI USB Serial Device converter detected
+[    4.891380] usb 2-1.3: Detected FT4232H
+[    4.895411] usb 2-1.3: Number of endpoints 2
+[    4.899901] usb 2-1.3: Endpoint 1 MaxPacketSize 512
+[    4.905042] usb 2-1.3: Endpoint 2 MaxPacketSize 512
+[    4.910158] usb 2-1.3: Setting MaxPacketSize 512
+[    4.950816] usb 2-1.3: FTDI USB Serial Device converter now attached to ttyUSB2
+[    4.958914] platform 44d00000.wkup_m3: Driver wkup_m3 requests probe deferral
+[    4.967263] platform 44d00000.wkup_m3: Driver wkup_m3 requests probe deferral
+[    4.975221] ftdi_sio 2-1.3:1.3: FTDI USB Serial Device converter detected
+[    4.991412] usb 2-1.3: Detected FT4232H
+[    4.995443] usb 2-1.3: Number of endpoints 2
+[    4.999932] usb 2-1.3: Endpoint 1 MaxPacketSize 512
+[    5.005073] usb 2-1.3: Endpoint 2 MaxPacketSize 512
+[    5.010189] usb 2-1.3: Setting MaxPacketSize 512
+[    5.050972] usb 2-1.3: FTDI USB Serial Device converter now attached to ttyUSB3
+[    5.059083] platform 44d00000.wkup_m3: Driver wkup_m3 requests probe deferral
+[    5.067482] platform 44d00000.wkup_m3: Driver wkup_m3 requests probe deferral
+[    5.151025] usb 2-1.4: new high-speed USB device number 4 using musb-hdrc
+[    5.282899] usb 2-1.4: device v0781 p5567 is not supported
+[    5.288666] usb 2-1.4: New USB device found, idVendor=0781, idProduct=5567
+[    5.295893] usb 2-1.4: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[    5.303569] usb 2-1.4: Product: Cruzer Blade
+[    5.308050] usb 2-1.4: Manufacturer: SanDisk
+[    5.312538] usb 2-1.4: SerialNumber: 4C532007131225111451
+[    5.361903] usb-storage 2-1.4:1.0: USB Mass Storage device detected
+[    5.381412] scsi0 : usb-storage 2-1.4:1.0
+[    5.386889] platform 44d00000.wkup_m3: Driver wkup_m3 requests probe deferral
+[    5.395295] platform 44d00000.wkup_m3: Driver wkup_m3 requests probe deferral
+[    6.382742] scsi 0:0:0:0: Direct-Access     SanDisk  Cruzer Blade     1.26 PQ: 0 ANSI: 5
+[    6.411815] sd 0:0:0:0: [sda] 15633408 512-byte logical blocks: (8.00 GB/7.45 GiB)
+[    6.420519] platform 44d00000.wkup_m3: Driver wkup_m3 requests probe deferral
+[    6.428574] sd 0:0:0:0: [sda] Write Protect is off
+[    6.442060] sd 0:0:0:0: [sda] Write cache: disabled, read cache: enabled, doesn't support DPO or FUA
+[    6.472413]  sda: sda1
+[    6.485138] sd 0:0:0:0: [sda] Attached SCSI removable disk
+[    9.094707] UBI: scanning is finished
+[    9.120965] UBI: attached mtd9 (name "NAND.file-system", size 1014 MiB) to ubi0
+[    9.128661] UBI: PEB size: 131072 bytes (128 KiB), LEB size: 126976 bytes
+[    9.135821] UBI: min./max. I/O unit sizes: 2048/2048, sub-page size 512
+[    9.142767] UBI: VID header offset: 2048 (aligned 2048), data offset: 4096
+[    9.149980] UBI: good PEBs: 8112, bad PEBs: 0, corrupted PEBs: 0
+[    9.156285] UBI: user volume: 1, internal volumes: 1, max. volumes count: 128
+[    9.163780] UBI: max/mean erase counter: 3/1, WL threshold: 4096, image sequence number: 710274841
+[    9.173186] UBI: available PEBs: 0, total reserved PEBs: 8112, PEBs reserved for bad PEB handling: 160
+[    9.182968] UBI: background thread "ubi_bgt0d" started, PID 1009
+[    9.250594] davinci_mdio 4a101000.mdio: davinci mdio revision 1.6
+[    9.257004] davinci_mdio 4a101000.mdio: detected phy mask fffffffa
+[    9.264960] platform 44d00000.wkup_m3: Driver wkup_m3 requests probe deferral
+[    9.273190] libphy: 4a101000.mdio: probed
+[    9.277417] davinci_mdio 4a101000.mdio: phy[0]: device 4a101000.mdio:00, driver Atheros 8035 ethernet
+[    9.287135] davinci_mdio 4a101000.mdio: phy[2]: device 4a101000.mdio:02, driver Atheros 8035 ethernet
+[    9.297156] platform 44d00000.wkup_m3: Driver wkup_m3 requests probe deferral
+[    9.305035] platform 44d00000.wkup_m3: Driver wkup_m3 requests probe deferral
+[    9.313405] cpsw 4a100000.ethernet: Missing dual_emac_res_vlan in DT.
+[    9.320177] cpsw 4a100000.ethernet: Using 1 as Reserved VLAN for 0 slave
+[    9.327262] ######### phyid = 0
+[    9.330565] ######### phy-mode = 10
+[    9.334268] cpsw 4a100000.ethernet: Missing dual_emac_res_vlan in DT.
+[    9.341041] cpsw 4a100000.ethernet: Using 2 as Reserved VLAN for 1 slave
+[    9.348072] ######### phyid = 2
+[    9.351372] ######### phy-mode = 10
+[    9.355036] cpsw 4a100000.ethernet: Detected MACID = 74:e1:82:b2:39:5b
+[    9.362349] platform 44d00000.wkup_m3: Driver wkup_m3 requests probe deferral
+[    9.371275] cpsw 4a100000.ethernet: cpsw: Detected MACID = 74:e1:82:b2:39:5d
+[    9.379971] platform 44d00000.wkup_m3: Driver wkup_m3 requests probe deferral
+[    9.388408] rtc-ds1307 1-0032: setting system clock to 2035-12-24 22:39:14 UTC (2082148754)
+[    9.400734] ALSA device list:
+[    9.403853]   #0: AM335x-EVM
+[    9.441094] UBIFS: background thread "ubifs_bgt0_0" started, PID 1025
+[    9.491656] UBIFS: mounted UBI device 0, volume 0, name "rootfs"
+[    9.497939] UBIFS: LEB size: 126976 bytes (124 KiB), min./max. I/O unit sizes: 2048 bytes/2048 bytes
+[    9.507511] UBIFS: FS size: 1007808512 bytes (961 MiB, 7937 LEBs), journal size 9023488 bytes (8 MiB, 72 LEBs)
+[    9.517956] UBIFS: reserved for root: 0 bytes (0 KiB)
+[    9.523239] UBIFS: media format: w4/r0 (latest is w4/r0), UUID 96776A7F-B063-4A96-944B-76DF49A137CE, small LPT model
+[    9.535483] VFS: Mounted root (ubifs filesystem) on device 0:14.
+[    9.543475] devtmpfs: mounted
+[    9.546997] Freeing unused kernel memory: 276K (c0880000 - c08c5000)
+INIT: version 2.86 booting
+Please wait: booting...
+Starting udev
+[   10.100988] udevd (1045): /proc/1045/oom_adj is deprecated, please use /proc/1045/oom_score_adj instead.
+[   14.266494] FAT-fs (sda): bogus number of reserved sectors
+[   14.272345] FAT-fs (sda): Can't find a valid FAT filesystem
+[   15.964085] random: nonblocking pool is initialized
+[   16.099454] FAT-fs (sda1): Volume was not properly unmounted. Some data may be corrupt. Please run fsck.
+[   16.171068] alignment: ignoring faults is unsafe on this CPU.  Defaulting to fixup mode.
+Root filesystem already rw, not remounting
+Caching udev devnodes
+Start httpd
+Start udhcpc on eth0
+udhcpc (v1.23.1) started
+Setting IP address 0.0.0.0 on eth0
+[   16.347549] net eth0: initializing cpsw version 1.12 (0)
+[   16.431755] net eth0: phy found : id is : 0x4dd072
+Sending discover...
+Sending discover...
+Sending discover...
+Deleting routers
+route: SIOCDELRT: No such process
+Leasefail, fallback IP to 100.66
+No lease, forking to background
+udhcpc (v1.23.1) started
+Setting IP address 0.0.0.0 on eth1
+[   25.565052] net eth1: initializing cpsw version 1.12 (0)
+[   25.651364] net eth1: phy found : id is : 0x4dd072
+Sending discover...
+Sending discover...
+Sending discover...
+Deleting routers
+route: SIOCDELRT: No such process
+Leasefail, fallback IP to 101.67
+No lease, forking to background
+logger: mount: mount point /proc/bus/usb does not exist
+ALSA: Restoring mixer settings...
+Configuring network interfaces... done.
+Setting up IP spoofing protection: rp_filter.
+ls: /home/*/.Xauthority: No such file or directory
+[   36.194428] input: PenMount Touch Screen as /devices/virtual/input/input0
+Init c2000a/c3000 ESAM power pin...242
+Init c2000a/c2000b/c3000 ESAM reset pin...115
+Init c2000a/c3000 DI/DO/PFS pin...
+Init c2000a/c3000 GPS power...
+Init C3000 BT power...
+start run led process.
+open /dev/ttyO3 success
+$CCCAS,1,5*55
+
+$CCCAS,2,5*56
+
+success
+numid=1,iface=MIXER,name='PCM Playback Volume'
+  ; type=INTEGER,access=rw---R--,values=2,min=0,max=127,step=0
+  : values=120,120
+  | dBscale-min=-63.50dB,step=0.50dB,mute=0
+numid=28,iface=MIXER,name='HPCOM DAC Playback Volume'
+  ; type=INTEGER,access=rw---R--,values=2,min=0,max=118,step=0
+  : values=90,90
+  | dBscale-min=-59.00dB,step=0.50dB,mute=1
+The timeout was set to 5 seconds
+Feed the watchdog.
+[   45.817360] c_can_platform 481cc000.can can0: setting BTR=1c0b BRPE=0000
+[   45.844583] c_can_platform 481d0000.can can1: setting BTR=1c0b BRPE=0000
+can0 send cnt=0
+can0 send cnt=1
+can0 send cnt=2
+can0 send can1 receive test FAIL
+ret = -1
+Enter app mode !!!
+Run state grade app !!!
+INIT: Entering runlevel: 5
+Starting system message bus: dbus.
+Starting telnet daemon.
+Starting syslogd/klogd: done
+Starting thttpd.
+
+root@am335x:~# uname -a
+Linux am335x 3.14.28-g7e5eb61-dirty #145 Thu Jul 12 16:53:17 CST 2018 armv7l GNU/Linux
+root@am335x:~# cat model
+TI AM335x EVM
