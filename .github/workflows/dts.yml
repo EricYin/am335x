@@ -1,0 +1,36 @@
+name: Decompile DTB to DTS
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'bak/nmtd4_NAND.u-boot-spl-os.bin'
+      - '.github/workflows/export-dts.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  decompile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install device-tree-compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y device-tree-compiler
+
+      - name: Decompile DTB to DTS
+        run: |
+          dtc -I dtb -O dts -o bak/board_orig.dts bak/nmtd4_NAND.u-boot-spl-os.bin
+          ls -lh bak/board_orig.dts
+
+      - name: Commit and push DTS file
+        run: |
+          git config --local user.email "github-actions[bot]@://github.com"
+          git config --local user.name "github-actions[bot]"
+          git add bak/board_orig.dts
+          git diff --quiet && git diff --staged --quiet || git commit -m "chore: export board_orig.dts from dtb"
+          git push
