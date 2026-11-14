@@ -2,11 +2,7 @@ name: Decompile DTB to DTS
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'bak/nmtd4_NAND.u-boot-spl-os.bin'
-      - '.github/workflows/export-dts.yml'
-
+  
 permissions:
   contents: write
 
