@@ -7,7 +7,7 @@ on:
         description: 'OpenWrt 分支或标签 (例如 main 或 v25.12.0)'
         required: true
         default: 'am335x'
-  
+
 env:
   REPO_URL: https://github.com/ericyin/openwrt.git
   TARGET_BOARD: ti_am335x-c3000a
@@ -17,6 +17,11 @@ jobs:
     runs-on: ubuntu-24.04
 
     steps:
+      - name: 0. 清理 Runner 冗余磁盘空间
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+          df -h
+
       - name: 1. 检出自定义 DTS 与 files 仓库
         uses: actions/checkout@v4
         with:
@@ -40,42 +45,71 @@ jobs:
           BRANCH="${{ github.event.inputs.openwrt_branch || 'am335x' }}"
           git clone --depth 1 -b "$BRANCH" "$REPO_URL" openwrt
 
-      - name: 4. 更新并安装 Feeds
+      - name: 4. 恢复源码包缓存 (dl)
+        uses: actions/cache@v4
+        with:
+          path: openwrt/dl
+          key: openwrt-dl-${{ github.event.inputs.openwrt_branch || 'am335x' }}-${{ hashFiles('c3000a_repo/configs/am335x.config') }}
+          restore-keys: |
+            openwrt-dl-${{ github.event.inputs.openwrt_branch || 'am335x' }}-
+            openwrt-dl-
+
+      - name: 5. 恢复工具链与编译缓存 (staging_dir & ccache)
+        uses: actions/cache@v4
+        with:
+          path: |
+            openwrt/staging_dir/host
+            openwrt/staging_dir/hostpkg
+            openwrt/staging_dir/toolchain-*
+            openwrt/.ccache
+          key: openwrt-toolchain-${{ github.event.inputs.openwrt_branch || 'am335x' }}-${{ hashFiles('c3000a_repo/configs/am335x.config') }}
+          restore-keys: |
+            openwrt-toolchain-${{ github.event.inputs.openwrt_branch || 'am335x' }}-
+            openwrt-toolchain-
+
+      - name: 6. 更新并安装 Feeds
         working-directory: openwrt
         run: |
           ./scripts/feeds update -a
           ./scripts/feeds install -a
-      
-      - name: 6. 复制 configs/am335x.config 生成编译配置 (.config)
+
+      - name: 7. 生成编译配置 (.config) 并启用 ccache
         run: |
-          cp -v c3000a_repo/configs/am335x.config openwrt/.config         
+          cp -v c3000a_repo/configs/am335x.config openwrt/.config
+          if [ -d "c3000a_repo/files" ]; then
+            cp -rv c3000a_repo/files openwrt/files
+          fi
+          echo "CONFIG_CCACHE=y" >> openwrt/.config
           cd openwrt && make defconfig
           [ -e .config ] && cp .config defconfig-final.config
 
-      - name: 6. 上传 config files
-        uses: actions/upload-artifact@v6
+      - name: 8. 上传 config files
+        uses: actions/upload-artifact@v4
         with:
           name: build-config
           path: |
             openwrt/defconfig-final.config
 
-      - name: 8. 预下载源码包并刷新内核补丁
+      - name: 9. 预下载源码包并准备内核源码
         working-directory: openwrt
         run: |
           make download -j8
           find dl -size -1024c -exec ls -l {} \; -exec rm -f {} \;
           make target/linux/prepare V=s
 
-      - name: 9. 编译固件
+      - name: 10. 编译固件
         working-directory: openwrt
         run: |
+          export CCACHE_DIR="$PWD/.ccache"
+          ccache -M 5G
           make -j$(nproc) || make -j1 V=s
+          ccache -s
 
-      - name: 10. 整理并上传 SD 卡固件到 Artifacts
+      - name: 11. 整理并上传 SD 卡固件到 Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: openwrt-am335x-c3000a-sdcard
+          if-no-files-found: error
           path: |
             openwrt/bin/targets/omap/generic/*ti_am335x-c3000a*
             openwrt/bin/targets/omap/generic/sha256sums
-          
