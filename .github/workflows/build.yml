@@ -75,6 +75,7 @@ jobs:
 
       - name: 7. 生成编译配置 (.config) 并启用 ccache
         run: |
+          rm -rf openwrt/tmp
           cp -v c3000a_repo/configs/am335x.config openwrt/.config
           if [ -d "c3000a_repo/files" ]; then
             cp -rv c3000a_repo/files openwrt/files
