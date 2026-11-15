@@ -1,0 +1,1472 @@
+
+U-Boot SPL 2014.07 (Mar 08 2017 - 18:22:06)
+
+
+U-Boot 2014.07 (Mar 08 2017 - 18:22:06)
+
+I2C:   ready
+DRAM:  512 MiB
+NAND:  1024 MiB
+MMC:   OMAP SD/MMC: 0
+*** Warning - bad CRC, using default environment
+
+Net:   <ethaddr> not set. Validating first E-fuse MAC
+cpsw, usb_ether
+Hit any key to stop autoboot:  0
+switch to partitions #0, OK
+mmc0 is current device
+SD/MMC found on device 0
+reading uEnv.txt
+218 bytes read in 22 ms (8.8 KiB/s)
+Loaded environment from uEnv.txt
+Importing environment from mmc ...
+Running uenvcmd ...
+reading /zImage
+5109040 bytes read in 450 ms (10.8 MiB/s)
+reading /dtbs/am335x-c3000a.dtb
+74251 bytes read in 17 ms (4.2 MiB/s)
+Kernel image @ 0x82000000 [ 0x000000 - 0x4df530 ]
+## Flattened Device Tree blob at 88000000
+   Booting using the fdt blob at 0x88000000
+   Loading Device Tree to 8ffea000, end 8ffff20a ... OK
+
+Starting kernel ...
+
+[    0.000000] Booting Linux on physical CPU 0x0
+[    0.000000] Linux version 6.18.60 (runner@runnervm8axu0) (arm-openwrt-linux-muslgnueabi-gcc (OpenWrt GCC 14.4.0 toolchain-c0e63334e4) 14.4.0, GNU ld (GNU Binutils) 2.46.1) #0 SMP Sun Nov 15 15:27:48 2026
+[    0.000000] CPU: ARMv7 Processor [413fc082] revision 2 (ARMv7), cr=10c5387d
+[    0.000000] CPU: PIPT / VIPT nonaliasing data cache, VIPT aliasing instruction cache
+[    0.000000] OF: fdt: Machine model: TI AM335x Custom Board
+[    0.000000] Memory policy: Data cache writeback
+[    0.000000] cma: Reserved 16 MiB at 0x9ec00000
+[    0.000000] Zone ranges:
+[    0.000000]   Normal   [mem 0x0000000080000000-0x000000009fdfffff]
+[    0.000000]   HighMem  empty
+[    0.000000] Movable zone start for each node
+[    0.000000] Early memory node ranges
+[    0.000000]   node   0: [mem 0x0000000080000000-0x000000009fdfffff]
+[    0.000000] Initmem setup node 0 [mem 0x0000000080000000-0x000000009fdfffff]
+[    0.000000] On node 0, zone Normal: 512 pages in unavailable ranges
+[    0.000000] OF: reserved mem: Reserved memory: No reserved-memory node in the DT
+[    0.000000] CPU: All CPU(s) started in SVC mode.
+[    0.000000] AM335X ES2.1 (sgx neon)
+[    0.000000] percpu: Embedded 14 pages/cpu s27340 r8192 d21812 u57344
+[    0.000000] Kernel command line: console=ttyS0,115200n8 root=/dev/mmcblk0p2 rootwait
+[    0.000000] printk: log buffer data + meta data: 131072 + 409600 = 540672 bytes
+[    0.000000] Dentry cache hash table entries: 65536 (order: 6, 262144 bytes, linear)
+[    0.000000] Inode-cache hash table entries: 32768 (order: 5, 131072 bytes, linear)
+[    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 130560
+[    0.000000] mem auto-init: stack:off, heap alloc:off, heap free:off
+[    0.000000] SLUB: HWalign=16, Order=0-3, MinObjects=0, CPUs=1, Nodes=1
+[    0.000000] rcu: Hierarchical RCU implementation.
+[    0.000000] rcu:     RCU restricting CPUs from NR_CPUS=4 to nr_cpu_ids=1.
+[    0.000000]  Tracing variant of Tasks RCU enabled.
+[    0.000000] rcu: RCU calculated value of scheduler-enlistment delay is 10 jiffies.
+[    0.000000] rcu: Adjusting geometry for rcu_fanout_leaf=16, nr_cpu_ids=1
+[    0.000000] RCU Tasks Trace: Setting shift to 0 and lim to 1 rcu_task_cb_adjust=1 rcu_task_cpu_ids=1.
+[    0.000000] NR_IRQS: 16, nr_irqs: 16, preallocated irqs: 16
+[    0.000000] IRQ: Found an INTC at 0x(ptrval) (revision 5.0) with 128 interrupts
+[    0.000000] rcu: srcu_init: Setting srcu_struct sizes based on contention.
+[    0.000000] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 19112604462750000 ns
+[    0.000000] TI gptimer clocksource: always-on /ocp/interconnect@44c00000/segment@200000/target-module@31000
+[    0.000003] sched_clock: 32 bits at 24MHz, resolution 41ns, wraps every 89478484971ns
+[    0.000030] clocksource: dmtimer: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 79635851949 ns
+[    0.000585] TI gptimer clockevent: 24000000 Hz at /ocp/interconnect@48000000/segment@0/target-module@40000
+[    0.002406] Calibrating delay loop... 795.44 BogoMIPS (lpj=3977216)
+[    0.090700] CPU: Testing write buffer coherency: ok
+[    0.090820] CPU0: Spectre v2: using BPIALL workaround
+[    0.090832] pid_max: default: 32768 minimum: 301
+[    0.098170] Mount-cache hash table entries: 1024 (order: 0, 4096 bytes, linear)
+[    0.098198] Mountpoint-cache hash table entries: 1024 (order: 0, 4096 bytes, linear)
+[    0.110275] CPU0: thread -1, cpu 0, socket -1, mpidr 0
+[    0.112511] Setting up static identity map for 0x80100000 - 0x80100060
+[    0.112833] rcu: Hierarchical SRCU implementation.
+[    0.112842] rcu:     Max phase no-delay instances is 1000.
+[    0.113691] smp: Bringing up secondary CPUs ...
+[    0.113704] smp: Brought up 1 node, 1 CPU
+[    0.113717] SMP: Total of 1 processors activated (795.44 BogoMIPS).
+[    0.113730] CPU: All CPU(s) started in SVC mode.
+[    0.114014] Memory: 482016K/522240K available (11141K kernel code, 730K rwdata, 3228K rodata, 1024K init, 304K bss, 22828K reserved, 16384K cma-reserved, 0K highmem)
+[    0.135600] VFP support v0.3: implementor 41 architecture 3 part 30 variant c rev 3
+[    0.136240] posixtimers hash table entries: 512 (order: 0, 4096 bytes, linear)
+[    0.136279] futex hash table entries: 256 (16384 bytes on 1 NUMA nodes, total 16 KiB, linear).
+[    0.142745] pinctrl core: initialized pinctrl subsystem
+[    0.145824] NET: Registered PF_NETLINK/PF_ROUTE protocol family
+[    0.148742] DMA: preallocated 256 KiB pool for atomic coherent allocations
+[    0.150230] thermal_sys: Registered thermal governor 'fair_share'
+[    0.150245] thermal_sys: Registered thermal governor 'step_wise'
+[    0.150256] thermal_sys: Registered thermal governor 'user_space'
+[    0.150403] cpuidle: using governor ladder
+[    0.150453] cpuidle: using governor menu
+[    0.172801] /ocp/interconnect@48000000/segment@300000/target-module@e000/lcdc@0: Fixed dependency cycle(s) with /panel
+[    0.172962] /panel: Fixed dependency cycle(s) with /ocp/interconnect@48000000/segment@300000/target-module@e000/lcdc@0
+[    0.189847] SCSI subsystem initialized
+[    0.190599] usbcore: registered new interface driver usbfs
+[    0.190805] usbcore: registered new interface driver hub
+[    0.190903] usbcore: registered new device driver usb
+[    0.191553] pps_core: LinuxPPS API ver. 1 registered
+[    0.191567] pps_core: Software ver. 5.3.6 - Copyright 2005-2007 Rodolfo Giometti <giometti@linux.it>
+[    0.191596] PTP clock support registered
+[    0.191993] Advanced Linux Sound Architecture Driver Initialized.
+[    0.194423] clocksource: Switched to clocksource dmtimer
+[    0.201866] VFS: Disk quotas dquot_6.6.0
+[    0.202229] VFS: Dquot-cache hash table entries: 1024 (order 0, 4096 bytes)
+[    0.205082] NET: Registered PF_INET protocol family
+[    0.205427] IP idents hash table entries: 8192 (order: 4, 65536 bytes, linear)
+[    0.207714] tcp_listen_portaddr_hash hash table entries: 512 (order: 0, 4096 bytes, linear)
+[    0.207757] Table-perturb hash table entries: 65536 (order: 6, 262144 bytes, linear)
+[    0.208514] TCP established hash table entries: 4096 (order: 2, 16384 bytes, linear)
+[    0.208574] TCP bind hash table entries: 4096 (order: 4, 65536 bytes, linear)
+[    0.208699] TCP: Hash tables configured (established 4096 bind 4096)
+[    0.209132] MPTCP token hash table entries: 512 (order: 1, 8192 bytes, linear)
+[    0.209345] UDP hash table entries: 256 (order: 2, 14336 bytes, linear)
+[    0.209387] UDP-Lite hash table entries: 256 (order: 2, 14336 bytes, linear)
+[    0.210628] NET: Registered PF_UNIX/PF_LOCAL protocol family
+[    0.212021] RPC: Registered named UNIX socket transport module.
+[    0.212039] RPC: Registered udp transport module.
+[    0.212045] RPC: Registered tcp transport module.
+[    0.212051] RPC: Registered tcp-with-tls transport module.
+[    0.212057] RPC: Registered tcp NFSv4.1 backchannel transport module.
+[    0.215659] workingset: timestamp_bits=14 max_order=17 bucket_order=3
+[    0.228610] squashfs: version 4.0 (2009/01/31) Phillip Lougher
+[    0.233505] NFS: Registering the id_resolver key type
+[    0.233605] Key type id_resolver registered
+[    0.233614] Key type id_legacy registered
+[    0.233746] jffs2: version 2.2 (NAND) (SUMMARY) (LZO) (LZMA) (RTIME) (RUBIN) (CMODE_PRIORITY) (c) 2001-2006 Red Hat, Inc.
+[    0.241051] cryptd: max_cpu_qlen set to 1000
+[    0.447110] target-module@4b000000:target-module@140000:pmu@0:fck: device ID is greater than 24
+[    0.452517] ledtrig-cpu: registered to indicate activity on CPUs
+[    0.456999] Serial: 8250/16550 driver, 2 ports, IRQ sharing enabled
+[    0.501624] brd: module loaded
+[    0.514721] loop: module loaded
+[    0.516120] mtdoops: mtd device (mtddev=name/number) must be supplied
+[    0.521761] i2c_dev: i2c /dev entries driver
+[    0.523665] cpuidle: enable-method property 'ti,am3352' found operations
+[    0.524302] sdhci: Secure Digital Host Controller Interface driver
+[    0.524313] sdhci: Copyright(c) Pierre Ossman
+[    0.524738] sdhci-pltfm: SDHCI platform and OF driver helper
+[    0.530617] NET: Registered PF_INET6 protocol family
+[    0.555972] Segment Routing with IPv6
+[    0.556076] In-situ OAM (IOAM) with IPv6
+[    0.556242] NET: Registered PF_PACKET protocol family
+[    0.556270] NET: Registered PF_KEY protocol family
+[    0.556378] 8021q: 802.1Q VLAN Support v1.8
+[    0.556498] Key type dns_resolver registered
+[    0.556789] ThumbEE CPU extension supported.
+[    0.556811] Registering SWP/SWPB emulation handler
+[    0.556822] omap_voltage_late_init: Voltage driver support not added
+[    0.557355] SmartReflex Class3 initialized
+[    0.647700] pinctrl-single 44e10800.pinmux: 142 pins, size 568
+[    0.690564] omap_wdt: OMAP Watchdog Timer Rev 0x01: initial timeout 60 sec
+[    0.694348] omap_rtc 44e3e000.rtc: registered as rtc1
+[    0.742620] OMAP GPIO hardware version 0.1
+[    0.772973] 48000000.interconnect:segment@200000:target-module@0:mpu@0:fck: device ID is greater than 24
+[    0.788645] omap_gpio 481ae000.gpio: Could not set line 8 debounce to 200000 microseconds (-22)
+[    0.788690] sdhci-omap 48060000.mmc: Got CD GPIO
+[    0.788943] sdhci-omap 48060000.mmc: supply pbias not found, using dummy regulator
+[    0.789595] sdhci-omap 48060000.mmc: supply vqmmc not found, using dummy regulator
+[    0.819236] omap_rng 48310000.rng: Random Number Generator ver. 20
+[    0.830766] random: crng init done
+[    0.884506] davinci_mdio 4a101000.mdio: davinci mdio revision 1.6, bus freq 1000000
+[    0.893590] davinci_mdio 4a101000.mdio: phy[0]: device 4a101000.mdio:00, driver Qualcomm Atheros AR8035
+[    0.893620] davinci_mdio 4a101000.mdio: phy[2]: device 4a101000.mdio:02, driver Qualcomm Atheros AR8035
+[    0.894726] cpsw-switch 4a100000.switch: initialized cpsw ale version 1.4
+[    0.894749] cpsw-switch 4a100000.switch: ALE Table size 1024, Policers 0
+[    0.896283] cpsw-switch 4a100000.switch: cpts: overflow check period 500 (jiffies)
+[    0.896314] cpsw-switch 4a100000.switch: CPTS: ref_clk_freq:250000000 calc_mult:2147483648 calc_shift:29 error:0 nsec/sec
+[    0.896426] cpsw-switch 4a100000.switch: Detected MACID = 74:e1:82:b2:39:5b
+[    0.896529] cpsw-switch 4a100000.switch: Detected MACID = 74:e1:82:b2:39:5d
+[    0.900560] cpsw-switch 4a100000.switch: initialized (regs 0x4a100000, pool size 256) hw_ver:0019010C 1.12 (0)
+[    0.920318] debugfs: '49000000.dma' already exists in 'dmaengine'
+[    0.920369] edma 49000000.dma: TI EDMA DMA engine driver
+[    0.943326] am335x-phy-driver 47401300.usb-phy: dummy supplies not allowed for exclusive requests (id=vbus)
+[    0.952758] am335x-phy-driver 47401b00.usb-phy: dummy supplies not allowed for exclusive requests (id=vbus)
+[    0.987902] omap-gpmc 50000000.gpmc: GPMC revision 6.0
+[    0.987943] gpmc_mem_init: disabling cs 0 mapped at 0x0-0x1000000
+[    0.990110] nand: device found, Manufacturer ID: 0xec, Chip ID: 0xd3
+[    0.990130] nand: Samsung NAND 1GiB 3,3V 8-bit
+[    0.990138] nand: 1024 MiB, SLC, erase size: 128 KiB, page size: 2048, OOB size: 64
+[    0.990326] nand: using OMAP_ECC_BCH8_CODE_HW ECC scheme
+[    0.990450] 10 fixed-partitions partitions found on MTD device omap2-nand.0
+[    0.990474] Creating 10 MTD partitions on "omap2-nand.0":
+[    0.990489] 0x000000000000-0x000000020000 : "NAND.SPL"
+[    0.991524] 0x000000020000-0x000000040000 : "NAND.SPL.backup1"
+[    0.992329] 0x000000040000-0x000000060000 : "NAND.SPL.backup2"
+[    0.993046] 0x000000060000-0x000000080000 : "NAND.SPL.backup3"
+[    0.993754] 0x000000080000-0x0000000c0000 : "NAND.u-boot-spl-os"
+[    0.998497] 0x0000000c0000-0x0000001c0000 : "NAND.u-boot"
+[    1.000972] 0x0000001c0000-0x0000001e0000 : "NAND.u-boot-env"
+[    1.002657] 0x0000001e0000-0x000000200000 : "NAND.u-boot-env.backup1"
+[    1.004300] 0x000000200000-0x000000a00000 : "NAND.kernel"
+[    1.013462] 0x000000a00000-0x000040000000 : "NAND.file-system"
+[    1.824805] omap-sham 53100000.sham: hw accel on OMAP rev 4.3
+[    1.825253] omap-sham 53100000.sham: will run requests pump with realtime priority
+[    1.829239] omap-aes 53500000.aes: OMAP AES hw accel rev: 3.2
+[    1.829635] omap-aes 53500000.aes: will run requests pump with realtime priority
+[    1.833913] ti-sysc 44e31000.target-module: Failed to create device link (0x180) with supplier ocp for /ocp/interconnect@44c00000/segment@200000/target-module@31000/timer@0
+[    1.833971] ti-sysc 48040000.target-module: Failed to create device link (0x180) with supplier ocp for /ocp/interconnect@48000000/segment@0/target-module@40000/timer@0
+[    1.840809] input: beeper as /devices/platform/beeper/input/input0
+[    1.845503] printk: legacy console [ttyS0] disabled
+[    1.846270] 44e09000.serial: ttyS0 at MMIO 0x44e09000 (irq = 43, base_baud = 3000000) is a 8250
+[    1.846374] printk: legacy console [ttyS0] enabled
+[    3.005316] tps65910 0-002d: No interrupt support, no core IRQ
+[    3.017491] tps65910-rtc tps65910-rtc: error -EINVAL: request_irq(6) 0x0 tps65910_rtc_interrupt tps65910-rtc
+[    3.030778] tps65910-rtc tps65910-rtc: registered as rtc0
+[    3.040002] tps65910-rtc tps65910-rtc: setting system clock to 2000-01-01T00:00:00 UTC (946684800)
+[    3.052818] rtc-ds1307 0-0032: power-on detected
+[    3.058002] rtc-ds1307 0-0032: voltage drop detected
+[    3.064282] rtc-ds1307 0-0032: /aliases ID 0 not available
+[    3.070906] rtc-ds1307 0-0032: registered as rtc2
+[    3.079163] pca953x 0-0020: supply vcc not found, using dummy regulator
+[    3.086305] pca953x 0-0020: using no AI
+[    3.093766] omap_i2c 44e0b000.i2c: bus 0 rev0.11 at 400 kHz
+[    3.110460] omap_gpio 481ae000.gpio: Could not set line 8 debounce to 200000 microseconds (-22)
+[    3.119499] sdhci-omap 48060000.mmc: Got CD GPIO
+[    3.124487] sdhci-omap 48060000.mmc: supply pbias not found, using dummy regulator
+[    3.133989] sdhci-omap 48060000.mmc: supply vqmmc not found, using dummy regulator
+[    3.148656] musb-hdrc musb-hdrc.0: MUSB HDRC host driver
+[    3.154096] musb-hdrc musb-hdrc.0: new USB bus registered, assigned bus number 1
+[    3.167298] hub 1-0:1.0: USB hub found
+[    3.172578] hub 1-0:1.0: 1 port detected
+[    3.185317] musb-hdrc musb-hdrc.1: MUSB HDRC host driver
+[    3.190754] musb-hdrc musb-hdrc.1: new USB bus registered, assigned bus number 2
+[    3.202385] hub 2-0:1.0: USB hub found
+[    3.207770] hub 2-0:1.0: 1 port detected
+[    3.231969] omap_gpio 481ae000.gpio: Could not set line 8 debounce to 200000 microseconds (-22)
+[    3.240993] sdhci-omap 48060000.mmc: Got CD GPIO
+[    3.245983] sdhci-omap 48060000.mmc: supply pbias not found, using dummy regulator
+[    3.257960] sdhci-omap 48060000.mmc: supply vqmmc not found, using dummy regulator
+[    3.300141] clk: Disabling unused clocks
+[    3.304350] PM: genpd: Disabling unused power domains
+[    3.309764] ALSA device list:
+[    3.312755]   #0: AM335x-EVM
+[    3.343676] check access for rdinit=/init failed: -2, ignoring
+[    3.403640] mmc0: SDHCI controller on 48060000.mmc [48060000.mmc] using External DMA
+[    3.422524] Waiting for root device /dev/mmcblk0p2...
+[    3.587295] mmc0: new SDHC card at address e624
+[    3.595199] mmcblk0: mmc0:e624 SD08G 7.40 GiB
+[    3.606674]  mmcblk0: p1 p2
+[    3.625486] usb 2-1: new high-speed USB device number 2 using musb-hdrc
+[    3.667955] VFS: Mounted root (squashfs filesystem) readonly on device 179:2.
+[    3.680883] Freeing unused kernel image (initmem) memory: 1024K
+[    3.689471] Run /sbin/init as init process
+[    3.858755] hub 2-1:1.0: USB hub found
+[    3.862686] hub 2-1:1.0: 4 ports detected
+[    4.193327] usb 2-1.3: new high-speed USB device number 3 using musb-hdrc
+[    4.357951] init: Console is alive
+[    4.363220] init: - watchdog -
+[    5.276685] kmodloader: loading kernel modules from /etc/modules-boot.d/*
+[    5.425529] gpio_button_hotplug: loading out-of-tree module taints kernel.
+[    5.508475] kmodloader: done loading kernel modules from /etc/modules-boot.d/*
+[    5.527403] init: - preinit -
+[    7.326943] cpsw-switch 4a100000.switch: starting ndev. mode: dual_mac
+[    7.437947] Qualcomm Atheros AR8035 4a101000.mdio:00: attached PHY driver (mii_bus:phy_addr=4a101000.mdio:00, irq=POLL)
+[    7.453311] 8021q: adding VLAN 0 to HW filter on device eth0
+Press the [f] key and hit [enter] to enter failsafe mode
+Press the [1], [2], [3] or [4] key and hit [enter] to select the debug level
+[   11.845374] mount_root: loading kmods from internal overlay
+[   11.898808] kmodloader: loading kernel modules from //etc/modules-boot.d/*
+[   11.916768] kmodloader: done loading kernel modules from //etc/modules-boot.d/*
+[   12.287464] block: attempting to load /tmp/overlay/upper/etc/config/fstab
+[   12.305378] block: unable to load configuration (fstab: Entry not found)
+[   12.312447] block: attempting to load /tmp/overlay/etc/config/fstab
+[   12.319306] block: unable to load configuration (fstab: Entry not found)
+[   12.326491] block: attempting to load /etc/config/fstab
+[   12.335637] block: unable to load configuration (fstab: Entry not found)
+[   12.342624] block: no usable configuration
+[   12.347783] block: attempting to load /etc/config/fstab
+[   12.353350] block: unable to load configuration (fstab: Entry not found)
+[   12.361060] block: no usable configuration
+[   12.366764] loop0: detected capacity change from 0 to 212992
+[   12.394561] loop0: detected capacity change from 212992 to 193664
+[   12.831392] EXT4-fs (loop0): recovery complete
+[   12.864976] EXT4-fs (loop0): mounted filesystem 34a9f8ac-f3f6-4928-a1ea-38be6ba2d388 r/w with ordered data mode. Quota mode: none.
+[   12.944252] block: attempting to load /tmp/overlay/upper/etc/config/fstab
+[   12.955800] block: extroot: not configured
+[   12.960859] block: attempting to load /etc/config/fstab
+[   12.967420] block: unable to load configuration (fstab: Entry not found)
+[   12.974587] block: no usable configuration
+[   12.980577] mount_root: switching to ext4 overlay
+[   13.091542] urandom-seed: Seeding with /etc/urandom.seed
+[   13.262029] procd: - early -
+[   13.265826] procd: - watchdog -
+[   14.087926] procd: - watchdog -
+[   14.150986] procd: - ubus -
+[   14.351433] procd: - init -
+Please press Enter to activate this console.
+[   15.849832] platform 4830e000.lcdc: deferred probe pending: (reason unknown)
+[   15.857304] omap_prm 44e00d00.prm: sync_state() pending due to 44d00000.cpu
+[   17.079427] kmodloader: loading kernel modules from /etc/modules.d/*
+[   17.365465] cryptodev: driver 1.14 loaded.
+[   17.424940] hid: raw HID events driver (C) Jiri Kosina
+[   17.592776] Bluetooth: Core ver 2.22
+[   17.596863] NET: Registered PF_BLUETOOTH protocol family
+[   17.602219] Bluetooth: HCI device and connection manager initialized
+[   17.608712] Bluetooth: HCI socket layer initialized
+[   17.613627] Bluetooth: L2CAP socket layer initialized
+[   17.618794] Bluetooth: SCO socket layer initialized
+[   17.697327] Bluetooth: BNEP (Ethernet Emulation) ver 1.3
+[   17.702741] Bluetooth: BNEP filters: protocol multicast
+[   17.708239] Bluetooth: BNEP socket layer initialized
+[   17.767252] can: controller area network core
+[   17.771927] NET: Registered PF_CAN protocol family
+[   17.840272] CAN device driver interface
+[   17.849132] usbcore: registered new interface driver cdc_acm
+[   17.855016] cdc_acm: USB Abstract Control Model driver for USB modems and ISDN adapters
+[   17.917536] Bluetooth: HIDP (Human Interface Emulation) ver 1.2
+[   17.923588] Bluetooth: HIDP socket layer initialized
+[   18.084717] Bluetooth: RFCOMM TTY layer initialized
+[   18.089718] Bluetooth: RFCOMM socket layer initialized
+[   18.095032] Bluetooth: RFCOMM ver 1.11
+[   18.208366] usbcore: registered new interface driver usbserial_generic
+[   18.215187] usbserial: USB Serial support registered for generic
+[   18.309039] c_can_platform 481cc000.can: c_can_platform device registered (regs=c49935d4, irq=48)
+[   18.320026] c_can_platform 481d0000.can: c_can_platform device registered (regs=3efc8c7c, irq=49)
+[   18.419627] usbcore: registered new interface driver cdc_ether
+[   18.468078] usbcore: registered new interface driver ch341
+[   18.473757] usbserial: USB Serial support registered for ch341-uart
+[   18.543046] usbcore: registered new interface driver cp210x
+[   18.549036] usbserial: USB Serial support registered for cp210x
+[   18.631647] usbcore: registered new interface driver ftdi_sio
+[   18.637779] usbserial: USB Serial support registered for FTDI USB Serial Device
+[   18.645534] ftdi_sio 2-1.3:1.0: FTDI USB Serial Device converter detected
+[   18.652637] usb 2-1.3: Detected FT4232H
+[   18.766937] urngd: v1.0.2 started.
+[   18.771309] usb 2-1.3: FTDI USB Serial Device converter now attached to ttyUSB0
+[   18.779203] ftdi_sio 2-1.3:1.1: FTDI USB Serial Device converter detected
+[   18.786342] usb 2-1.3: Detected FT4232H
+[   18.854020] usb 2-1.3: FTDI USB Serial Device converter now attached to ttyUSB1
+[   18.861875] ftdi_sio 2-1.3:1.2: FTDI USB Serial Device converter detected
+[   18.869054] usb 2-1.3: Detected FT4232H
+[   18.914968] usb 2-1.3: FTDI USB Serial Device converter now attached to ttyUSB2
+[   18.922702] ftdi_sio 2-1.3:1.3: FTDI USB Serial Device converter detected
+[   18.930004] usb 2-1.3: Detected FT4232H
+[   18.995023] usb 2-1.3: FTDI USB Serial Device converter now attached to ttyUSB3
+[   19.348464] usbcore: registered new interface driver pl2303
+[   19.354236] usbserial: USB Serial support registered for pl2303
+[   19.418496] PPP generic driver version 2.4.2
+[   19.466502] NET: Registered PF_PPPOX protocol family
+[   19.498654] usbcore: registered new interface driver rndis_host
+[   19.674831] usbcore: registered new interface driver option
+[   19.680614] usbserial: USB Serial support registered for GSM modem (1-port)
+[   19.777252] kmodloader: done loading kernel modules from /etc/modules.d/*
+[   33.167657] cpsw-switch 4a100000.switch: starting ndev. mode: dual_mac
+[   33.295984] Qualcomm Atheros AR8035 4a101000.mdio:00: attached PHY driver (mii_bus:phy_addr=4a101000.mdio:00, irq=POLL)
+[   33.366487] 8021q: adding VLAN 0 to HW filter on device eth0
+[   33.384622] br-lan: port 1(eth0) entered blocking state
+[   33.389969] br-lan: port 1(eth0) entered disabled state
+[   33.395388] cpsw-switch 4a100000.switch eth0: entered allmulticast mode
+[   33.402493] cpsw-switch 4a100000.switch eth0: entered promiscuous mode
+[   33.461278] cpsw-switch 4a100000.switch eth0: failed to initialize vlan filtering on this port
+[   33.492610] cpsw-switch 4a100000.switch eth0: left allmulticast mode
+[   33.522493] br-lan: port 1(eth0) entered blocking state
+[   33.528021] br-lan: port 1(eth0) entered disabled state
+[   33.533372] cpsw-switch 4a100000.switch eth0: entered allmulticast mode
+[   33.557569] cpsw-switch 4a100000.switch eth0: failed to initialize vlan filtering on this port
+[   33.584815] cpsw-switch 4a100000.switch eth0: left allmulticast mode
+[   33.603678] br-lan: port 1(eth0) entered blocking state
+[   33.609204] br-lan: port 1(eth0) entered disabled state
+[   33.614625] cpsw-switch 4a100000.switch eth0: entered allmulticast mode
+[   33.644602] cpsw-switch 4a100000.switch eth0: failed to initialize vlan filtering on this port
+[   33.658155] cpsw-switch 4a100000.switch eth0: left allmulticast mode
+[   35.126466] cpsw-switch 4a100000.switch: starting ndev. mode: dual_mac
+[   35.274912] Qualcomm Atheros AR8035 4a101000.mdio:02: attached PHY driver (mii_bus:phy_addr=4a101000.mdio:02, irq=POLL)
+[   35.333931] 8021q: adding VLAN 0 to HW filter on device eth1
+[   35.420368] br-lan: port 1(eth1) entered blocking state
+[   35.425822] br-lan: port 1(eth1) entered disabled state
+[   35.431173] cpsw-switch 4a100000.switch eth1: entered allmulticast mode
+[   35.438346] cpsw-switch 4a100000.switch eth1: entered promiscuous mode
+[   35.504742] cpsw-switch 4a100000.switch eth1: failed to initialize vlan filtering on this port
+[   35.518160] cpsw-switch 4a100000.switch eth1: left allmulticast mode
+[   35.535642] br-lan: port 1(eth1) entered blocking state
+[   35.540958] br-lan: port 1(eth1) entered disabled state
+[   35.546480] cpsw-switch 4a100000.switch eth1: entered allmulticast mode
+[   35.701761] cpsw-switch 4a100000.switch eth1: failed to initialize vlan filtering on this port
+[   35.726437] cpsw-switch 4a100000.switch eth1: left allmulticast mode
+[   35.778520] br-lan: port 1(eth1) entered blocking state
+[   35.783983] br-lan: port 1(eth1) entered disabled state
+[   35.789521] cpsw-switch 4a100000.switch eth1: entered allmulticast mode
+[   35.884744] cpsw-switch 4a100000.switch eth1: failed to initialize vlan filtering on this port
+[   35.904922] cpsw-switch 4a100000.switch eth1: left allmulticast mode
+[   37.689095] cpsw-switch 4a100000.switch: starting ndev. mode: dual_mac
+[   37.865305] Qualcomm Atheros AR8035 4a101000.mdio:00: attached PHY driver (mii_bus:phy_addr=4a101000.mdio:00, irq=POLL)
+[   37.910058] 8021q: adding VLAN 0 to HW filter on device eth0
+[   37.935618] br-lan: port 1(eth0) entered blocking state
+[   37.940957] br-lan: port 1(eth0) entered disabled state
+[   37.946518] cpsw-switch 4a100000.switch eth0: entered allmulticast mode
+[   38.085149] cpsw-switch 4a100000.switch eth0: failed to initialize vlan filtering on this port
+[   38.220553] cpsw-switch 4a100000.switch eth0: left allmulticast mode
+[   38.236288] br-lan: port 1(eth0) entered blocking state
+[   38.241610] br-lan: port 1(eth0) entered disabled state
+[   38.247167] cpsw-switch 4a100000.switch eth0: entered allmulticast mode
+[   38.314767] cpsw-switch 4a100000.switch eth0: failed to initialize vlan filtering on this port
+[   38.344941] cpsw-switch 4a100000.switch eth0: left allmulticast mode
+[   38.446655] br-lan: port 1(eth0) entered blocking state
+[   38.451992] br-lan: port 1(eth0) entered disabled state
+[   38.457522] cpsw-switch 4a100000.switch eth0: entered allmulticast mode
+[   38.517790] cpsw-switch 4a100000.switch eth0: failed to initialize vlan filtering on this port
+[   38.585392] cpsw-switch 4a100000.switch eth0: left allmulticast mode
+[   38.651026] cpsw-switch 4a100000.switch: starting ndev. mode: dual_mac
+[   38.821260] Qualcomm Atheros AR8035 4a101000.mdio:02: attached PHY driver (mii_bus:phy_addr=4a101000.mdio:02, irq=POLL)
+[   38.849295] 8021q: adding VLAN 0 to HW filter on device eth1
+[   38.945219] br-lan: port 1(eth1) entered blocking state
+[   38.950556] br-lan: port 1(eth1) entered disabled state
+[   38.956014] cpsw-switch 4a100000.switch eth1: entered allmulticast mode
+[   38.992613] cpsw-switch 4a100000.switch eth1: failed to initialize vlan filtering on this port
+[   39.074856] cpsw-switch 4a100000.switch eth1: left allmulticast mode
+[   39.155393] br-lan: port 1(eth1) entered blocking state
+[   39.160730] br-lan: port 1(eth1) entered disabled state
+[   39.166192] cpsw-switch 4a100000.switch eth1: entered allmulticast mode
+[   39.210554] cpsw-switch 4a100000.switch eth1: failed to initialize vlan filtering on this port
+[   39.244885] cpsw-switch 4a100000.switch eth1: left allmulticast mode
+[   39.285309] br-lan: port 1(eth1) entered blocking state
+[   39.290645] br-lan: port 1(eth1) entered disabled state
+[   39.296174] cpsw-switch 4a100000.switch eth1: entered allmulticast mode
+[   39.418123] cpsw-switch 4a100000.switch eth1: failed to initialize vlan filtering on this port
+[   39.444810] cpsw-switch 4a100000.switch eth1: left allmulticast mode
+
+
+
+BusyBox v1.38.0 (2026-05-13 02:19:59 UTC) built-in shell (ash)
+
+  _______                     ________        __
+ |       |.-----.-----.-----.|  |  |  |.----.|  |_
+ |   -   ||  _  |  -__|     ||  |  |  ||   _||   _|
+ |_______||   __|_____|__|__||________||__|  |____|
+          |__| W I R E L E S S   F R E E D O M
+ -----------------------------------------------------
+ OpenWrt SNAPSHOT, r0-c96867e
+ -----------------------------------------------------
+
+ === WARNING! =====================================
+ There is no root password defined on this device!
+ Use the "passwd" command to set up a new password
+ in order to prevent unauthorized SSH logins.
+ --------------------------------------------------
+
+root@OpenWrt:~# ifconfifg
+-ash: ifconfifg: not found
+root@OpenWrt:~# ifconfig
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:56 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:56 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:4368 (4.2 KiB)  TX bytes:4368 (4.2 KiB)
+
+root@OpenWrt:~# ls /dev
+audio            loop6            mtdblock1        ram6
+bus              loop7            mtdblock2        ram7
+console          mmcblk0          mtdblock3        ram8
+cpu_dma_latency  mmcblk0p1        mtdblock4        ram9
+crypto           mmcblk0p2        mtdblock5        random
+dsp              mtd0             mtdblock6        rtc0
+fd               mtd0ro           mtdblock7        rtc1
+full             mtd1             mtdblock8        rtc2
+gpiochip0        mtd1ro           mtdblock9        shm
+gpiochip1        mtd2             null             snd
+gpiochip2        mtd2ro           port             stderr
+gpiochip3        mtd3             ppp              stdin
+gpiochip4        mtd3ro           ptmx             stdout
+gpiochip5        mtd4             pts              tty
+gpiochip6        mtd4ro           ram0             ttyS0
+hwrng            mtd5             ram1             ttyS1
+i2c-0            mtd5ro           ram10            ttyUSB0
+kmsg             mtd6             ram11            ttyUSB1
+log              mtd6ro           ram12            ttyUSB2
+loop-control     mtd7             ram13            ttyUSB3
+loop0            mtd7ro           ram14            ubi_ctrl
+loop1            mtd8             ram15            urandom
+loop2            mtd8ro           ram2             watchdog
+loop3            mtd9             ram3             watchdog0
+loop4            mtd9ro           ram4             zero
+loop5            mtdblock0        ram5
+root@OpenWrt:~# ifconfig -a
+br-lan    Link encap:Ethernet  HWaddr 92:7E:38:DA:FA:71
+          BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+can0      Link encap:UNSPEC  HWaddr 00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
+          NOARP  MTU:16  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:10
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+          Interrupt:48
+
+can1      Link encap:UNSPEC  HWaddr 00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
+          NOARP  MTU:16  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:10
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+          Interrupt:49
+
+eth0      Link encap:Ethernet  HWaddr 74:E1:82:B2:39:5B
+          BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:4 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+eth1      Link encap:Ethernet  HWaddr 74:E1:82:B2:39:5D
+          BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:256 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:256 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:19968 (19.5 KiB)  TX bytes:19968 (19.5 KiB)
+
+root@OpenWrt:~# if eth0 up
+> ^C
+
+root@OpenWrt:~# ifconfig eth0 up
+[  251.938332] cpsw-switch 4a100000.switch: starting ndev. mode: dual_mac
+[  252.016927] Qualcomm Atheros AR8035 4a101000.mdio:00: attached PHY driver (mii_bus:phy_addr=4a101000.mdio:00, irq=POLL)
+[  252.030453] 8021q: adding VLAN 0 to HW filter on device eth0
+root@OpenWrt:~# ifconfig eth1 up
+[  261.907508] cpsw-switch 4a100000.switch: starting ndev. mode: dual_mac
+[  261.986913] Qualcomm Atheros AR8035 4a101000.mdio:02: attached PHY driver (mii_bus:phy_addr=4a101000.mdio:02, irq=POLL)
+[  261.998505] 8021q: adding VLAN 0 to HW filter on device eth1
+root@OpenWrt:~# [  264.086181] cpsw-switch 4a100000.switch eth1: Link is Up - 100Mbps/Full - flow control off
+root@OpenWrt:~# ifconfig
+eth0      Link encap:Ethernet  HWaddr 74:E1:82:B2:39:5B
+          UP BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:4 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+eth1      Link encap:Ethernet  HWaddr 74:E1:82:B2:39:5D
+          inet6 addr: fe80::76e1:82ff:feb2:395d/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:7 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:826 (826.0 B)
+
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:320 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:320 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:24960 (24.3 KiB)  TX bytes:24960 (24.3 KiB)
+
+root@OpenWrt:~# ifconfig br-lan up
+root@OpenWrt:~# ifconfig
+br-lan    Link encap:Ethernet  HWaddr 92:7E:38:DA:FA:71
+          UP BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+eth0      Link encap:Ethernet  HWaddr 74:E1:82:B2:39:5B
+          UP BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:4 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+eth1      Link encap:Ethernet  HWaddr 74:E1:82:B2:39:5D
+          inet6 addr: fe80::76e1:82ff:feb2:395d/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:7 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:826 (826.0 B)
+
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:320 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:320 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:24960 (24.3 KiB)  TX bytes:24960 (24.3 KiB)
+
+root@OpenWrt:~# uci set network.lan.ipaddress="192.168.1.1"
+root@OpenWrt:~# uci set network.lan.netmask="255.255.255.0"
+root@OpenWrt:~# ifconfig
+br-lan    Link encap:Ethernet  HWaddr 92:7E:38:DA:FA:71
+          UP BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+eth0      Link encap:Ethernet  HWaddr 74:E1:82:B2:39:5B
+          UP BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:4 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+eth1      Link encap:Ethernet  HWaddr 74:E1:82:B2:39:5D
+          inet6 addr: fe80::76e1:82ff:feb2:395d/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:7 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:826 (826.0 B)
+
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:384 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:384 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:29952 (29.2 KiB)  TX bytes:29952 (29.2 KiB)
+
+root@OpenWrt:~# /etc/init.d/network restart
+root@OpenWrt:~# /etc/init.d/network restart[  450.968998] cpsw-switch 4a100000.switch: starting ndev. mode: dual_mac
+root@OpenWrt:~# ifconfig[  451.057934] Qualcomm Atheros AR8035 4a101000.mdio:00: attached PHY driver (mii_bus:phy_addr=4a101000.mdio:00, irq=POLL)
+[  451.076769] 8021q: adding VLAN 0 to HW filter on device eth0
+[  451.087353] br-lan: port 1(eth0) entered blocking state
+[  451.092670] br-lan: port 1(eth0) entered disabled state
+[  451.098196] cpsw-switch 4a100000.switch eth0: entered allmulticast mode
+[  451.114600] cpsw-switch 4a100000.switch eth0: failed to initialize vlan filtering on this port
+[  451.125849] cpsw-switch 4a100000.switch eth0: left allmulticast mode
+[  451.135312] br-lan: port 1(eth0) entered blocking state
+[  451.140617] br-lan: port 1(eth0) entered disabled state
+[  451.146101] cpsw-switch 4a100000.switch eth0: entered allmulticast mode
+[  451.155170] cpsw-switch 4a100000.switch eth0: failed to initialize vlan filtering on this port
+[  451.165398] cpsw-switch 4a100000.switch eth0: left allmulticast mode
+[  451.174042] br-lan: port 1(eth0) entered blocking state
+[  451.179460] br-lan: port 1(eth0) entered disabled state
+[  451.184834] cpsw-switch 4a100000.switch eth0: entered allmulticast mode
+[  451.194568] cpsw-switch 4a100000.switch eth0: failed to initialize vlan filtering on this port
+[  451.203915] cpsw-switch 4a100000.switch eth0: left allmulticast mode
+[  451.633150] cpsw-switch 4a100000.switch eth1: Link is Down
+[  451.668333] cpsw-switch 4a100000.switch: starting ndev. mode: dual_mac
+[  451.767770] Qualcomm Atheros AR8035 4a101000.mdio:02: attached PHY driver (mii_bus:phy_addr=4a101000.mdio:02, irq=POLL)
+[  451.782545] 8021q: adding VLAN 0 to HW filter on device eth1
+[  451.795944] br-lan: port 1(eth1) entered blocking state
+[  451.801273] br-lan: port 1(eth1) entered disabled state
+[  451.806740] cpsw-switch 4a100000.switch eth1: entered allmulticast mode
+[  451.834481] cpsw-switch 4a100000.switch eth1: failed to initialize vlan filtering on this port
+[  451.843947] cpsw-switch 4a100000.switch eth1: left allmulticast mode
+[  451.854741] br-lan: port 1(eth1) entered blocking state
+[  451.860061] br-lan: port 1(eth1) entered disabled state
+[  451.865581] cpsw-switch 4a100000.switch eth1: entered allmulticast mode
+[  451.874693] cpsw-switch 4a100000.switch eth1: failed to initialize vlan filtering on this port
+[  451.884196] cpsw-switch 4a100000.switch eth1: left allmulticast mode
+[  451.894176] br-lan: port 1(eth1) entered blocking state
+[  451.899577] br-lan: port 1(eth1) entered disabled state
+[  451.904950] cpsw-switch 4a100000.switch eth1: entered allmulticast mode
+[  451.924500] cpsw-switch 4a100000.switch eth1: failed to initialize vlan filtering on this port
+[  451.933908] cpsw-switch 4a100000.switch eth1: left allmulticast mode
+[  453.690677] cpsw-switch 4a100000.switch: starting ndev. mode: dual_mac
+[  453.778430] Qualcomm Atheros AR8035 4a101000.mdio:00: attached PHY driver (mii_bus:phy_addr=4a101000.mdio:00, irq=POLL)
+[  453.802394] 8021q: adding VLAN 0 to HW filter on device eth0
+[  453.814345] br-lan: port 1(eth0) entered blocking state
+[  453.819876] br-lan: port 1(eth0) entered disabled state
+[  453.825283] cpsw-switch 4a100000.switch eth0: entered allmulticast mode
+[  453.835099] cpsw-switch 4a100000.switch eth0: failed to initialize vlan filtering on this port
+[  453.845089] cpsw-switch 4a100000.switch eth0: left allmulticast mode
+[  453.853750] br-lan: port 1(eth0) entered blocking state
+[  453.859182] br-lan: port 1(eth0) entered disabled state
+[  453.864541] cpsw-switch 4a100000.switch eth0: entered allmulticast mode
+[  453.884555] cpsw-switch 4a100000.switch eth0: failed to initialize vlan filtering on this port
+[  453.893892] cpsw-switch 4a100000.switch eth0: left allmulticast mode
+[  453.903981] br-lan: port 1(eth0) entered blocking state
+[  453.909401] br-lan: port 1(eth0) entered disabled state
+[  453.914805] cpsw-switch 4a100000.switch eth0: entered allmulticast mode
+[  453.924645] cpsw-switch 4a100000.switch eth0: failed to initialize vlan filtering on this port
+[  453.934577] cpsw-switch 4a100000.switch eth0: left allmulticast mode
+[  453.953251] cpsw-switch 4a100000.switch: starting ndev. mode: dual_mac
+[  454.027343] Qualcomm Atheros AR8035 4a101000.mdio:02: attached PHY driver (mii_bus:phy_addr=4a101000.mdio:02, irq=POLL)
+[  454.042083] 8021q: adding VLAN 0 to HW filter on device eth1
+[  454.055087] br-lan: port 1(eth1) entered blocking state
+[  454.060426] br-lan: port 1(eth1) entered disabled state
+[  454.065891] cpsw-switch 4a100000.switch eth1: entered allmulticast mode
+[  454.084561] cpsw-switch 4a100000.switch eth1: failed to initialize vlan filtering on this port
+[  454.094042] cpsw-switch 4a100000.switch eth1: left allmulticast mode
+[  454.103785] br-lan: port 1(eth1) entered blocking state
+[  454.109217] br-lan: port 1(eth1) entered disabled state
+[  454.114628] cpsw-switch 4a100000.switch eth1: entered allmulticast mode
+[  454.124638] cpsw-switch 4a100000.switch eth1: failed to initialize vlan filtering on this port
+[  454.134082] cpsw-switch 4a100000.switch eth1: left allmulticast mode
+[  454.143297] br-lan: port 1(eth1) entered blocking state
+[  454.148694] br-lan: port 1(eth1) entered disabled state
+[  454.154023] cpsw-switch 4a100000.switch eth1: entered allmulticast mode
+[  454.164654] cpsw-switch 4a100000.switch eth1: failed to initialize vlan filtering on this port
+[  454.174009] cpsw-switch 4a100000.switch eth1: left allmulticast mode
+
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:384 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:384 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:29952 (29.2 KiB)  TX bytes:29952 (29.2 KiB)
+
+root@OpenWrt:~# ifconfig
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:384 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:384 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:29952 (29.2 KiB)  TX bytes:29952 (29.2 KiB)
+
+root@OpenWrt:~# ifconfig br-lan up
+root@OpenWrt:~# ifconfig eth0 up
+[  485.469700] cpsw-switch 4a100000.switch: starting ndev. mode: dual_mac
+[  485.546922] Qualcomm Atheros AR8035 4a101000.mdio:00: attached PHY driver (mii_bus:phy_addr=4a101000.mdio:00, irq=POLL)
+[  485.560423] 8021q: adding VLAN 0 to HW filter on device eth0
+root@OpenWrt:~# ifconfig eth1 up
+[  493.142889] cpsw-switch 4a100000.switch: starting ndev. mode: dual_mac
+[  493.227309] Qualcomm Atheros AR8035 4a101000.mdio:02: attached PHY driver (mii_bus:phy_addr=4a101000.mdio:02, irq=POLL)
+[  493.239511] 8021q: adding VLAN 0 to HW filter on device eth1
+root@OpenWrt:~# ifconfig br-lan up[  495.366145] cpsw-switch 4a100000.switch eth1: Link is Up - 100Mbps/Full - flow control off
+root@OpenWrt:~# ifconfig
+br-lan    Link encap:Ethernet  HWaddr C2:A9:5A:65:10:88
+          UP BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+eth0      Link encap:Ethernet  HWaddr 74:E1:82:B2:39:5B
+          UP BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:4 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+eth1      Link encap:Ethernet  HWaddr 74:E1:82:B2:39:5D
+          inet6 addr: fe80::76e1:82ff:feb2:395d/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:14 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:1692 (1.6 KiB)
+
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:384 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:384 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:29952 (29.2 KiB)  TX bytes:29952 (29.2 KiB)
+
+root@OpenWrt:~# cat /etc/config/network
+
+config interface 'loopback'
+        option device 'lo'
+        option proto 'static'
+        list ipaddr '127.0.0.1/8'
+
+config globals 'globals'
+        option dhcp_default_duid '000471fd6e6f645f579cacb43cbaa458666e'
+        option ula_prefix 'fd3e:2a58:1cad::/48'
+
+config interface 'lan'
+        option device 'br-lan'
+        option proto 'static'
+        option ipaddr '192.168.1.1'
+        option ip6assign '60'
+        option netmask '255.255.255.0'
+
+config device 'lan_dev'
+        option name 'br-lan'
+        option type 'bridge'
+        list ports 'eth0'
+        list ports 'eth1'
+
+root@OpenWrt:~# ifconfig
+br-lan    Link encap:Ethernet  HWaddr C2:A9:5A:65:10:88
+          UP BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+eth0      Link encap:Ethernet  HWaddr 74:E1:82:B2:39:5B
+          UP BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:4 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+eth1      Link encap:Ethernet  HWaddr 74:E1:82:B2:39:5D
+          inet6 addr: fe80::76e1:82ff:feb2:395d/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:14 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:1692 (1.6 KiB)
+
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:384 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:384 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:29952 (29.2 KiB)  TX bytes:29952 (29.2 KiB)
+
+root@OpenWrt:~# ifconfig -a
+br-lan    Link encap:Ethernet  HWaddr C2:A9:5A:65:10:88
+          UP BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+can0      Link encap:UNSPEC  HWaddr 00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
+          NOARP  MTU:16  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:10
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+          Interrupt:48
+
+can1      Link encap:UNSPEC  HWaddr 00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
+          NOARP  MTU:16  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:10
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+          Interrupt:49
+
+eth0      Link encap:Ethernet  HWaddr 74:E1:82:B2:39:5B
+          UP BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:4 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+eth1      Link encap:Ethernet  HWaddr 74:E1:82:B2:39:5D
+          inet6 addr: fe80::76e1:82ff:feb2:395d/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:14 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:1692 (1.6 KiB)
+
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:384 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:384 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:29952 (29.2 KiB)  TX bytes:29952 (29.2 KiB)
+
+root@OpenWrt:~# ifconfig br-lan 192.168.1.1 netmask 255.255.255.0 up
+root@OpenWrt:~# ifconfig
+br-lan    Link encap:Ethernet  HWaddr C2:A9:5A:65:10:88
+          inet addr:192.168.1.1  Bcast:192.168.1.255  Mask:255.255.255.0
+          UP BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+eth0      Link encap:Ethernet  HWaddr 74:E1:82:B2:39:5B
+          UP BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:4 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+eth1      Link encap:Ethernet  HWaddr 74:E1:82:B2:39:5D
+          inet6 addr: fe80::76e1:82ff:feb2:395d/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:14 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:1692 (1.6 KiB)
+
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:384 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:384 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:29952 (29.2 KiB)  TX bytes:29952 (29.2 KiB)
+
+root@OpenWrt:~# ping 192.168.1.1
+PING 192.168.1.1 (192.168.1.1): 56 data bytes
+64 bytes from 192.168.1.1: seq=0 ttl=64 time=0.820 ms
+64 bytes from 192.168.1.1: seq=1 ttl=64 time=0.687 ms
+64 bytes from 192.168.1.1: seq=2 ttl=64 time=0.668 ms
+^C
+--- 192.168.1.1 ping statistics ---
+3 packets transmitted, 3 packets received, 0% packet loss
+round-trip min/avg/max = 0.668/0.725/0.820 ms
+root@OpenWrt:~# ping 192.168.1.10
+PING 192.168.1.10 (192.168.1.10): 56 data bytes
+^C
+--- 192.168.1.10 ping statistics ---
+4 packets transmitted, 0 packets received, 100% packet loss
+root@OpenWrt:~# [  705.447756] cpsw-switch 4a100000.switch eth1: Link is Down
+[  712.326319] cpsw-switch 4a100000.switch eth0: Link is Up - 100Mbps/Full - flow control off
+
+root@OpenWrt:~# ping 192.168.1.10\
+> ^C
+
+root@OpenWrt:~# ping 192.168.1.10
+PING 192.168.1.10 (192.168.1.10): 56 data bytes
+^C
+--- 192.168.1.10 ping statistics ---
+11 packets transmitted, 0 packets received, 100% packet loss
+root@OpenWrt:~# cat /etc/config/fireware
+cat: can't open '/etc/config/fireware': No such file or directory
+root@OpenWrt:~# cat /etc/config/firewall
+config defaults
+        option syn_flood        1
+        option input            REJECT
+        option output           ACCEPT
+        option forward          REJECT
+# Uncomment this line to disable ipv6 rules
+#       option disable_ipv6     1
+
+config zone
+        option name             lan
+        list   network          'lan'
+        option input            ACCEPT
+        option output           ACCEPT
+        option forward          ACCEPT
+
+config zone
+        option name             wan
+        list   network          'wan'
+        list   network          'wan6'
+        option input            REJECT
+        option output           ACCEPT
+        option forward          DROP
+        option masq             1
+        option mtu_fix          1
+
+config forwarding
+        option src              lan
+        option dest             wan
+
+# We need to accept udp packets on port 68,
+# see https://dev.openwrt.org/ticket/4108
+config rule
+        option name             Allow-DHCP-Renew
+        option src              wan
+        option proto            udp
+        option dest_port        68
+        option target           ACCEPT
+        option family           ipv4
+
+# Allow IPv4 ping
+config rule
+        option name             Allow-Ping
+        option src              wan
+        option proto            icmp
+        option icmp_type        echo-request
+        option family           ipv4
+        option target           ACCEPT
+
+config rule
+        option name             Allow-IGMP
+        option src              wan
+        option proto            igmp
+        option family           ipv4
+        option target           ACCEPT
+
+# Allow DHCPv6 replies
+# see https://github.com/openwrt/openwrt/issues/5066
+config rule
+        option name             Allow-DHCPv6
+        option src              wan
+        option proto            udp
+        option dest_port        546
+        option family           ipv6
+        option target           ACCEPT
+
+config rule
+        option name             Allow-MLD
+        option src              wan
+        option proto            icmp
+        option src_ip           fe80::/10
+        list icmp_type          '130/0'
+        list icmp_type          '131/0'
+        list icmp_type          '132/0'
+        list icmp_type          '143/0'
+        option family           ipv6
+        option target           ACCEPT
+
+# Allow essential incoming IPv6 ICMP traffic
+config rule
+        option name             Allow-ICMPv6-Input
+        option src              wan
+        option proto    icmp
+        list icmp_type          echo-request
+        list icmp_type          echo-reply
+        list icmp_type          destination-unreachable
+        list icmp_type          packet-too-big
+        list icmp_type          time-exceeded
+        list icmp_type          bad-header
+        list icmp_type          unknown-header-type
+        list icmp_type          router-solicitation
+        list icmp_type          neighbour-solicitation
+        list icmp_type          router-advertisement
+        list icmp_type          neighbour-advertisement
+        option limit            1000/sec
+        option family           ipv6
+        option target           ACCEPT
+
+# Allow essential forwarded IPv6 ICMP traffic
+config rule
+        option name             Allow-ICMPv6-Forward
+        option src              wan
+        option dest             *
+        option proto            icmp
+        list icmp_type          echo-request
+        list icmp_type          echo-reply
+        list icmp_type          destination-unreachable
+        list icmp_type          packet-too-big
+        list icmp_type          time-exceeded
+        list icmp_type          bad-header
+        list icmp_type          unknown-header-type
+        option limit            1000/sec
+        option family           ipv6
+        option target           ACCEPT
+
+config rule
+        option name             Allow-IPSec-ESP
+        option src              wan
+        option dest             lan
+        option proto            esp
+        option target           ACCEPT
+
+config rule
+        option name             Allow-ISAKMP
+        option src              wan
+        option dest             lan
+        option dest_port        500
+        option proto            udp
+        option target           ACCEPT
+
+
+### EXAMPLE CONFIG SECTIONS
+# do not allow a specific ip to access wan
+#config rule
+#       option src              lan
+#       option src_ip   192.168.45.2
+#       option dest             wan
+#       option proto    tcp
+#       option target   REJECT
+
+# block a specific mac on wan
+#config rule
+#       option dest             wan
+#       option src_mac  00:11:22:33:44:66
+#       option target   REJECT
+
+# block incoming ICMP traffic on a zone
+#config rule
+#       option src              lan
+#       option proto    ICMP
+#       option target   DROP
+
+# port redirect port coming in on wan to lan
+#config redirect
+#       option src                      wan
+#       option src_dport        80
+#       option dest                     lan
+#       option dest_ip          192.168.16.235
+#       option dest_port        80
+#       option proto            tcp
+
+# port redirect of remapped ssh port (22001) on wan
+#config redirect
+#       option src              wan
+#       option src_dport        22001
+#       option dest             lan
+#       option dest_port        22
+#       option proto            tcp
+
+### FULL CONFIG SECTIONS
+#config rule
+#       option src              lan
+#       option src_ip   192.168.45.2
+#       option src_mac  00:11:22:33:44:55
+#       option src_port 80
+#       option dest             wan
+#       option dest_ip  194.25.2.129
+#       option dest_port        120
+#       option proto    tcp
+#       option target   REJECT
+
+#config redirect
+#       option src              lan
+#       option src_ip   192.168.45.2
+#       option src_mac  00:11:22:33:44:55
+#       option src_port         1024
+#       option src_dport        80
+#       option dest_ip  194.25.2.129
+#       option dest_port        120
+#       option proto    tcp
+root@OpenWrt:~# brctl show
+bridge name     bridge id               STP enabled     interfaces
+br-lan          7000.000000000000       no
+root@OpenWrt:~# brctl addif br-lan eth0
+[  878.837672] br-lan: port 1(eth0) entered blocking state
+[  878.843079] br-lan: port 1(eth0) entered disabled state
+[  878.848751] cpsw-switch 4a100000.switch eth0: entered allmulticast mode
+[  878.864639] cpsw-switch 4a100000.switch eth0: failed to initialize vlan filtering on this port
+[  878.874277] cpsw-switch 4a100000.switch eth0: left allmulticast mode
+brctl: bridge br-lan: Invalid argument
+root@OpenWrt:~# brctl addif br-lan eth1
+[  892.198958] br-lan: port 1(eth1) entered blocking state
+[  892.204606] br-lan: port 1(eth1) entered disabled state
+[  892.210042] cpsw-switch 4a100000.switch eth1: entered allmulticast mode
+[  892.224883] cpsw-switch 4a100000.switch eth1: failed to initialize vlan filtering on this port
+[  892.236727] cpsw-switch 4a100000.switch eth1: left allmulticast mode
+brctl: bridge br-lan: Invalid argument
+root@OpenWrt:~# brctl show
+bridge name     bridge id               STP enabled     interfaces
+br-lan          7000.000000000000       no
+root@OpenWrt:~# ip link set dev br-lan type bridge vlan_filtering 0
+root@OpenWrt:~# brctl addif br-lan eth1
+[ 1030.495331] br-lan: port 1(eth1) entered blocking state
+[ 1030.500730] br-lan: port 1(eth1) entered disabled state
+[ 1030.506311] cpsw-switch 4a100000.switch eth1: entered allmulticast mode
+[ 1030.517901] cpsw-switch 4a100000.switch eth1: failed to initialize vlan filtering on this port
+[ 1030.527475] cpsw-switch 4a100000.switch eth1: left allmulticast mode
+brctl: bridge br-lan: Invalid argument
+root@OpenWrt:~# brctl addif br-lan eth0
+[ 1034.405121] br-lan: port 1(eth0) entered blocking state
+[ 1034.410518] br-lan: port 1(eth0) entered disabled state
+[ 1034.416140] cpsw-switch 4a100000.switch eth0: entered allmulticast mode
+[ 1034.434585] cpsw-switch 4a100000.switch eth0: failed to initialize vlan filtering on this port
+[ 1034.444070] cpsw-switch 4a100000.switch eth0: left allmulticast mode
+brctl: bridge br-lan: Invalid argument
+root@OpenWrt:~# ip link set dev br-lan type bridge vlan_filtering 0
+root@OpenWrt:~# brctl addif br-lan eth0
+[ 1058.423788] br-lan: port 1(eth0) entered blocking state
+[ 1058.429411] br-lan: port 1(eth0) entered disabled state
+[ 1058.434950] cpsw-switch 4a100000.switch eth0: entered allmulticast mode
+[ 1058.447069] cpsw-switch 4a100000.switch eth0: failed to initialize vlan filtering on this port
+[ 1058.456656] cpsw-switch 4a100000.switch eth0: left allmulticast mode
+brctl: bridge br-lan: Invalid argument
+root@OpenWrt:~# ifconfig eth0 up
+root@OpenWrt:~# ifconfig eth1 up
+root@OpenWrt:~# ip link set dev br-lan type bridge vlan_filtering 0
+root@OpenWrt:~# brctl addif br-lan eth0
+[ 1083.769527] br-lan: port 1(eth0) entered blocking state
+[ 1083.775140] br-lan: port 1(eth0) entered disabled state
+[ 1083.780569] cpsw-switch 4a100000.switch eth0: entered allmulticast mode
+[ 1083.794784] cpsw-switch 4a100000.switch eth0: failed to initialize vlan filtering on this port
+[ 1083.806626] cpsw-switch 4a100000.switch eth0: left allmulticast mode
+brctl: bridge br-lan: Invalid argument
+root@OpenWrt:~# cat /sys/class/net/br-lan/bridge/vlan_filtering
+0
+root@OpenWrt:~# ip link set br-lan down
+root@OpenWrt:~# brctl delbr br-lan
+root@OpenWrt:~# brctl addbr br-lan
+root@OpenWrt:~# brctl addif br-lan eth0
+[ 1203.417445] br-lan: port 1(eth0) entered blocking state
+[ 1203.422843] br-lan: port 1(eth0) entered disabled state
+[ 1203.428497] cpsw-switch 4a100000.switch eth0: entered allmulticast mode
+[ 1203.444600] cpsw-switch 4a100000.switch eth0: failed to initialize vlan filtering on this port
+[ 1203.454788] cpsw-switch 4a100000.switch eth0: left allmulticast mode
+brctl: bridge br-lan: Invalid argument
+root@OpenWrt:~# ip link set eth0 up
+root@OpenWrt:~# brctl addif br-lan eth0
+[ 1222.887972] br-lan: port 1(eth0) entered blocking state
+[ 1222.893371] br-lan: port 1(eth0) entered disabled state
+[ 1222.899032] cpsw-switch 4a100000.switch eth0: entered allmulticast mode
+[ 1222.914592] cpsw-switch 4a100000.switch eth0: failed to initialize vlan filtering on this port
+[ 1222.924512] cpsw-switch 4a100000.switch eth0: left allmulticast mode
+brctl: bridge br-lan: Invalid argument
+root@OpenWrt:~# ip addr add 192.168.1.1/24 dev eth0
+root@OpenWrt:~# ip addr add 192.168.1.2/24 dev eth1
+root@OpenWrt:~# ping 192.168.1.10
+PING 192.168.1.10 (192.168.1.10): 56 data bytes
+^C
+--- 192.168.1.10 ping statistics ---
+11 packets transmitted, 0 packets received, 100% packet loss
+root@OpenWrt:~# ping 192.168.1.2
+PING 192.168.1.2 (192.168.1.2): 56 data bytes
+64 bytes from 192.168.1.2: seq=0 ttl=64 time=0.825 ms
+64 bytes from 192.168.1.2: seq=1 ttl=64 time=0.698 ms
+64 bytes from 192.168.1.2: seq=2 ttl=64 time=0.652 ms
+^C
+--- 192.168.1.2 ping statistics ---
+3 packets transmitted, 3 packets received, 0% packet loss
+round-trip min/avg/max = 0.652/0.725/0.825 ms
+root@OpenWrt:~# ipconfig
+-ash: ipconfig: not found
+root@OpenWrt:~# ifconfig
+eth0      Link encap:Ethernet  HWaddr 74:E1:82:B2:39:5B
+          inet addr:192.168.1.1  Bcast:0.0.0.0  Mask:255.255.255.0
+          inet6 addr: fe80::76e1:82ff:feb2:395b/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:16 errors:0 dropped:4 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:1366 (1.3 KiB)
+
+eth1      Link encap:Ethernet  HWaddr 74:E1:82:B2:39:5D
+          inet addr:192.168.1.2  Bcast:0.0.0.0  Mask:255.255.255.0
+          inet6 addr: fe80::76e1:82ff:feb2:395d/64 Scope:Link
+          UP BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:14 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:1692 (1.6 KiB)
+
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:614 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:614 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:48848 (47.7 KiB)  TX bytes:48848 (47.7 KiB)
+
+root@OpenWrt:~# /etc/init.d/network relaod
+Syntax: /etc/init.d/network [command]
+
+Available commands:
+        start           Start the service
+        stop            Stop the service
+        restart         Restart the service
+        reload          Reload configuration files (or restart if service does not implement reload)
+        enable          Enable service autostart
+        disable         Disable service autostart
+        enabled         Check if service is started on boot
+        running         Check if service is running
+        status          Service status
+        trace           Start with syscall trace
+        info            Dump procd service info
+
+root@OpenWrt:~# /etc/init.d/network reload
+root@OpenWrt:~# /etc/init.d/network restart
+root@OpenWrt:~# /etc/init.d/network restart[ 1411.141844] cpsw-switch 4a100000.switch eth0: Link is Down
+[ 1411.178312] cpsw-switch 4a100000.switch: starting ndev. mode: dual_mac
+root@OpenWrt:~# /etc/init.d/network reload[ 1411.267951] Qualcomm Atheros AR8035 4a101000.mdio:00: attached PHY driver (mii_bus:phy_addr=4a101000.mdio:00, irq=POLL)
+[ 1411.290836] 8021q: adding VLAN 0 to HW filter on device eth0
+[ 1411.301895] br-lan: port 1(eth0) entered blocking state
+[ 1411.307378] br-lan: port 1(eth0) entered disabled state
+[ 1411.312722] cpsw-switch 4a100000.switch eth0: entered allmulticast mode
+[ 1411.324673] cpsw-switch 4a100000.switch eth0: failed to initialize vlan filtering on this port
+[ 1411.335316] cpsw-switch 4a100000.switch eth0: left allmulticast mode
+[ 1411.344075] br-lan: port 1(eth0) entered blocking state
+[ 1411.349531] br-lan: port 1(eth0) entered disabled state
+[ 1411.354912] cpsw-switch 4a100000.switch eth0: entered allmulticast mode
+[ 1411.364569] cpsw-switch 4a100000.switch eth0: failed to initialize vlan filtering on this port
+[ 1411.374513] cpsw-switch 4a100000.switch eth0: left allmulticast mode
+[ 1411.383485] br-lan: port 1(eth0) entered blocking state
+[ 1411.388889] br-lan: port 1(eth0) entered disabled state
+[ 1411.394272] cpsw-switch 4a100000.switch eth0: entered allmulticast mode
+root@OpenWrt:~# /etc/init.d/network relaod[ 1411.404640] cpsw-switch 4a100000.switch eth0: failed to initialize vlan filtering on this port
+[ 1411.416591] cpsw-switch 4a100000.switch eth0: left allmulticast mode
+[ 1411.888427] cpsw-switch 4a100000.switch: starting ndev. mode: dual_mac
+[ 1411.992703] Qualcomm Atheros AR8035 4a101000.mdio:02: attached PHY driver (mii_bus:phy_addr=4a101000.mdio:02, irq=POLL)
+[ 1412.008552] 8021q: adding VLAN 0 to HW filter on device eth1
+[ 1412.021496] br-lan: port 1(eth1) entered blocking state
+[ 1412.027021] br-lan: port 1(eth1) entered disabled state
+[ 1412.032370] cpsw-switch 4a100000.switch eth1: entered allmulticast mode
+[ 1412.054823] cpsw-switch 4a100000.switch eth1: failed to initialize vlan filtering on this port
+[ 1412.066765] cpsw-switch 4a100000.switch eth1: left allmulticast mode
+[ 1412.076573] br-lan: port 1(eth1) entered blocking state
+[ 1412.081886] br-lan: port 1(eth1) entered disabled state
+[ 1412.087419] cpsw-switch 4a100000.switch eth1: entered allmulticast mode
+[ 1412.114489] cpsw-switch 4a100000.switch eth1: failed to initialize vlan filtering on this port
+[ 1412.123957] cpsw-switch 4a100000.switch eth1: left allmulticast mode
+[ 1412.133931] br-lan: port 1(eth1) entered blocking state
+[ 1412.139361] br-lan: port 1(eth1) entered disabled state
+[ 1412.144776] cpsw-switch 4a100000.switch eth1: entered allmulticast mode
+[ 1412.164495] cpsw-switch 4a100000.switch eth1: failed to initialize vlan filtering on this port
+[ 1412.173953] cpsw-switch 4a100000.switch eth1: left allmulticast mode
+root@OpenWrt:~# ipconfig[ 1413.919598] cpsw-switch 4a100000.switch: starting ndev. mode: dual_mac
+[ 1414.012979] Qualcomm Atheros AR8035 4a101000.mdio:00: attached PHY driver (mii_bus:phy_addr=4a101000.mdio:00, irq=POLL)
+[ 1414.031680] 8021q: adding VLAN 0 to HW filter on device eth0
+[ 1414.044296] br-lan: port 1(eth0) entered blocking state
+[ 1414.049738] br-lan: port 1(eth0) entered disabled state
+[ 1414.055131] cpsw-switch 4a100000.switch eth0: entered allmulticast mode
+[ 1414.064809] cpsw-switch 4a100000.switch eth0: failed to initialize vlan filtering on this port
+[ 1414.074313] cpsw-switch 4a100000.switch eth0: left allmulticast mode
+[ 1414.083902] br-lan: port 1(eth0) entered blocking state
+[ 1414.089376] br-lan: port 1(eth0) entered disabled state
+[ 1414.094751] cpsw-switch 4a100000.switch eth0: entered allmulticast mode
+[ 1414.104687] cpsw-switch 4a100000.switch eth0: failed to initialize vlan filtering on this port
+[ 1414.114484] cpsw-switch 4a100000.switch eth0: left allmulticast mode
+[ 1414.123385] br-lan: port 1(eth0) entered blocking state
+[ 1414.128785] br-lan: port 1(eth0) entered disabled state
+[ 1414.134107] cpsw-switch 4a100000.switch eth0: entered allmulticast mode
+[ 1414.144621] cpsw-switch 4a100000.switch eth0: failed to initialize vlan filtering on this port
+[ 1414.153995] cpsw-switch 4a100000.switch eth0: left allmulticast mode
+[ 1414.174055] cpsw-switch 4a100000.switch: starting ndev. mode: dual_mac
+[ 1414.257336] Qualcomm Atheros AR8035 4a101000.mdio:02: attached PHY driver (mii_bus:phy_addr=4a101000.mdio:02, irq=POLL)
+[ 1414.272003] 8021q: adding VLAN 0 to HW filter on device eth1
+[ 1414.285779] br-lan: port 1(eth1) entered blocking state
+[ 1414.291104] br-lan: port 1(eth1) entered disabled state
+[ 1414.296526] cpsw-switch 4a100000.switch eth1: entered allmulticast mode
+[ 1414.314569] cpsw-switch 4a100000.switch eth1: failed to initialize vlan filtering on this port
+[ 1414.324039] cpsw-switch 4a100000.switch eth1: left allmulticast mode
+[ 1414.334831] br-lan: port 1(eth1) entered blocking state
+[ 1414.340147] br-lan: port 1(eth1) entered disabled state
+[ 1414.345653] cpsw-switch 4a100000.switch eth1: entered allmulticast mode
+[ 1414.354642] cpsw-switch 4a100000.switch eth1: failed to initialize vlan filtering on this port
+[ 1414.364178] cpsw-switch 4a100000.switch eth1: left allmulticast mode
+[ 1414.374142] br-lan: port 1(eth1) entered blocking state
+[ 1414.379538] br-lan: port 1(eth1) entered disabled state
+[ 1414.384916] cpsw-switch 4a100000.switch eth1: entered allmulticast mode
+[ 1414.394655] cpsw-switch 4a100000.switch eth1: failed to initialize vlan filtering on this port
+[ 1414.404516] cpsw-switch 4a100000.switch eth1: left allmulticast mode
+g
+-ash: ipconfig: not found
+root@OpenWrt:~# ifconfig
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:614 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:614 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:48848 (47.7 KiB)  TX bytes:48848 (47.7 KiB)
+
+root@OpenWrt:~# ifconfig eth0 up
+[ 1444.279336] cpsw-switch 4a100000.switch: starting ndev. mode: dual_mac
+[ 1444.356901] Qualcomm Atheros AR8035 4a101000.mdio:00: attached PHY driver (mii_bus:phy_addr=4a101000.mdio:00, irq=POLL)
+[ 1444.370354] 8021q: adding VLAN 0 to HW filter on device eth0
+root@OpenWrt:~# ifconfig e[ 1446.486192] cpsw-switch 4a100000.switch eth0: Link is Up - 100Mbps/Full - flow control off
+root@OpenWrt:~# ip link set eth1 up
+[ 1454.825614] cpsw-switch 4a100000.switch: starting ndev. mode: dual_mac
+[ 1454.906878] Qualcomm Atheros AR8035 4a101000.mdio:02: attached PHY driver (mii_bus:phy_addr=4a101000.mdio:02, irq=POLL)
+[ 1454.918434] 8021q: adding VLAN 0 to HW filter on device eth1
+root@OpenWrt:~# ifconfig
+eth0      Link encap:Ethernet  HWaddr 74:E1:82:B2:39:5B
+          inet6 addr: fe80::76e1:82ff:feb2:395b/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:23 errors:0 dropped:4 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:2232 (2.1 KiB)
+
+eth1      Link encap:Ethernet  HWaddr 74:E1:82:B2:39:5D
+          UP BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:14 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:1692 (1.6 KiB)
+
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:630 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:630 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:50096 (48.9 KiB)  TX bytes:50096 (48.9 KiB)
+
+root@OpenWrt:~# ip link set br-lan up
+root@OpenWrt:~# ifconfig
+br-lan    Link encap:Ethernet  HWaddr 56:2D:3E:AA:D6:55
+          UP BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+eth0      Link encap:Ethernet  HWaddr 74:E1:82:B2:39:5B
+          inet6 addr: fe80::76e1:82ff:feb2:395b/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:23 errors:0 dropped:4 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:2232 (2.1 KiB)
+
+eth1      Link encap:Ethernet  HWaddr 74:E1:82:B2:39:5D
+          UP BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:14 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:1692 (1.6 KiB)
+
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:654 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:654 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:51968 (50.7 KiB)  TX bytes:51968 (50.7 KiB)
+
+root@OpenWrt:~# ifconfig -a
+br-lan    Link encap:Ethernet  HWaddr 56:2D:3E:AA:D6:55
+          UP BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+can0      Link encap:UNSPEC  HWaddr 00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
+          NOARP  MTU:16  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:10
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+          Interrupt:48
+
+can1      Link encap:UNSPEC  HWaddr 00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
+          NOARP  MTU:16  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:10
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+          Interrupt:49
+
+eth0      Link encap:Ethernet  HWaddr 74:E1:82:B2:39:5B
+          inet6 addr: fe80::76e1:82ff:feb2:395b/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:23 errors:0 dropped:4 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:2232 (2.1 KiB)
+
+eth1      Link encap:Ethernet  HWaddr 74:E1:82:B2:39:5D
+          UP BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:14 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:1692 (1.6 KiB)
+
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:678 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:678 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:53840 (52.5 KiB)  TX bytes:53840 (52.5 KiB)
+
+root@OpenWrt:~# brctl addif br-lan eth0
+[ 1518.943595] br-lan: port 1(eth0) entered blocking state
+[ 1518.949224] br-lan: port 1(eth0) entered disabled state
+[ 1518.954758] cpsw-switch 4a100000.switch eth0: entered allmulticast mode
+[ 1518.966211] cpsw-switch 4a100000.switch eth0: failed to initialize vlan filtering on this port
+[ 1518.976965] cpsw-switch 4a100000.switch eth0: left allmulticast mode
+brctl: bridge br-lan: Invalid argument
+root@OpenWrt:~#
