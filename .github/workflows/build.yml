@@ -96,6 +96,8 @@ jobs:
           make download -j8
           find dl -size -1024c -exec ls -l {} \; -exec rm -f {} \;
           make target/linux/prepare V=s
+          yes "" | make target/linux/prepare V=s
+
 
       - name: 10. 编译固件
         working-directory: openwrt
