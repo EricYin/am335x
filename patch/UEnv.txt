@@ -1,0 +1,9 @@
+bootfile=zImage
+fdtfile=am335x-c3000a.dtb
+console=ttyS0,115200n8
+optargs=earlycon
+mmcroot=/dev/mmcblk0p2 rootwait
+loadzimage=fatload mmc 0:1 ${loadaddr} /zImage
+loadfdt=fatload mmc 0:1 ${fdtaddr} /dtbs/am335x-c3000a.dtb
+mmcargs=setenv bootargs console=${console} ${optargs} root=${mmcroot}
+uenvcmd=run loadzimage; run loadfdt; run mmcargs; bootz ${loadaddr} - ${fdtaddr}
