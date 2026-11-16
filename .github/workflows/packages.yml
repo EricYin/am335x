@@ -35,6 +35,7 @@ jobs:
           CONFIG_TARGET_omap=y
           CONFIG_TARGET_omap_DEVICE_ti_am335x-evm=y
           CONFIG_LINUX_6_18=y
+          CONFIG_PACKAGE_kmod-input-core=y
           CONFIG_PACKAGE_kmod-sound-core=y
           EOF
           make defconfig
