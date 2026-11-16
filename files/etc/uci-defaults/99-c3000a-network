@@ -41,8 +41,4 @@ uci set dhcp.wan.ignore='1'
 uci commit network
 uci commit dhcp
 
-# 6. 重启网络和 DHCP 服务（若放入 /etc/uci-defaults/ 作为首次启动脚本，请删除以下两行）
-/etc/init.d/network restart
-/etc/init.d/dnsmasq restart
-
 exit 0
