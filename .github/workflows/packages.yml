@@ -20,7 +20,7 @@ jobs:
 
       - name: Clone OpenWrt source
         run: |
-          git clone --depth 1 -b am335x https://github.com/ericyin/openwrt
+          git clone --depth 1 -b main https://github.com/openwrt/openwrt
 
       - name: Update and install feeds
         working-directory: ./openwrt
@@ -33,28 +33,18 @@ jobs:
         run: |
           cat << 'EOF' > .config
           CONFIG_TARGET_omap=y
-          CONFIG_TARGET_omap_generic=y
-          CONFIG_TARGET_omap_generic_DEVICE_ti_am335x-c3000a=y
+          CONFIG_TARGET_omap_DEVICE_ti_am335x-evm=y
           CONFIG_LINUX_6_18=y
-          CONFIG_PACKAGE_kmod-sound-core=m
+          CONFIG_PACKAGE_kmod-sound-core=y
           EOF
           make defconfig
+          [ -e .config ] && cp .config defconfig-final.config
 
-      - name: Compile tools, toolchain, kernel & kmod-sound-core
-        working-directory: ./openwrt
-        run: |
-          make tools/install -j$(nproc)
-          make toolchain/install -j$(nproc)
-          make target/linux/compile -j$(nproc)
-          make package/kernel/linux/compile -j$(nproc)
-
-      - name: Collect compiled packages
-        run: |
-          mkdir -p output
-          find openwrt/bin/targets/omap/ -name "*kmod-sound-core*" -exec cp {} output/ \;
-
-      - name: Upload Artifact
+      - name: 上传 config files
         uses: actions/upload-artifact@v4
         with:
-          name: am335x-kmod-sound-core
-          path: output/
+          name: build-config
+          path: |
+            openwrt/defconfig-final.config
+
+      
