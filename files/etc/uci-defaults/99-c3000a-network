@@ -19,6 +19,11 @@ uci set network.wan=interface
 uci set network.wan.device='eth1'
 uci set network.wan.proto='dhcp'
 
+# （可选）如需恢复 WAN6 IPv6 获取，取消下面三行注释
+# uci set network.wan6=interface
+# uci set network.wan6.device='eth1'
+# uci set network.wan6.proto='dhcpv6'
+
 # 4. 开启 LAN 口 DHCP 服务，电脑连接 eth0 自动获取 192.168.1.x
 uci set dhcp.lan=dhcp
 uci set dhcp.lan.interface='lan'
@@ -36,7 +41,7 @@ uci set dhcp.wan.ignore='1'
 uci commit network
 uci commit dhcp
 
-# 6. 重启网络和 DHCP 服务（若放入 /etc/uci-defaults/ 作为首次启动脚本，可删除以下两行）
+# 6. 重启网络和 DHCP 服务（若放入 /etc/uci-defaults/ 作为首次启动脚本，请删除以下两行）
 /etc/init.d/network restart
 /etc/init.d/dnsmasq restart
 
