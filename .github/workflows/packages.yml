@@ -39,6 +39,14 @@ jobs:
           CONFIG_PACKAGE_kmod-sound-core=m
           EOF
           make defconfig
+          [ -e .config ] && cp .config defconfig-final.config
+
+      - name: Upload config files
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-config
+          path: |
+            openwrt/defconfig-final.config
 
       - name: Compile tools, toolchain, kernel & kmod-sound-core
         working-directory: ./openwrt
