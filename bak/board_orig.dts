@@ -1722,13 +1722,13 @@
 			slave@4a100200 {
 				mac-address = [00 00 00 00 00 00];
 				phy_id = <0x46 0x00>;
-				phy-mode = "rgmii-id";
+				phy-mode = "rgmii-txid";
 			};
 
 			slave@4a100300 {
 				mac-address = [00 00 00 00 00 00];
 				phy_id = <0x46 0x02>;
-				phy-mode = "rgmii-id";
+				phy-mode = "rgmii-txid";
 			};
 
 			cpsw-phy-sel@44e10650 {
