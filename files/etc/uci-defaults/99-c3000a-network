@@ -1,8 +1,11 @@
 #!/bin/sh
 
-# 1. 清理所有旧的设备（网桥）配置，彻底移除 br-lan
+# 1. 清理旧的设备（网桥）及接口配置，彻底移除 br-lan 避免残留参数冲突
 while uci -q delete network.@device[0]; do :; done
 uci -q delete network.lan_dev
+uci -q delete network.lan
+uci -q delete network.wan
+uci -q delete network.wan6
 
 # 2. 配置 LAN 口：直接绑定物理网口 eth0，静态 IP 为 192.168.1.1
 uci set network.lan=interface
@@ -15,9 +18,6 @@ uci set network.lan.netmask='255.255.255.0'
 uci set network.wan=interface
 uci set network.wan.device='eth1'
 uci set network.wan.proto='dhcp'
-
-# 如需关闭 IPv6 WAN，可保留下一行；如需使用 IPv6 可将其改为 dhcpv6
-uci -q delete network.wan6
 
 # 4. 开启 LAN 口 DHCP 服务，电脑连接 eth0 自动获取 192.168.1.x
 uci set dhcp.lan=dhcp
@@ -32,10 +32,11 @@ uci set dhcp.wan=dhcp
 uci set dhcp.wan.interface='wan'
 uci set dhcp.wan.ignore='1'
 
+# 提交配置生效
 uci commit network
 uci commit dhcp
 
-# 6. 重启网络和 DHCP 服务使配置立即生效（如果作为首次启动脚本可保留）
+# 6. 重启网络和 DHCP 服务（若放入 /etc/uci-defaults/ 作为首次启动脚本，可删除以下两行）
 /etc/init.d/network restart
 /etc/init.d/dnsmasq restart
 
