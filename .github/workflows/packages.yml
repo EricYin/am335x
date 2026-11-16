@@ -1,0 +1,60 @@
+name: Build kmod for AM335x
+
+on:
+  workflow_dispatch: # 支持在网页端手动点击运行
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential clang flex bison g++ gawk \
+            gcc-multilib g++-multilib gettext git libncurses-dev libssl-dev \
+            python3-distutils rsync unzip zlib1g-dev file wget
+
+      - name: Clone OpenWrt source
+        run: |
+          git clone --depth 1 -b am335x https://github.com/ericyin/openwrt
+
+      - name: Update and install feeds
+        working-directory: ./openwrt
+        run: |
+          ./scripts/feeds update -a
+          ./scripts/feeds install -a
+
+      - name: Configure target (AM335x / OMAP) & kmod-sound-core
+        working-directory: ./openwrt
+        run: |
+          cat << 'EOF' > .config
+          CONFIG_TARGET_omap=y
+          CONFIG_TARGET_omap_generic=y
+          CONFIG_TARGET_omap_generic_DEVICE_ti_am335x-c3000a=y
+          CONFIG_LINUX_6_18=y
+          CONFIG_PACKAGE_kmod-sound-core=m
+          EOF
+          make defconfig
+
+      - name: Compile tools, toolchain, kernel & kmod-sound-core
+        working-directory: ./openwrt
+        run: |
+          make tools/install -j$(nproc)
+          make toolchain/install -j$(nproc)
+          make target/linux/compile -j$(nproc)
+          make package/kernel/linux/compile -j$(nproc)
+
+      - name: Collect compiled packages
+        run: |
+          mkdir -p output
+          find openwrt/bin/targets/omap/ -name "*kmod-sound-core*" -exec cp {} output/ \;
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: am335x-kmod-sound-core
+          path: output/
