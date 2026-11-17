@@ -11,7 +11,7 @@ uci -q delete network.wan6
 uci set network.lan=interface
 uci set network.lan.device='eth0'
 uci set network.lan.proto='static'
-uci set network.lan.ipaddr='192.168.1.1'
+uci set network.lan.ipaddr='192.168.50.230'
 uci set network.lan.netmask='255.255.255.0'
 
 # 3. 配置 WAN 口：直接绑定物理网口 eth1，默认 DHCP 自动获取上游 IP
@@ -25,12 +25,12 @@ uci set network.wan.proto='dhcp'
 # uci set network.wan6.proto='dhcpv6'
 
 # 4. 开启 LAN 口 DHCP 服务，电脑连接 eth0 自动获取 192.168.1.x
-uci set dhcp.lan=dhcp
-uci set dhcp.lan.interface='lan'
-uci set dhcp.lan.start='100'
-uci set dhcp.lan.limit='150'
-uci set dhcp.lan.leasetime='12h'
-uci -q delete dhcp.lan.ignore
+# uci set dhcp.lan=dhcp
+# uci set dhcp.lan.interface='lan'
+# uci set dhcp.lan.start='100'
+# uci set dhcp.lan.limit='150'
+# uci set dhcp.lan.leasetime='12h'
+# uci -q delete dhcp.lan.ignore
 
 # 5. 确保 WAN 口关闭 DHCP 服务端，避免干扰上级网络
 uci set dhcp.wan=dhcp
