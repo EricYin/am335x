@@ -20,7 +20,8 @@ jobs:
 
       - name: Clone OpenWrt source
         run: |
-          git clone --depth 1 -b am335x https://github.com/ericyin/openwrt
+          # git clone --depth 1 -b am335x https://github.com/ericyin/openwrt
+          git clone --depth 1 -b main https://github.com/openwrt/openwrt
 
       - name: Update and install feeds
         working-directory: ./openwrt
@@ -32,10 +33,12 @@ jobs:
         working-directory: ./openwrt
         run: |
           cat << 'EOF' > .config
-          CONFIG_TARGET_omap=y
-          CONFIG_TARGET_omap_generic=y
-          CONFIG_TARGET_omap_generic_DEVICE_ti_am335x-c3000a=y
           CONFIG_LINUX_6_18=y
+          CONFIG_TARGET_omap=y
+          #CONFIG_TARGET_omap_generic=y
+          #CONFIG_TARGET_omap_generic_DEVICE_ti_am335x-c3000a=y
+          CONFIG_TARGET_omap_DEVICE_ti_am335x-evm=y
+          CONFIG_PACKAGE_kmod-input-core=m
           CONFIG_PACKAGE_kmod-sound-core=m
           EOF
           make defconfig
