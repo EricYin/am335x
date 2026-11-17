@@ -38,6 +38,8 @@ jobs:
           CONFIG_TARGET_omap_generic=y
           #CONFIG_TARGET_omap_generic_DEVICE_ti_am335x-c3000a=y
           CONFIG_TARGET_omap_generic_DEVICE_ti_am335x-evm=y
+          CONFIG_PACKAGE_audio-support=m
+          CONFIG_PACKAGE_input-support=m
           CONFIG_PACKAGE_kmod-input-core=m
           CONFIG_PACKAGE_kmod-sound-core=m
           EOF
