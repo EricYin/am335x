@@ -41,4 +41,9 @@ uci set dhcp.wan.ignore='1'
 uci commit network
 uci commit dhcp
 
+mkdir /home
+mkdir /home/u1
+mkdir /home/u1/share
+chmod 777 /home/u1/share
+
 exit 0
