@@ -104,6 +104,7 @@ amixer sset 'Line' 2 >/dev/null 2>&1
 /etc/init.d/mpd restart
 
 sleep 1
-chmod 777 /home/u1/.mpd/mpdstate
+[ -f /home/u1/.mpd/mpdstate ] && chmod 777 /home/u1/.mpd/mpdstate
+#mpc update --wait >/dev/null 2>&1
 
 exit 0
