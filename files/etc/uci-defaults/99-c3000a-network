@@ -47,7 +47,7 @@ mkdir /home/u1/share
 chmod 777 /home/u1/share
 
 mkdir /home/u1/.mpd
-chown 600 /home/u1/.mpd
-chown mpd /home/u1/.mpd
+chown 755 /home/u1/.mpd
+chown mpd:mpd /home/u1/.mpd
 
 exit 0
