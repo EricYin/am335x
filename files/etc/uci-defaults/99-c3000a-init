@@ -41,13 +41,32 @@ uci set dhcp.wan.ignore='1'
 uci commit network
 uci commit dhcp
 
-mkdir /home
-mkdir /home/u1
-mkdir /home/u1/share
+mkdir -p /home/u1/share/music
 chmod 777 /home/u1/share
 
-mkdir /home/u1/.mpd
+mkdir -p /home/u1/.mpd/playlists
 chown 755 /home/u1/.mpd
 chown mpd:mpd /home/u1/.mpd
+
+cat << 'EOF' > /etc/mpd.conf
+music_directory     "/home/u1/share/music"
+playlist_directory  "/home/u1/.mpd/playlists"
+db_file             "/home/u1/.mpd/mpd.db"
+log_file            "/home/u1/.mpd/mpd.log"
+pid_file            "/home/u1/.mpd/mpd.pid"
+state_file          "/home/u1/.mpd/mpdstate"
+
+user                "mpd"
+bind_to_address     "0.0.0.0"
+port                "6600"
+
+audio_output {
+    type            "alsa"
+    name            "AM335x Sound Card"
+    device          "plughw:0,0"
+    mixer_type      "software"
+}
+EOF
+
 
 exit 0
