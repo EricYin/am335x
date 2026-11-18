@@ -41,8 +41,6 @@ uci set dhcp.wan.ignore='1'
 uci commit network
 uci commit dhcp
 
-#!/bin/sh
-
 # 1. 创建音乐目录与 MPD 运行目录
 mkdir -p /home/u1/share/music
 chmod 777 /home/u1/share
@@ -84,7 +82,10 @@ decoder {
 EOF
 
 # 4. 如果直接走 ALSA 输出，停掉后台占用的 PulseAudio（防止 Device busy）
-[ -x /etc/init.d/pulseaudio ] && /etc/init.d/pulseaudio disable
+[ -x /etc/init.d/pulseaudio ] && {
+    /etc/init.d/pulseaudio stop
+    /etc/init.d/pulseaudio disable
+}
 
 # 5. 设置安全适中的 ALSA 硬件音量增益（防止开机默认静音或过响）
 amixer sset 'PCM' 75% >/dev/null 2>&1
@@ -92,8 +93,10 @@ amixer sset 'HP DAC' 75% >/dev/null 2>&1
 amixer sset 'Line DAC' 75% >/dev/null 2>&1
 amixer sset 'HP' 2 >/dev/null 2>&1
 amixer sset 'Line' 2 >/dev/null 2>&1
+#alsactl store
 
 # 6. 重启 MPD 服务使配置生效
+/etc/init.d/mpd enable
 /etc/init.d/mpd restart
 
 exit 0
