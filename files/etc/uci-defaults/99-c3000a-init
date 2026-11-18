@@ -43,19 +43,19 @@ uci commit dhcp
 
 # 1. 创建音乐目录与 MPD 运行目录
 mkdir -p /home/u1/share/music
-chmod 777 /home/u1/share
-
 mkdir -p /home/u1/.mpd/playlists
+
+chmod o+x /home /home/u1 /home/u1/share
+chmod -R a+rX /home/u1/share/music
+chmod 777 /home/u1/share
+chmod 777 /home/u1/share/music
 chmod -R 755 /home/u1/.mpd
 chown -R mpd:mpd /home/u1/.mpd
 
 # 2. 确保 mpd 用户拥有访问声卡设备 (/dev/snd/*) 的权限
 grep -q "^pulse:.*mpd" /etc/group || sed -i 's/^\(pulse:[^:]*:[^:]*:[^:]*\)$/\1,mpd/' /etc/group
+grep -q "^audio:.*mpd" /etc/group || sed -i 's/^\(audio:[^:]*:[^:]*:[^:]*\)$/\1,mpd/' /etc/group
 sed -i 's/:,/:/g' /etc/group
-
-sed -i 's/^audio:x:29:.*/audio:x:29:mpd/' /etc/group
-
-
 
 # 3. 备份并生成 /etc/mpd.conf（使用 ALSA 直出并禁用有缺陷的 faad 解码器）
 [ -e /etc/mpd.conf ] && [ ! -e /etc/mpd.conf.bak ] && mv /etc/mpd.conf /etc/mpd.conf.bak
@@ -78,12 +78,12 @@ audio_output {
     device          "plughw:0,0"
     mixer_type      "software"
 }
-
-decoder {
-    plugin          "faad"
-    enabled         "no"
-}
 EOF
+
+#decoder {
+#    plugin          "faad"
+#    enabled         "no"
+#}
 
 # 4. 如果直接走 ALSA 输出，停掉后台占用的 PulseAudio（防止 Device busy）
 [ -x /etc/init.d/pulseaudio ] && {
@@ -102,5 +102,8 @@ amixer sset 'Line' 2 >/dev/null 2>&1
 # 6. 重启 MPD 服务使配置生效
 /etc/init.d/mpd enable
 /etc/init.d/mpd restart
+
+sleep 1
+chmod 777 /home/u1/.mpd/mpdstate
 
 exit 0
