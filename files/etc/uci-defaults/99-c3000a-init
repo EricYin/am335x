@@ -48,7 +48,7 @@ mkdir -p /home/u1/.mpd/playlists
 chown 755 /home/u1/.mpd
 chown mpd:mpd /home/u1/.mpd
 
-cp /etc/mpd.conf /etc/mpd.conf.bak
+[ -e /etc/mpd.conf ] && cp /etc/mpd.conf /etc/mpd.conf.bak
 
 cat << 'EOF' > /etc/mpd.conf
 music_directory     "/home/u1/share/music"
