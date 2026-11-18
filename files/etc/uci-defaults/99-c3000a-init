@@ -53,6 +53,10 @@ chown -R mpd:mpd /home/u1/.mpd
 grep -q "^pulse:.*mpd" /etc/group || sed -i 's/^\(pulse:[^:]*:[^:]*:[^:]*\)$/\1,mpd/' /etc/group
 sed -i 's/:,/:/g' /etc/group
 
+sed -i 's/^audio:x:29:.*/audio:x:29:mpd/' /etc/group
+
+
+
 # 3. 备份并生成 /etc/mpd.conf（使用 ALSA 直出并禁用有缺陷的 faad 解码器）
 [ -e /etc/mpd.conf ] && [ ! -e /etc/mpd.conf.bak ] && mv /etc/mpd.conf /etc/mpd.conf.bak
 
