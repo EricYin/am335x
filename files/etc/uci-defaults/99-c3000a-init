@@ -41,14 +41,22 @@ uci set dhcp.wan.ignore='1'
 uci commit network
 uci commit dhcp
 
+#!/bin/sh
+
+# 1. 创建音乐目录与 MPD 运行目录
 mkdir -p /home/u1/share/music
 chmod 777 /home/u1/share
 
 mkdir -p /home/u1/.mpd/playlists
-chown 755 /home/u1/.mpd
-chown mpd:mpd /home/u1/.mpd
+chmod -R 755 /home/u1/.mpd
+chown -R mpd:mpd /home/u1/.mpd
 
-[ -e /etc/mpd.conf ] && mv /etc/mpd.conf /etc/mpd.conf.bak
+# 2. 确保 mpd 用户拥有访问声卡设备 (/dev/snd/*) 的权限
+grep -q "^pulse:.*mpd" /etc/group || sed -i 's/^\(pulse:[^:]*:[^:]*:[^:]*\)$/\1,mpd/' /etc/group
+sed -i 's/:,/:/g' /etc/group
+
+# 3. 备份并生成 /etc/mpd.conf（使用 ALSA 直出并禁用有缺陷的 faad 解码器）
+[ -e /etc/mpd.conf ] && [ ! -e /etc/mpd.conf.bak ] && mv /etc/mpd.conf /etc/mpd.conf.bak
 
 cat << 'EOF' > /etc/mpd.conf
 music_directory     "/home/u1/share/music"
@@ -68,7 +76,24 @@ audio_output {
     device          "plughw:0,0"
     mixer_type      "software"
 }
+
+decoder {
+    plugin          "faad"
+    enabled         "no"
+}
 EOF
 
+# 4. 如果直接走 ALSA 输出，停掉后台占用的 PulseAudio（防止 Device busy）
+[ -x /etc/init.d/pulseaudio ] && /etc/init.d/pulseaudio disable
+
+# 5. 设置安全适中的 ALSA 硬件音量增益（防止开机默认静音或过响）
+amixer sset 'PCM' 75% >/dev/null 2>&1
+amixer sset 'HP DAC' 75% >/dev/null 2>&1
+amixer sset 'Line DAC' 75% >/dev/null 2>&1
+amixer sset 'HP' 2 >/dev/null 2>&1
+amixer sset 'Line' 2 >/dev/null 2>&1
+
+# 6. 重启 MPD 服务使配置生效
+/etc/init.d/mpd restart
 
 exit 0
