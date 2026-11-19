@@ -1,0 +1,447 @@
+BusyBox v1.38.0 (2026-05-13 02:19:59 UTC) built-in shell (ash)
+
+  _______                     ________        __
+ |       |.-----.-----.-----.|  |  |  |.----.|  |_
+ |   -   ||  _  |  -__|     ||  |  |  ||   _||   _|
+ |_______||   __|_____|__|__||________||__|  |____|
+          |__| W I R E L E S S   F R E E D O M
+ -----------------------------------------------------
+ OpenWrt SNAPSHOT, r0-410ca81
+ -----------------------------------------------------
+root@C3000A:~# cat /mtd
+cat: can't open '/mtd': No such file or directory
+root@C3000A:~# ls /dev
+audio            mtd2             ram13
+bus              mtd2ro           ram14
+console          mtd3             ram15
+cpu_dma_latency  mtd3ro           ram2
+crypto           mtd4             ram3
+dsp              mtd4ro           ram4
+fd               mtd5             ram5
+full             mtd5ro           ram6
+gpiochip0        mtd6             ram7
+gpiochip1        mtd6ro           ram8
+gpiochip2        mtd7             ram9
+gpiochip3        mtd7ro           random
+gpiochip4        mtd8             rtc0
+gpiochip5        mtd8ro           rtc1
+gpiochip6        mtd9             rtc2
+hwrng            mtd9ro           shm
+i2c-0            mtdblock0        snd
+input            mtdblock1        stderr
+kmsg             mtdblock2        stdin
+log              mtdblock3        stdout
+loop-control     mtdblock4        tty
+loop0            mtdblock5        ttyS0
+loop1            mtdblock6        ttyS1
+loop2            mtdblock7        ttyS2
+loop3            mtdblock8        ttyS3
+loop4            mtdblock9        ttyS4
+loop5            null             ttyS5
+loop6            port             ttyUSB0
+loop7            ppp              ttyUSB1
+mixer            ptmx             ttyUSB2
+mmcblk0          ptp0             ttyUSB3
+mmcblk0p1        pts              ubi_ctrl
+mmcblk0p2        ram0             urandom
+mtd0             ram1             watchdog
+mtd0ro           ram10            watchdog0
+mtd1             ram11            zero
+mtd1ro           ram12
+root@C3000A:~# picocom -b 9600 /dev/ttyS3
+picocom v3.1
+
+port is        : /dev/ttyS3
+flowcontrol    : none
+baudrate is    : 9600
+parity is      : none
+databits are   : 8
+stopbits are   : 1
+escape is      : C-a
+local echo is  : no
+noinit is      : no
+noreset is     : no
+hangup is      : no
+nolock is      : no
+send_cmd is    : sz -vv
+receive_cmd is : rz -vv -E
+imap is        :
+omap is        :
+emap is        : crcrlf,delbs,
+logfile is     : none
+initstring     : none
+exit_after is  : not set
+exit is        : no
+
+Type [C-a] [C-h] to see available commands
+Terminal ready
+
+Terminating...
+Skipping tty reset...
+Thanks for using picocom
+root@C3000A:~# dmesg
+[    0.000000] Booting Linux on physical CPU 0x0
+[    0.000000] Linux version 6.18.64 (runner@ip-10-0-137-13) (arm-openwrt-linux-muslgnueabi-gcc (OpenWrt GCC 15.3.0 toolchain-9ca657ca9f) 15.3.0, GNU ld (GNU Binutils) 2.46.1) #0 SMP Thu Nov 19 11:03:15 2026
+[    0.000000] CPU: ARMv7 Processor [413fc082] revision 2 (ARMv7), cr=10c5387d
+[    0.000000] CPU: PIPT / VIPT nonaliasing data cache, VIPT aliasing instruction cache
+[    0.000000] OF: fdt: Machine model: TI AM335x C3000A
+[    0.000000] Memory policy: Data cache writeback
+[    0.000000] cma: Reserved 16 MiB at 0x9ec00000
+[    0.000000] Zone ranges:
+[    0.000000]   Normal   [mem 0x0000000080000000-0x000000009fdfffff]
+[    0.000000]   HighMem  empty
+[    0.000000] Movable zone start for each node
+[    0.000000] Early memory node ranges
+[    0.000000]   node   0: [mem 0x0000000080000000-0x000000009fdfffff]
+[    0.000000] Initmem setup node 0 [mem 0x0000000080000000-0x000000009fdfffff]
+[    0.000000] On node 0, zone Normal: 512 pages in unavailable ranges
+[    0.000000] OF: reserved mem: Reserved memory: No reserved-memory node in the DT
+[    0.000000] CPU: All CPU(s) started in SVC mode.
+[    0.000000] AM335X ES2.1 (sgx neon)
+[    0.000000] percpu: Embedded 14 pages/cpu s27340 r8192 d21812 u57344
+[    0.000000] pcpu-alloc: s27340 r8192 d21812 u57344 alloc=14*4096
+[    0.000000] pcpu-alloc: [0] 0
+[    0.000000] Kernel command line: console=ttyS0,115200n8 root=/dev/mmcblk0p2 rootwait
+[    0.000000] printk: log buffer data + meta data: 131072 + 409600 = 540672 bytes
+[    0.000000] Dentry cache hash table entries: 65536 (order: 6, 262144 bytes, linear)
+[    0.000000] Inode-cache hash table entries: 32768 (order: 5, 131072 bytes, linear)
+[    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 130560
+[    0.000000] mem auto-init: stack:off, heap alloc:off, heap free:off
+[    0.000000] SLUB: HWalign=16, Order=0-3, MinObjects=0, CPUs=1, Nodes=1
+[    0.000000] rcu: Hierarchical RCU implementation.
+[    0.000000] rcu:     RCU restricting CPUs from NR_CPUS=4 to nr_cpu_ids=1.
+[    0.000000]  Tracing variant of Tasks RCU enabled.
+[    0.000000] rcu: RCU calculated value of scheduler-enlistment delay is 10 jiffies.
+[    0.000000] rcu: Adjusting geometry for rcu_fanout_leaf=16, nr_cpu_ids=1
+[    0.000000] RCU Tasks Trace: Setting shift to 0 and lim to 1 rcu_task_cb_adjust=1 rcu_task_cpu_ids=1.
+[    0.000000] NR_IRQS: 16, nr_irqs: 16, preallocated irqs: 16
+[    0.000000] IRQ: Found an INTC at 0x(ptrval) (revision 5.0) with 128 interrupts
+[    0.000000] rcu: srcu_init: Setting srcu_struct sizes based on contention.
+[    0.000000] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 19112604462750000 ns
+[    0.000000] TI gptimer clocksource: always-on /ocp/interconnect@44c00000/segment@200000/target-module@31000
+[    0.000003] sched_clock: 32 bits at 24MHz, resolution 41ns, wraps every 89478484971ns
+[    0.000029] clocksource: dmtimer: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 79635851949 ns
+[    0.000574] TI gptimer clockevent: 24000000 Hz at /ocp/interconnect@48000000/segment@0/target-module@40000
+[    0.002379] Calibrating delay loop... 795.44 BogoMIPS (lpj=3977216)
+[    0.090691] CPU: Testing write buffer coherency: ok
+[    0.090815] CPU0: Spectre v2: using BPIALL workaround
+[    0.090829] pid_max: default: 32768 minimum: 301
+[    0.098181] Mount-cache hash table entries: 1024 (order: 0, 4096 bytes, linear)
+[    0.098207] Mountpoint-cache hash table entries: 1024 (order: 0, 4096 bytes, linear)
+[    0.110309] CPU0: thread -1, cpu 0, socket -1, mpidr 0
+[    0.112508] Setting up static identity map for 0x80100000 - 0x80100060
+[    0.112843] rcu: Hierarchical SRCU implementation.
+[    0.112854] rcu:     Max phase no-delay instances is 1000.
+[    0.113693] smp: Bringing up secondary CPUs ...
+[    0.113708] smp: Brought up 1 node, 1 CPU
+[    0.113719] SMP: Total of 1 processors activated (795.44 BogoMIPS).
+[    0.113731] CPU: All CPU(s) started in SVC mode.
+[    0.114020] Memory: 482016K/522240K available (11195K kernel code, 730K rwdata, 3232K rodata, 1024K init, 304K bss, 22828K reserved, 16384K cma-reserved, 0K highmem)
+[    0.135395] VFP support v0.3: implementor 41 architecture 3 part 30 variant c rev 3
+[    0.136042] posixtimers hash table entries: 512 (order: 0, 4096 bytes, linear)
+[    0.136082] futex hash table entries: 256 (16384 bytes on 1 NUMA nodes, total 16 KiB, linear).
+[    0.142542] pinctrl core: initialized pinctrl subsystem
+[    0.145571] NET: Registered PF_NETLINK/PF_ROUTE protocol family
+[    0.148504] DMA: preallocated 256 KiB pool for atomic coherent allocations
+[    0.149970] thermal_sys: Registered thermal governor 'fair_share'
+[    0.149987] thermal_sys: Registered thermal governor 'step_wise'
+[    0.149997] thermal_sys: Registered thermal governor 'user_space'
+[    0.150140] cpuidle: using governor ladder
+[    0.150192] cpuidle: using governor menu
+[    0.172770] /ocp/interconnect@48000000/segment@300000/target-module@e000/lcdc@0: Fixed dependency cycle(s) with /panel
+[    0.172924] /panel: Fixed dependency cycle(s) with /ocp/interconnect@48000000/segment@300000/target-module@e000/lcdc@0
+[    0.189700] SCSI subsystem initialized
+[    0.190107] libata version 3.00 loaded.
+[    0.190453] usbcore: registered new interface driver usbfs
+[    0.190574] usbcore: registered new interface driver hub
+[    0.190722] usbcore: registered new device driver usb
+[    0.191377] pps_core: LinuxPPS API ver. 1 registered
+[    0.191392] pps_core: Software ver. 5.3.6 - Copyright 2005-2007 Rodolfo Giometti <giometti@linux.it>
+[    0.191421] PTP clock support registered
+[    0.191812] Advanced Linux Sound Architecture Driver Initialized.
+[    0.194247] clocksource: Switched to clocksource dmtimer
+[    0.201582] VFS: Disk quotas dquot_6.6.0
+[    0.201951] VFS: Dquot-cache hash table entries: 1024 (order 0, 4096 bytes)
+[    0.204787] NET: Registered PF_INET protocol family
+[    0.205124] IP idents hash table entries: 8192 (order: 4, 65536 bytes, linear)
+[    0.207427] tcp_listen_portaddr_hash hash table entries: 512 (order: 0, 4096 bytes, linear)
+[    0.207469] Table-perturb hash table entries: 65536 (order: 6, 262144 bytes, linear)
+[    0.208226] TCP established hash table entries: 4096 (order: 2, 16384 bytes, linear)
+[    0.208284] TCP bind hash table entries: 4096 (order: 4, 65536 bytes, linear)
+[    0.208409] TCP: Hash tables configured (established 4096 bind 4096)
+[    0.208856] MPTCP token hash table entries: 512 (order: 1, 8192 bytes, linear)
+[    0.209072] UDP hash table entries: 256 (order: 2, 14336 bytes, linear)
+[    0.209115] UDP-Lite hash table entries: 256 (order: 2, 14336 bytes, linear)
+[    0.210337] NET: Registered PF_UNIX/PF_LOCAL protocol family
+[    0.211735] RPC: Registered named UNIX socket transport module.
+[    0.211758] RPC: Registered udp transport module.
+[    0.211764] RPC: Registered tcp transport module.
+[    0.211770] RPC: Registered tcp-with-tls transport module.
+[    0.211776] RPC: Registered tcp NFSv4.1 backchannel transport module.
+[    0.215355] workingset: timestamp_bits=14 max_order=17 bucket_order=3
+[    0.228311] squashfs: version 4.0 (2009/01/31) Phillip Lougher[    0.233179] NFS: Registering the id_resolver key type
+[    0.233247] Key type id_resolver registered
+[    0.233255] Key type id_legacy registered
+[    0.233386] jffs2: version 2.2 (NAND) (SUMMARY) (LZO) (LZMA) (RTIME) (RUBIN) (CMODE_PRIORITY) (c) 2001-2006 Red Hat, Inc.
+[    0.240686] cryptd: max_cpu_qlen set to 1000
+[    0.446827] target-module@4b000000:target-module@140000:pmu@0:fck: device ID is greater than 24
+[    0.452242] ledtrig-cpu: registered to indicate activity on CPUs
+[    0.456633] Serial: 8250/16550 driver, 6 ports, IRQ sharing enabled
+[    0.508569] brd: module loaded
+[    0.520614] loop: module loaded
+[    0.521944] mtdoops: mtd device (mtddev=name/number) must be supplied
+[    0.527736] i2c_dev: i2c /dev entries driver
+[    0.529612] cpuidle: enable-method property 'ti,am3352' found operations
+[    0.530241] sdhci: Secure Digital Host Controller Interface driver
+[    0.530252] sdhci: Copyright(c) Pierre Ossman
+[    0.530449] sdhci-pltfm: SDHCI platform and OF driver helper
+[    0.536579] NET: Registered PF_INET6 protocol family
+[    0.561558] Segment Routing with IPv6
+[    0.561691] In-situ OAM (IOAM) with IPv6
+[    0.561824] NET: Registered PF_PACKET protocol family
+[    0.561856] NET: Registered PF_KEY protocol family
+[    0.561960] 8021q: 802.1Q VLAN Support v1.8
+[    0.562060] Key type dns_resolver registered
+[    0.562350] ThumbEE CPU extension supported.
+[    0.562374] Registering SWP/SWPB emulation handler
+[    0.562386] omap_voltage_late_init: Voltage driver support not added
+[    0.562963] SmartReflex Class3 initialized
+[    0.654679] pinctrl-single 44e10800.pinmux: 142 pins, size 568[    0.697789] omap_wdt: OMAP Watchdog Timer Rev 0x01: initial timeout 60 sec
+[    0.700760] omap_rtc 44e3e000.rtc: already running
+[    0.701532] omap_rtc 44e3e000.rtc: registered as rtc0
+[    0.701600] omap_rtc 44e3e000.rtc: setting system clock to 2026-11-19T22:50:08 UTC (1795128608)
+[    0.750007] OMAP GPIO hardware version 0.1
+[    0.767203] 481a6000.serial: ttyS3 at MMIO 0x481a6000 (irq = 28, base_baud = 3000000) is a 8250
+[    0.784650] 48000000.interconnect:segment@200000:target-module@0:mpu@0:fck: device ID is greater than 24
+[    0.801141] sdhci-omap 48060000.mmc: Got CD GPIO
+[    0.801426] sdhci-omap 48060000.mmc: supply pbias not found, using dummy regulator
+[    0.802024] sdhci-omap 48060000.mmc: supply vqmmc not found, using dummy regulator
+[    0.833169] omap_rng 48310000.rng: Random Number Generator ver. 20
+[    0.839978] random: crng init done
+[    0.894285] davinci_mdio 4a101000.mdio: davinci mdio revision 1.6, bus freq 1000000
+[    0.903275] davinci_mdio 4a101000.mdio: phy[0]: device 4a101000.mdio:00, driver Qualcomm Atheros AR8035
+[    0.903304] davinci_mdio 4a101000.mdio: phy[2]: device 4a101000.mdio:02, driver Qualcomm Atheros AR8035
+[    0.904404] cpsw-switch 4a100000.switch: initialized cpsw ale version 1.4
+[    0.904428] cpsw-switch 4a100000.switch: ALE Table size 1024, Policers 0
+[    0.905883] cpsw-switch 4a100000.switch: cpts: overflow check period 500 (jiffies)
+[    0.905916] cpsw-switch 4a100000.switch: CPTS: ref_clk_freq:250000000 calc_mult:2147483648 calc_shift:29 error:0 nsec/sec
+[    0.906028] cpsw-switch 4a100000.switch: Detected MACID = 74:e1:82:b2:39:5b
+[    0.906133] cpsw-switch 4a100000.switch: Detected MACID = 74:e1:82:b2:39:5d
+[    0.910107] cpsw-switch 4a100000.switch: initialized (regs 0x4a100000, pool size 256) hw_ver:0019010C 1.12 (0)
+[    0.929966] debugfs: '49000000.dma' already exists in 'dmaengine'
+[    0.930017] edma 49000000.dma: TI EDMA DMA engine driver
+[    0.952850] am335x-phy-driver 47401300.usb-phy: dummy supplies not allowed for exclusive requests (id=vbus)
+[    0.962505] am335x-phy-driver 47401b00.usb-phy: dummy supplies not allowed for exclusive requests (id=vbus)
+[    0.997455] omap-gpmc 50000000.gpmc: GPMC revision 6.0
+[    0.997497] gpmc_mem_init: disabling cs 0 mapped at 0x0-0x1000000
+[    1.000949] nand: device found, Manufacturer ID: 0xec, Chip ID: 0xd3
+[    1.000979] nand: Samsung NAND 1GiB 3,3V 8-bit
+[    1.000987] nand: 1024 MiB, SLC, erase size: 128 KiB, page size: 2048, OOB size: 64
+[    1.001193] nand: using OMAP_ECC_BCH8_CODE_HW ECC scheme
+[    1.001328] 10 fixed-partitions partitions found on MTD device omap2-nand.0
+[    1.001353] Creating 10 MTD partitions on "omap2-nand.0":
+[    1.001367] 0x000000000000-0x000000020000 : "NAND.SPL"
+[    1.003299] 0x000000020000-0x000000040000 : "NAND.SPL.backup1"[    1.005416] 0x000000040000-0x000000060000 : "NAND.SPL.backup2"[    1.006975] 0x000000060000-0x000000080000 : "NAND.SPL.backup3"[    1.008503] 0x000000080000-0x0000000c0000 : "NAND.u-boot-spl-os"
+[    1.010106] 0x0000000c0000-0x0000001c0000 : "NAND.u-boot"
+[    1.012288] 0x0000001c0000-0x0000001e0000 : "NAND.u-boot-env"
+[    1.013804] 0x0000001e0000-0x000000200000 : "NAND.u-boot-env.backup1"
+[    1.016530] 0x000000200000-0x000000a00000 : "NAND.kernel"
+[    1.024495] 0x000000a00000-0x000040000000 : "NAND.file-system"[    1.830939] omap-sham 53100000.sham: hw accel on OMAP rev 4.3
+[    1.831245] omap-sham 53100000.sham: will run requests pump with realtime priority
+[    1.835462] omap-aes 53500000.aes: OMAP AES hw accel rev: 3.2
+[    1.835814] omap-aes 53500000.aes: will run requests pump with realtime priority
+[    1.840115] ti-sysc 44e31000.target-module: Failed to create device link (0x180) with supplier ocp for /ocp/interconnect@44c00000/segment@200000/target-module@31000/timer@0
+[    1.840174] ti-sysc 48040000.target-module: Failed to create device link (0x180) with supplier ocp for /ocp/interconnect@48000000/segment@0/target-module@40000/timer@0
+[    1.846890] input: beeper as /devices/platform/beeper/input/input0
+[    1.851984] 44e09000.serial: ttyS0 at MMIO 0x44e09000 (irq = 44, base_baud = 3000000) is a 8250
+[    1.852103] printk: legacy console [ttyS0] enabled
+[    3.025107] tps65910 0-002d: No interrupt support, no core IRQ[    3.036987] tps65910-rtc tps65910-rtc: error -EINVAL: request_irq(6) 0x0 tps65910_rtc_interrupt tps65910-rtc
+[    3.050374] tps65910-rtc tps65910-rtc: registered as rtc1
+[    3.059670] rtc-ds1307 0-0032: power-on detected
+[    3.065232] rtc-ds1307 0-0032: voltage drop detected
+[    3.071400] rtc-ds1307 0-0032: registered as rtc2
+[    3.080539] pca953x 0-0020: supply vcc not found, using dummy regulator
+[    3.087725] pca953x 0-0020: using no AI
+[    3.095352] omap_i2c 44e0b000.i2c: bus 0 rev0.11 at 400 kHz
+[    3.110724] sdhci-omap 48060000.mmc: Got CD GPIO
+[    3.115924] sdhci-omap 48060000.mmc: supply pbias not found, using dummy regulator
+[    3.125073] sdhci-omap 48060000.mmc: supply vqmmc not found, using dummy regulator
+[    3.140716] musb-hdrc musb-hdrc.0: MUSB HDRC host driver
+[    3.146392] musb-hdrc musb-hdrc.0: new USB bus registered, assigned bus number 1
+[    3.156906] hub 1-0:1.0: USB hub found
+[    3.161312] hub 1-0:1.0: 1 port detected
+[    3.175400] musb-hdrc musb-hdrc.1: MUSB HDRC host driver
+[    3.180841] musb-hdrc musb-hdrc.1: new USB bus registered, assigned bus number 2
+[    3.191937] hub 2-0:1.0: USB hub found
+[    3.196876] hub 2-0:1.0: 1 port detected
+[    3.217900] sdhci-omap 48060000.mmc: Got CD GPIO
+[    3.222861] sdhci-omap 48060000.mmc: supply pbias not found, using dummy regulator
+[    3.232653] sdhci-omap 48060000.mmc: supply vqmmc not found, using dummy regulator
+[    3.258620] clk: Disabling unused clocks
+[    3.262819] PM: genpd: Disabling unused power domains
+[    3.268209] ALSA device list:
+[    3.271208]   No soundcards found.
+[    3.295440] sdhci-omap 48060000.mmc: Got CD GPIO
+[    3.300433] sdhci-omap 48060000.mmc: supply pbias not found, using dummy regulator
+[    3.317828] check access for rdinit=/init failed: -2, ignoring[    3.324398] sdhci-omap 48060000.mmc: supply vqmmc not found, using dummy regulator
+[    3.366015] mmc0: SDHCI controller on 48060000.mmc [48060000.mmc] using External DMA
+[    3.387073] Waiting for root device /dev/mmcblk0p2...
+[    3.547196] mmc0: new SDHC card at address e624
+[    3.555434] mmcblk0: mmc0:e624 SD08G 7.40 GiB
+[    3.566799]  mmcblk0: p1 p2
+[    3.602761] VFS: Mounted root (squashfs filesystem) readonly on device 179:2.
+[    3.613089] Freeing unused kernel image (initmem) memory: 1024K
+[    3.620388] usb 2-1: new high-speed USB device number 2 using musb-hdrc
+[    3.628048] Run /sbin/init as init process
+[    3.632195]   with arguments:
+[    3.632206]     /sbin/init
+[    3.632216]   with environment:
+[    3.632226]     HOME=/
+[    3.632235]     TERM=linux
+[    4.026058] hub 2-1:1.0: USB hub found
+[    4.079980] hub 2-1:1.0: 4 ports detected
+[    4.429154] init: Console is alive
+[    4.435291] init: - watchdog -
+[    4.481522] usb 2-1.3: new high-speed USB device number 3 using musb-hdrc
+[    5.439568] kmodloader: loading kernel modules from /etc/modules-boot.d/*
+[    5.591253] gpio_button_hotplug: loading out-of-tree module taints kernel.
+[    5.707585] usbcore: registered new interface driver usb-storage
+[    5.742557] usbcore: registered new interface driver uas
+[    5.753333] kmodloader: done loading kernel modules from /etc/modules-boot.d/*
+[    5.778723] init: - preinit -
+[    7.705297] cpsw-switch 4a100000.switch: starting ndev. mode: dual_mac
+[    7.787410] Qualcomm Atheros AR8035 4a101000.mdio:00: attached PHY driver (mii_bus:phy_addr=4a101000.mdio:00, irq=POLL)
+[    7.802582] 8021q: adding VLAN 0 to HW filter on device eth0
+[   10.965979] cpsw-switch 4a100000.switch eth0: Link is Up - 1Gbps/Full - flow control off
+[   12.170545] mount_root: loading kmods from internal overlay
+[   12.290145] kmodloader: loading kernel modules from //etc/modules-boot.d/*
+[   12.304158] kmodloader: done loading kernel modules from //etc/modules-boot.d/*
+[   12.568369] block: no fstab configuration found, skipping
+[   12.576674] loop0: detected capacity change from 0 to 1048576
+[   12.604286] loop0: detected capacity change from 1048576 to 1023616
+[   12.646346] F2FS-fs (loop0): f2fs_recover_fsync_data: recovery fsync data, check_only: 0
+[   12.656739] F2FS-fs (loop0): Mounted with checkpoint version = 1715a161
+[   12.668622] mount_root: loading kmods from internal overlay
+[   12.729704] kmodloader: loading kernel modules from /tmp/overlay/upper/etc/modules-boot.d/*
+[   12.743519] kmodloader: done loading kernel modules from /tmp/overlay/upper/etc/modules-boot.d/*
+[   12.820703] block: attempting to load /tmp/overlay/upper/etc/config/fstab
+[   12.829054] block: extroot: not configured
+[   12.837832] mount_root: switching to f2fs overlay
+[   12.996034] urandom-seed: Seeding with /etc/urandom.seed
+[   13.131183] cpsw-switch 4a100000.switch eth0: Link is Down
+[   13.154812] procd: - early -
+[   13.158041] procd: - watchdog -
+[   13.888338] procd: - watchdog -
+[   13.895952] procd: - ubus -
+[   14.058308] procd: - init -
+[   15.875854] platform 4830e000.lcdc: deferred probe pending: (reason unknown)
+[   15.883025] omap_prm 44e00d00.prm: sync_state() pending due to 44d00000.cpu
+[   16.548485] kmodloader: loading kernel modules from /etc/modules.d/*
+[   17.065361] cryptodev: driver 1.14 loaded.
+[   17.218993] hid: raw HID events driver (C) Jiri Kosina
+[   17.464696] Bluetooth: Core ver 2.22
+[   17.468621] NET: Registered PF_BLUETOOTH protocol family
+[   17.473974] Bluetooth: HCI device and connection manager initialized
+[   17.480528] Bluetooth: HCI socket layer initialized
+[   17.485479] Bluetooth: L2CAP socket layer initialized
+[   17.490596] Bluetooth: SCO socket layer initialized
+[   17.587214] Bluetooth: BNEP (Ethernet Emulation) ver 1.3
+[   17.592629] Bluetooth: BNEP filters: protocol multicast
+[   17.598140] Bluetooth: BNEP socket layer initialized
+[   17.674423] can: controller area network core
+[   17.679129] NET: Registered PF_CAN protocol family
+[   17.734523] CAN device driver interface
+[   17.777976] usbcore: registered new interface driver cdc_acm
+[   17.783723] cdc_acm: USB Abstract Control Model driver for USB modems and ISDN adapters
+[   17.872261] Bluetooth: HIDP (Human Interface Emulation) ver 1.2
+[   17.878548] Bluetooth: HIDP socket layer initialized
+[   17.948784] mc: Linux media interface: v0.10
+[   18.074372] Bluetooth: RFCOMM TTY layer initialized
+[   18.079378] Bluetooth: RFCOMM socket layer initialized
+[   18.084673] Bluetooth: RFCOMM ver 1.11
+[   18.172789] usbcore: registered new interface driver ums-alauda
+[   18.222563] usbcore: registered new interface driver ums-cypress
+[   18.268825] usbcore: registered new interface driver ums-datafab
+[   18.306543] usbcore: registered new interface driver ums-freecom
+[   18.324881] urngd: v1.0.2 started.
+[   18.331012] usbcore: registered new interface driver ums-isd200
+[   18.366869] usbcore: registered new interface driver ums-jumpshot
+[   18.397707] usbcore: registered new interface driver ums-karma[   18.418932] usbcore: registered new interface driver ums-sddr09
+[   18.467047] usbcore: registered new interface driver ums-sddr55
+[   18.487987] usbcore: registered new interface driver ums-usbat[   18.554718] usbcore: registered new interface driver usbserial_generic
+[   18.561409] usbserial: USB Serial support registered for generic
+[   18.642329] c_can_platform 481cc000.can: c_can_platform device registered (regs=0f2a4b2b, irq=49)
+[   18.653395] c_can_platform 481d0000.can: c_can_platform device registered (regs=9ce7aab0, irq=50)
+[   18.767615] usbcore: registered new interface driver cdc_ether[   18.808321] usbcore: registered new interface driver ch341
+[   18.814019] usbserial: USB Serial support registered for ch341-uart
+[   18.869059] usbcore: registered new interface driver cp210x
+[   18.875018] usbserial: USB Serial support registered for cp210x
+[   18.933593] usbcore: registered new interface driver ftdi_sio
+[   18.939775] usbserial: USB Serial support registered for FTDI USB Serial Device
+[   18.947506] ftdi_sio 2-1.3:1.0: FTDI USB Serial Device converter detected
+[   18.954671] usb 2-1.3: Detected FT4232H
+[   19.084825] usb 2-1.3: FTDI USB Serial Device converter now attached to ttyUSB0
+[   19.092578] ftdi_sio 2-1.3:1.1: FTDI USB Serial Device converter detected
+[   19.099784] usb 2-1.3: Detected FT4232H
+[   19.170633] usb 2-1.3: FTDI USB Serial Device converter now attached to ttyUSB1
+[   19.178578] ftdi_sio 2-1.3:1.2: FTDI USB Serial Device converter detected
+[   19.185777] usb 2-1.3: Detected FT4232H
+[   19.264907] usb 2-1.3: FTDI USB Serial Device converter now attached to ttyUSB2
+[   19.272657] ftdi_sio 2-1.3:1.3: FTDI USB Serial Device converter detected
+[   19.279803] usb 2-1.3: Detected FT4232H
+[   19.350068] usb 2-1.3: FTDI USB Serial Device converter now attached to ttyUSB3
+[   19.736905] usbcore: registered new interface driver pl2303
+[   19.742676] usbserial: USB Serial support registered for pl2303
+[   19.828642] PPP generic driver version 2.4.2
+[   19.866229] NET: Registered PF_PPPOX protocol family
+[   19.893623] usbcore: registered new interface driver rndis_host
+[   20.054699] usbcore: registered new interface driver snd-usb-audio
+[   20.224660] usbcore: registered new interface driver option
+[   20.230444] usbserial: USB Serial support registered for GSM modem (1-port)
+[   20.326634] kmodloader: done loading kernel modules from /etc/modules.d/*
+[   30.950680] cpsw-switch 4a100000.switch: starting ndev. mode: dual_mac
+[   31.037792] Qualcomm Atheros AR8035 4a101000.mdio:00: attached PHY driver (mii_bus:phy_addr=4a101000.mdio:00, irq=POLL)
+[   31.079069] 8021q: adding VLAN 0 to HW filter on device eth0
+[   31.181214] cpsw-switch 4a100000.switch: starting ndev. mode: dual_mac
+[   31.334552] Qualcomm Atheros AR8035 4a101000.mdio:02: attached PHY driver (mii_bus:phy_addr=4a101000.mdio:02, irq=POLL)
+[   31.370975] 8021q: adding VLAN 0 to HW filter on device eth1
+[   34.176736] cpsw-switch 4a100000.switch eth0: Link is Up - 1Gbps/Full - flow control off
+root@C3000A:~# ls /dev
+audio            mtd2             ram13
+bus              mtd2ro           ram14
+console          mtd3             ram15
+cpu_dma_latency  mtd3ro           ram2
+crypto           mtd4             ram3
+dsp              mtd4ro           ram4
+fd               mtd5             ram5
+full             mtd5ro           ram6
+gpiochip0        mtd6             ram7
+gpiochip1        mtd6ro           ram8
+gpiochip2        mtd7             ram9
+gpiochip3        mtd7ro           random
+gpiochip4        mtd8             rtc0
+gpiochip5        mtd8ro           rtc1
+gpiochip6        mtd9             rtc2
+hwrng            mtd9ro           shm
+i2c-0            mtdblock0        snd
+input            mtdblock1        stderr
+kmsg             mtdblock2        stdin
+log              mtdblock3        stdout
+loop-control     mtdblock4        tty
+loop0            mtdblock5        ttyS0
+loop1            mtdblock6        ttyS1
+loop2            mtdblock7        ttyS2
+loop3            mtdblock8        ttyS3
+loop4            mtdblock9        ttyS4
+loop5            null             ttyS5
+loop6            port             ttyUSB0
+loop7            ppp              ttyUSB1
+mixer            ptmx             ttyUSB2
+mmcblk0          ptp0             ttyUSB3
+mmcblk0p1        pts              ubi_ctrl
+mmcblk0p2        ram0             urandom
+mtd0             ram1             watchdog
+mtd0ro           ram10            watchdog0
+mtd1             ram11            zero
+mtd1ro           ram12
+root@C3000A:~#
