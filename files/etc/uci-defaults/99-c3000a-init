@@ -92,12 +92,12 @@ EOF
 }
 
 # 5. 设置安全适中的 ALSA 硬件音量增益（防止开机默认静音或过响）
-amixer sset 'PCM' 75% >/dev/null 2>&1
-amixer sset 'HP DAC' 75% >/dev/null 2>&1
-amixer sset 'Line DAC' 75% >/dev/null 2>&1
-amixer sset 'HP' 2 >/dev/null 2>&1
-amixer sset 'Line' 2 >/dev/null 2>&1
-#alsactl store
+amixer sset 'PCM' 80% >/dev/null 2>&1
+amixer sset 'HP DAC' 80% >/dev/null 2>&1
+amixer sset 'Line DAC' 80% >/dev/null 2>&1
+amixer sset 'HP' 3 >/dev/null 2>&1
+amixer sset 'Line' 3 >/dev/null 2>&1
+alsactl store
 
 # 6. 重启 MPD 服务使配置生效
 /etc/init.d/mpd enable
