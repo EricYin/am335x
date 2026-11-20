@@ -12,6 +12,15 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y binutils-arm-linux-gnueabi
+
+      - name: Extract and Disassemble am335x_sel from orig_kernel.bin
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y binwalk binutils-arm-linux-gnueabi python3
+          binwalk -e bak/nmtd8_NAND.kernel.bin
+          VMLINUX=$(find _nmtd8_NAND.kernel.bin.extracted -type f -size +3M | head -n 1)
+          echo "Extracted kernel: $VMLINUX"
+          strings "$VMLINUX" | grep -C 5 "am335x_sel"
       
       - name: Disassemble GetDeviceType & M536x
         run: |
