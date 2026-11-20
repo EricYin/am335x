@@ -24,9 +24,13 @@ jobs:
 
       - name: Checkout Linux 6.18 DTS Headers
         run: |
-          git clone --depth=1 --filter=blob:none --sparse --branch master https://github.com/torvalds/linux ksrc
+          git clone --depth=1 --filter=blob:none --sparse --branch v6.18 https://github.com ksrc
           cd ksrc
-          git sparse-checkout set --no-cone /include/dt-bindings /arch/arm/boot/dts/ti/omap
+          git sparse-checkout set --no-cone \
+            /include/dt-bindings \
+            /include/uapi/linux/input-event-codes.h \
+            /arch/arm/boot/dts/ti/omap
+          ln -sf ../../uapi/linux/input-event-codes.h include/dt-bindings/input/linux-event-codes.h
 
       - name: Compile am335x-c3000a.dtb
         run: |
