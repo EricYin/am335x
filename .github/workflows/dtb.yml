@@ -20,17 +20,16 @@ jobs:
       - name: Install DTC and Build Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y device-tree-compiler gcc wget xz-utils
+          sudo apt-get install -y device-tree-compiler gcc git
 
-      - name: Download Linux 6.18 Headers & DTS Includes
+      - name: Checkout Linux 6.18 DTS Headers
         run: |
-          mkdir -p ksrc
-          wget -qO- https://kernel.org | tar -xJ -C ksrc --strip-components=1 \
-            linux-6.18/include/dt-bindings \
-            linux-6.18/arch/arm/boot/dts/ti/omap/am33xx.dtsi \
-            linux-6.18/arch/arm/boot/dts/ti/omap/am33xx-clocks.dtsi \
-            linux-6.18/arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi \
-            linux-6.18/arch/arm/boot/dts/ti/omap/tps65910.dtsi
+          git clone --depth=1 --filter=blob:none --sparse --branch v6.18 \
+            https://kernel.org ksrc
+          cd ksrc
+          git sparse-checkout set --no-cone \
+            /include/dt-bindings \
+            /arch/arm/boot/dts/ti/omap
 
       - name: Compile am335x-c3000a.dtb
         run: |
