@@ -13,19 +13,28 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y binutils-arm-linux-gnueabi
 
-      - name: Extract and Disassemble am335x_sel from orig_kernel.bin
+      - name: Scan all compressed streams in kernel.bin
         run: |
           sudo apt-get update
-          sudo apt-get install -y binutils-arm-linux-gnueabi python3
-          dd if=bak/nmtd8_NAND.kernel.bin bs=1 skip=27136 2>/dev/null | gzip -dc > vmlinux.bin || true
-          ls -lh vmlinux.bin
-          strings -t x vmlinux.bin | grep -C 5 "am335x_sel" || true
+          sudo apt-get install -y binutils-arm-linux-gnueabi lzop xz-utils python3
           python3 -c '
-          import subprocess, re
-          data = open("vmlinux.bin", "rb").read()
-          for m in re.finditer(b"am335x_sel[^\x00]*", data):
-              print("Found:", hex(m.start()), m.group(0))
+          import zlib, subprocess, re
+          data = open("bak/nmtd8_NAND.kernel.bin", "rb").read()
+          
+          # 搜索所有 gzip 魔数 (1f 8b 08)
+          for m in re.finditer(b"\x1f\x8b\x08", data):
+              off = m.start()
+              try:
+                  d = zlib.decompressobj(16 + zlib.MAX_WBITS)
+                  out = d.decompress(data[off:])
+                  if len(out) > 1000000:
+                      print(f"Found gzip vmlinux at {hex(off)}, size={len(out)}")
+                      open("vmlinux_full.bin", "wb").write(out)
+              except Exception:
+                  pass
           '
+          ls -lh vmlinux_full.bin
+          strings -t x vmlinux_full.bin | grep -iE "am335x_sel|am335x_gprs|am335x_led|am335x_buzzer|sel_ioctl" || true
 
 
       - name: Disassemble GetDeviceType & M536x
