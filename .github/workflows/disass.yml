@@ -1,4 +1,4 @@
-name: Extract Custom Driver GPIO
+name: Extract Exact Custom Driver GPIOs
 
 on:
   workflow_dispatch:
@@ -8,31 +8,44 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - name: Install binutils
+      - name: Install tools
         run: sudo apt-get update && sudo apt-get install -y binutils-arm-linux-gnueabi python3
 
-      - name: Disassemble Only Custom Drivers (Small Output)
+      - name: Analyze Custom Drivers and Print Summary Only
         run: |
           dd if=bak/nmtd8_NAND.kernel.bin bs=1 skip=27136 2>/dev/null | gzip -dc > vmlinux_full.bin || true
           python3 - << 'EOF'
-          import struct, subprocess
+          import struct, subprocess, re
           data = open("vmlinux_full.bin", "rb").read()
           
-          # 只找引用了 0x7f7e00 ~ 0x7f8300 (定制驱动字符串区) 的 movt #0xc080 指令
+          # 1. 找出所有引用 0x7f7e00 ~ 0x7f8300 的指令位置
           hits = []
           for off in range(4, len(data) - 4, 4):
-              w = struct.unpack_from("<I", data, off)[0]
+              w = struct.unpack_from("<I", data, off)
               if (w & 0xfff00fff) == 0xe3400080:
-                  prev = struct.unpack_from("<I", data, off - 4)[0]
+                  prev = struct.unpack_from("<I", data, off - 4)
                   if (prev & 0xfff00000) == 0xe3000000:
                       imm16 = ((prev & 0xf0000) >> 4) | (prev & 0xfff)
                       if 0x7e00 <= imm16 <= 0x8300:
-                          hits.append(off)
+                          s_off = imm16 - 0x8000 + 0x800000
+                          s_end = data.find(b"\x00", s_off)
+                          s_val = data[s_off:s_end].decode(errors="ignore")
+                          hits.append((off, s_val))
           
-          print("Exact custom driver offsets:", [hex(h) for h in hits])
-          if hits:
-              start = max(0, min(hits) - 0x600)
-              stop = min(len(data), max(hits) + 0x600)
+          print("=== 1. Custom String References ===")
+          for off, s in hits:
+              print(f"Code {hex(0xc0008000+off)} -> \"{s}\"")
+          
+          # 2. 只针对每个命中点前后各 0x180 字节局部反汇编（绝不跨越中间无关代码）
+          print("\n=== 2. Local Disassembly Around Each Custom Driver ===")
+          printed_ranges = []
+          for off, s in hits:
+              if any(abs(off - r) < 0x150 for r in printed_ranges):
+                  continue
+              printed_ranges.append(off)
+              start = max(0, off - 0x180)
+              stop = min(len(data), off + 0x180)
+              print(f"\n--- Near '{s}' ({hex(0xc0008000+start)} .. {hex(0xc0008000+stop)}) ---")
               out = subprocess.check_output([
                   "arm-linux-gnueabi-objdump", "-D", "-b", "binary", "-m", "arm",
                   "--adjust-vma=0xc0008000",
