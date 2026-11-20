@@ -13,23 +13,42 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y binutils-arm-linux-gnueabi python3
 
-      - name: Locate & Disassemble Custom Drivers via movt 0xc080
+      name: Extract Custom Driver GPIO
+
+on:
+  workflow_dispatch:
+
+jobs:
+  extract_gpio:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install binutils
+        run: sudo apt-get update && sudo apt-get install -y binutils-arm-linux-gnueabi python3
+
+      - name: Disassemble Only Custom Drivers (Small Output)
         run: |
           dd if=bak/nmtd8_NAND.kernel.bin bs=1 skip=27136 2>/dev/null | gzip -dc > vmlinux_full.bin || true
           python3 - << 'EOF'
           import struct, subprocess
           data = open("vmlinux_full.bin", "rb").read()
+          
+          # 只找引用了 0x7f7f00 ~ 0x7f8250 (定制驱动字符串区) 的 movt #0xc080 指令
           hits = []
-          # Scan for ARMv7 movt r0..r12, #0xc080 -> word & 0xfff00fff == 0xe3400080
           for off in range(0, len(data) - 4, 4):
-              word = struct.unpack_from("<I", data, off)[0]
-              if (word & 0xfff00fff) == 0xe3400080:
-                  hits.append(off)
-          print("Found movt #0xc080 hits at file offsets:", [hex(h) for h in hits])
+              w = struct.unpack_from("<I", data, off)
+              if (w & 0xfff00fff) == 0xe3400080:
+                  # 检查前一条指令是不是 movw rX, #0x7f00..0x8300
+                  prev = struct.unpack_from("<I", data, off - 4)
+                  if (prev & 0xfff00000) == 0xe3000000:
+                      imm16 = ((prev & 0xf0000) >> 4) | (prev & 0xfff)
+                      if 0x7e00 <= imm16 <= 0x8300:
+                          hits.append(off)
+          
+          print("Exact custom driver offsets:", [hex(h) for h in hits])
           if hits:
-              # Disassemble a wide window covering all hits (e.g., min-0x800 to max+0x800)
-              start = max(0, min(hits) - 0x800)
-              stop = min(len(data), max(hits) + 0x800)
+              start = max(0, min(hits) - 0x600)
+              stop = min(len(data), max(hits) + 0x600)
               out = subprocess.check_output([
                   "arm-linux-gnueabi-objdump", "-D", "-b", "binary", "-m", "arm",
                   "--adjust-vma=0xc0008000",
@@ -37,6 +56,5 @@ jobs:
                   f"--stop-address={hex(0xc0008000 + stop)}",
                   "vmlinux_full.bin"
               ], text=True)
-              print(f"Disassembled {hex(0xc0008000+start)} .. {hex(0xc0008000+stop)} ({len(out.splitlines())} lines)")
               print(out)
           EOF
