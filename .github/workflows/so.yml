@@ -1,0 +1,23 @@
+name: Disassemble libtcu.so BT Functions
+
+on:
+  workflow_dispatch:
+
+jobs:
+  disasm:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install ARM objdump
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y binutils-arm-linux-gnueabi
+      - name: Disassemble BT functions
+        run: |
+          arm-linux-gnueabi-objdump -d bak/libtcu.so | awk '
+            /<(init_n303|stop_n303|SelectBT|open_bt_port|set_bt_opt|CheckBT|set_speed|set_parity)>:/ { p=1 }
+            /^$/ { p=0 }
+            p { print }
+          '
+          echo "=== RODATA STRINGS ==="
+          arm-linux-gnueabi-objdump -s -j .rodata bak/libtcu.so | grep -C 3 "TTM"
