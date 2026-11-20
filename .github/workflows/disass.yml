@@ -13,21 +13,73 @@ jobs:
 
       - name: Get Exact GPIO Number in am335x_sel_init
         run: |
+          ls -lh bak/nmtd8_NAND.kernel.bin
           dd if=bak/nmtd8_NAND.kernel.bin bs=1 skip=27136 2>/dev/null | gzip -dc > vmlinux_full.bin || true
+          ls -lh vmlinux_full.bin
+          test -s vmlinux_full.bin || { echo "ERROR: vmlinux_full.bin is empty! Check compression/offset."; exit 1; }
+
           python3 - << 'EOF'
-          import subprocess
+          import struct, subprocess
+
           data = open("vmlinux_full.bin", "rb").read()
+          BASE = 0xc0008000
+
+          # 1. 动态确认 "am335x_sel" 字符串在文件中的真实虚拟地址
+          str_idx = data.find(b"am335x_sel\x00")
+          if str_idx == -1:
+              print("ERROR: 'am335x_sel' string not found in vmlinux_full.bin!")
+              exit(1)
+
+          target_va = BASE + str_idx
+          print(f"Found 'am335x_sel' at file offset {hex(str_idx)}, VA = {hex(target_va)}")
+
+          def disasm(off, before=0x60, after=0x100, thumb=False):
+              start = max(0, off - before)
+              stop = min(len(data), off + after)
+              cmd = [
+                  "arm-linux-gnueabi-objdump", "-D", "-b", "binary", "-m", "arm",
+                  f"--adjust-vma={hex(BASE)}",
+                  f"--start-address={hex(BASE + start)}",
+                  f"--stop-address={hex(BASE + stop)}",
+              ]
+              if thumb:
+                  cmd += ["-M", "force-thumb"]
+              cmd.append("vmlinux_full.bin")
+              print(subprocess.check_output(cmd, text=True))
+
+          # 2. 搜索 32 位指针引用 (文字池 ldr 或 miscdevice/platform_driver 结构体)
+          ptr_bytes = struct.pack("<I", target_va)
+          pos = 0
+          while (idx := data.find(ptr_bytes, pos)) != -1:
+              print(f"\n=== [Pointer Ref] {hex(target_va)} at VA {hex(BASE + idx)} ===")
+              # 如果是函数末尾的文字池，往前反汇编 0x100 字节就能看到整个函数
+              disasm(idx, before=0x100, after=0x40)
+              pos = idx + 4
+
+          # 3. 搜索 ARM movw rX, #(target_va & 0xffff)
+          low16 = target_va & 0xffff
+          imm4 = (low16 >> 12) & 0xf
+          imm12 = low16 & 0xfff
+          arm_movw_mask = 0xfff00fff
+          arm_movw_val  = 0xe3000000 | (imm4 << 16) | imm12
+
           for off in range(0, len(data) - 4, 4):
               w = int.from_bytes(data[off:off+4], "little")
-              # Match movw rX, #0xff40 -> (w & 0xfff00fff) == 0xe30f0f40
-              if (w & 0xfff00fff) == 0xe30f0f40:
-                  print("Found am335x_sel_init at:", hex(0xc0008000 + off))
-                  out = subprocess.check_output([
-                      "arm-linux-gnueabi-objdump", "-D", "-b", "binary", "-m", "arm",
-                      "--adjust-vma=0xc0008000",
-                      f"--start-address={hex(0xc0008000 + off - 0x40)}",
-                      f"--stop-address={hex(0xc0008000 + off + 0xc0)}",
-                      "vmlinux_full.bin"
-                  ], text=True)
-                  print(out)
+              if (w & arm_movw_mask) == arm_movw_val:
+                  print(f"\n=== [ARM movw] at VA {hex(BASE + off)} ===")
+                  disasm(off, before=0x40, after=0xc0)
+
+          # 4. 搜索 Thumb-2 movw rX, #(target_va & 0xffff)
+          i_bit = (imm4 >> 3) & 1
+          t_imm4 = low16 >> 12
+          t_imm3 = (low16 >> 8) & 0x7
+          t_imm8 = low16 & 0xff
+          hw1_target = 0xf240 | (i_bit << 10) | t_imm4
+          for off in range(0, len(data) - 4, 2):
+              hw1, hw2 = struct.unpack_from("<HH", data, off)
+              if hw1 == hw1_target and (hw2 & 0x70ff) == ((t_imm3 << 12) | t_imm8):
+                  print(f"\n=== [Thumb-2 movw] at VA {hex(BASE + off)} ===")
+                  disasm(off, before=0x40, after=0xc0, thumb=True)
           EOF
+
+    
