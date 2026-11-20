@@ -12,7 +12,68 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y binutils-arm-linux-gnueabi
+name: Disassemble libtcu.so BT Functions
 
+on:
+  workflow_dispatch:
+
+jobs:
+  disasm:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install ARM objdump
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y binutils-arm-linux-gnueabi
+
+      - name: Extract and Disassemble am335x_sel from orig_kernel.bin
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y binwalk binutils-arm-linux-gnueabi python3
+          binwalk -e bak/nmtd8_NAND.kernel.bin
+          VMLINUX=$(find _nmtd8_NAND.kernel.bin.extracted -type f -size +3M | head -n 1)
+          echo "Extracted kernel: $VMLINUX"
+          strings "$VMLINUX" | grep -C 5 "am335x_sel"
+      
+      - name: Disassemble GetDeviceType & M536x
+        run: |
+          arm-linux-gnueabi-objdump -d bak/libtcu.so | awk '
+            /<(GetDeviceType|init_m536x|check_m536x)>:/ { p=1 }
+            /^$/ { p=0 }
+            p { print }
+          '
+          echo "=== STRINGS NEAR C3000 / C2000 ==="
+          arm-linux-gnueabi-objdump -s -j .rodata bak/libtcu.so | grep -C 6 -E "C3000|C2000|ttyUSB"
+   
+      
+      - name: Disassemble init_n303 & GPS/GPIO functions
+        run: |
+          arm-linux-gnueabi-objdump -d bak/libtcu.so | awk '
+            /<(init_n303|stop_n303|SetExIOOutState|InitBDGPS|do_exit_gps|set_gpio|get_gpio)>:/ { p=1 }
+            /^$/ { p=0 }
+            p { print }
+          '
+          echo "=== STRINGS NEAR GPIO/SYSFS ==="
+          arm-linux-gnueabi-objdump -s -j .rodata bak/libtcu.so | grep -C 4 -E "gpio|class|value|direction|n303|N303"
+
+      
+      - name: Disassemble BT functions
+        run: |
+          arm-linux-gnueabi-objdump -d bak/libtcu.so | awk '
+            /<(init_n303|stop_n303|SelectBT|open_bt_port|set_bt_opt|CheckBT|set_speed|set_parity)>:/ { p=1 }
+            /^$/ { p=0 }
+            p { print }
+          '
+          echo "=== RODATA STRINGS ==="
+          arm-linux-gnueabi-objdump -s -j .rodata bak/libtcu.so | grep -C 3 "TTM"
+          
+      - name: Disassemble BT functions 2
+        run: |
+          arm-linux-gnueabi-objdump -s -j .rodata bak/libtcu.so | awk '
+            /^ 11[de]/ || /^ 13[567]/ { print }
+          '
+          
       - name: Extract and Disassemble am335x_sel from orig_kernel.bin
         run: |
           sudo apt-get update
