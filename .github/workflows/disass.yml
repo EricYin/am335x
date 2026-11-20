@@ -13,18 +13,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y binutils-arm-linux-gnueabi
 
-      - name: Disassemble Custom Board Drivers in vmlinux
+      - name: Search tcu_info and chrdev in vmlinux
         run: |
-          sudo apt-get update
-          sudo apt-get install -y binutils-arm-linux-gnueabi python3
           dd if=bak/nmtd8_NAND.kernel.bin bs=1 skip=27136 2>/dev/null | gzip -dc > vmlinux_full.bin || true
-          
-          echo "=== 1. 查看 0x7f7d00 ~ 0x7f8600 区间的所有板级驱动字符串 ==="
-          strings -t x vmlinux_full.bin | awk '$1 ~ /^7f[78]/ { print }'
-          
-          echo "=== 2. 搜索内核中所有 gpio_request / gpio_direction 相关的板级函数 ==="
-          arm-linux-gnueabi-objdump -D -b binary -m arm vmlinux_full.bin | grep -B 10 -A 25 "0x4804c000\|0x481ac000\|0x481ae000\|0x44e07000" | head -n 120 || true
-
+          strings -t x vmlinux_full.bin | grep -C 15 -iE "tcu_info|am335x_|_sel" | head -n 120 || true
 
       - name: Disassemble GetDeviceType & M536x
         run: |
