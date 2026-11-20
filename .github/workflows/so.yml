@@ -12,7 +12,17 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y binutils-arm-linux-gnueabi
-     
+      
+      - name: Disassemble GetDeviceType & M536x
+        run: |
+          arm-linux-gnueabi-objdump -d bak/libtcu.so | awk '
+            /<(GetDeviceType|init_m536x|check_m536x)>:/ { p=1 }
+            /^$/ { p=0 }
+            p { print }
+          '
+          echo "=== STRINGS NEAR C3000 / C2000 ==="
+          arm-linux-gnueabi-objdump -s -j .rodata bak/libtcu.so | grep -C 6 -E "C3000|C2000|ttyUSB"
+   
       
       - name: Disassemble init_n303 & GPS/GPIO functions
         run: |
