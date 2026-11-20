@@ -1,72 +1,63 @@
-name: Disassemble BT Functions
+name: Full Kernel & Binary Reverse Engineering
 
 on:
   workflow_dispatch:
 
 jobs:
-  disasm:
+  full_extract:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - name: Install ARM objdump
+      - name: Install Tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y binutils-arm-linux-gnueabi
+          sudo apt-get install -y binutils-arm-linux-gnueabi python3
 
-      - name: Find Hardcoded GPIOs in vmlinux
+      - name: 1. Extract vmlinux & Dump All Custom Board Drivers
         run: |
           dd if=bak/nmtd8_NAND.kernel.bin bs=1 skip=27136 2>/dev/null | gzip -dc > vmlinux_full.bin || true
           python3 -c '
+          import struct, subprocess, re
+          data = open("vmlinux_full.bin", "rb").read()
+          print("vmlinux size:", len(data))
+
+          # A. 定位定制板级驱动代码区 (引用 0x7f803d "6am335x_gprs: probe..." 的位置)
+          # 尝试标准加载基址 0xc0008000 和 0xc0000000
+          for base in (0xc0008000, 0xc0000000):
+              target = struct.pack("<I", base + 0x7f803d)
+              idx = data.find(target)
+              if idx != -1:
+                  print(f"=== Found board drivers literal pool at {hex(idx)} (base={hex(base)}) ===")
+                  start = max(0, idx - 0x1500)
+                  stop = min(len(data), idx + 0x1500)
+                  out = subprocess.check_output([
+                      "arm-linux-gnueabi-objdump", "-D", "-b", "binary", "-m", "arm",
+                      f"--adjust-vma={hex(base)}",
+                      f"--start-address={hex(base + start)}",
+                      f"--stop-address={hex(base + stop)}",
+                      "vmlinux_full.bin"
+                  ], text=True)
+                  open("board_drivers.asm", "w").write(out)
+                  print("Saved board_drivers.asm, lines:", len(out.splitlines()))
+
+          # B. 搜索所有非标准 misc/chrdev 字符设备注册名称
+          for m in re.finditer(b"am335x[_-][a-zA-Z0-9_-]+", data):
+              print(f"String at {hex(m.start())}: {m.group(0).decode(errors=\"ignore\")}")
+          '
+          cat board_drivers.asm 2>/dev/null | head -n 400 || true
+
+      - name: 2. Dump Remaining Board Drivers Assembly
+        run: |
+          cat board_drivers.asm 2>/dev/null | tail -n +401 || true
+
+      - name: 3. Search Any Remaining GPIO / Sel References in Kernel
+        run: |
+          python3 -c '
           import subprocess, re
-          # Disassemble the code area around custom drivers
-          out = subprocess.check_output(["arm-linux-gnueabi-objdump", "-D", "-b", "binary", "-m", "arm", "--start-address=0x480000", "--stop-address=0x580000", "vmlinux_full.bin"], text=True)
-          lines = out.splitlines()
-          for i, line in enumerate(lines):
-              # Look for mov r0, #<small_gpio_num> followed shortly by a bl call
-              m = re.search(r"mov\s+r0,\s+#(\d+)", line)
-              if m:
-                  val = int(m.group(1))
-                  if 1 <= val <= 127:
-                      window = "\n".join(lines[max(0, i-3):min(len(lines), i+6)])
-                      if "bl\t" in window and ("mov\tr1, #0" in window or "mov\tr1, #1" in window):
-                          print(f"=== GPIO {val} at {line.split()[0]} ===")
-                          print(window)
-          '
-
-      - name: Disassemble GetDeviceType & M536x
-        run: |
-          arm-linux-gnueabi-objdump -d bak/libtcu.so | awk '
-            /<(GetDeviceType|init_m536x|check_m536x)>:/ { p=1 }
-            /^$/ { p=0 }
-            p { print }
-          '
-          echo "=== STRINGS NEAR C3000 / C2000 ==="
-          arm-linux-gnueabi-objdump -s -j .rodata bak/libtcu.so | grep -C 6 -E "C3000|C2000|ttyUSB"
-   
-      
-      - name: Disassemble init_n303 & GPS/GPIO functions
-        run: |
-          arm-linux-gnueabi-objdump -d bak/libtcu.so | awk '
-            /<(init_n303|stop_n303|SetExIOOutState|InitBDGPS|do_exit_gps|set_gpio|get_gpio)>:/ { p=1 }
-            /^$/ { p=0 }
-            p { print }
-          '
-          echo "=== STRINGS NEAR GPIO/SYSFS ==="
-          arm-linux-gnueabi-objdump -s -j .rodata bak/libtcu.so | grep -C 4 -E "gpio|class|value|direction|n303|N303"
-
-      
-      - name: Disassemble BT functions
-        run: |
-          arm-linux-gnueabi-objdump -d bak/libtcu.so | awk '
-            /<(init_n303|stop_n303|SelectBT|open_bt_port|set_bt_opt|CheckBT|set_speed|set_parity)>:/ { p=1 }
-            /^$/ { p=0 }
-            p { print }
-          '
-          echo "=== RODATA STRINGS ==="
-          arm-linux-gnueabi-objdump -s -j .rodata bak/libtcu.so | grep -C 3 "TTM"
-          
-      - name: Disassemble BT functions 2
-        run: |
-          arm-linux-gnueabi-objdump -s -j .rodata bak/libtcu.so | awk '
-            /^ 11[de]/ || /^ 13[567]/ { print }
+          data = open("vmlinux_full.bin", "rb").read()
+          # 搜索所有出现 "sel" 且前后是空字节的独立短字符串
+          for m in re.finditer(b"\x00([a-zA-Z0-9_-]{2,20}sel[a-zA-Z0-9_-]{0,10})\x00", data):
+              s = m.group(1).decode(errors="ignore")
+              if any(k in s.lower() for k in ["am335", "bt", "gps", "uart", "tty", "mux", "chan"]):
+                  print(f"Candidate string at {hex(m.start())}: {s}")
           '
