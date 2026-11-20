@@ -13,10 +13,25 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y binutils-arm-linux-gnueabi
 
-      - name: Dump tcu_info and am335x_sel strings in vmlinux
+      - name: Find Hardcoded GPIOs in vmlinux
         run: |
           dd if=bak/nmtd8_NAND.kernel.bin bs=1 skip=27136 2>/dev/null | gzip -dc > vmlinux_full.bin || true
-          strings -t x vmlinux_full.bin | grep -A 80 -B 5 "7c4c40 tcu_info"
+          python3 -c '
+          import subprocess, re
+          # Disassemble the code area around custom drivers
+          out = subprocess.check_output(["arm-linux-gnueabi-objdump", "-D", "-b", "binary", "-m", "arm", "--start-address=0x480000", "--stop-address=0x580000", "vmlinux_full.bin"], text=True)
+          lines = out.splitlines()
+          for i, line in enumerate(lines):
+              # Look for mov r0, #<small_gpio_num> followed shortly by a bl call
+              m = re.search(r"mov\s+r0,\s+#(\d+)", line)
+              if m:
+                  val = int(m.group(1))
+                  if 1 <= val <= 127:
+                      window = "\n".join(lines[max(0, i-3):min(len(lines), i+6)])
+                      if "bl\t" in window and ("mov\tr1, #0" in window or "mov\tr1, #1" in window):
+                          print(f"=== GPIO {val} at {line.split()[0]} ===")
+                          print(window)
+          '
 
       - name: Disassemble GetDeviceType & M536x
         run: |
