@@ -13,10 +13,16 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y binutils-arm-linux-gnueabi
 
-      - name: Search tcu_info and chrdev in vmlinux
+      - name: Find am335x_sel and tcu_info in vmlinux
         run: |
+          sudo apt-get update && sudo apt-get install -y binutils-arm-linux-gnueabi python3
           dd if=bak/nmtd8_NAND.kernel.bin bs=1 skip=27136 2>/dev/null | gzip -dc > vmlinux_full.bin || true
-          strings -t x vmlinux_full.bin | grep -C 15 -iE "tcu_info|am335x_|_sel" | head -n 120 || true
+          
+          echo "=== 1. 搜索 tcu_info 和 chrdev 注册字符串 ==="
+          strings -t x vmlinux_full.bin | grep -C 10 -iE "tcu_info|am335x_|gpio_gprs" || true
+          
+          echo "=== 2. 查看内核中的符号表 (kallsyms) ==="
+          strings -t x vmlinux_full.bin | grep -E "^[0-9a-f]+ [tTdDrRbB] " | grep -iE "sel|bt|gps|gprs|tcu|am335x" || true
 
       - name: Disassemble GetDeviceType & M536x
         run: |
