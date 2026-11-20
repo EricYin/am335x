@@ -21,3 +21,9 @@ jobs:
           '
           echo "=== RODATA STRINGS ==="
           arm-linux-gnueabi-objdump -s -j .rodata bak/libtcu.so | grep -C 3 "TTM"
+          
+      - name: Disassemble BT functions 2
+        run: |
+          arm-linux-gnueabi-objdump -s -j .rodata bak/libtcu.so | awk '
+            /^ 11[de]/ || /^ 13[567]/ { print }
+          '
