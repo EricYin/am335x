@@ -16,21 +16,17 @@ jobs:
       - name: Extract and Disassemble am335x_sel from orig_kernel.bin
         run: |
           sudo apt-get update
-          sudo apt-get install -y binwalk binutils-arm-linux-gnueabi python3
-          binwalk -e bak/nmtd8_NAND.kernel.bin
-          VMLINUX=$(find _nmtd8_NAND.kernel.bin.extracted -type f -size +3M | head -n 1)
-          echo "Extracted kernel: $VMLINUX"
-          strings -t x "$VMLINUX" | grep -C 5 "am335x_sel"
-          
-          # 自动反汇编内核中与 am335x_sel 相关的函数（若内核保留了符号表 kallsyms）
+          sudo apt-get install -y binutils-arm-linux-gnueabi python3
+          dd if=bak/nmtd8_NAND.kernel.bin bs=1 skip=27136 2>/dev/null | gzip -dc > vmlinux.bin || true
+          ls -lh vmlinux.bin
+          strings -t x vmlinux.bin | grep -C 5 "am335x_sel" || true
           python3 -c '
           import subprocess, re
-          vmlinux = "'"$VMLINUX"'"
-          data = open(vmlinux, "rb").read()
+          data = open("vmlinux.bin", "rb").read()
           for m in re.finditer(b"am335x_sel[^\x00]*", data):
-              print("Found symbol/string:", hex(m.start()), m.group(0))
+              print("Found:", hex(m.start()), m.group(0))
           '
-          arm-linux-gnueabi-objdump -D -b binary -m arm --adjust-vma=0xc0008000 "$VMLINUX" | grep -B 5 -A 45 "am335x_sel" || true
+
 
       - name: Disassemble GetDeviceType & M536x
         run: |
