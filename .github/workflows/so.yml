@@ -12,6 +12,19 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y binutils-arm-linux-gnueabi
+     
+      
+      - name: Disassemble init_n303 & GPS/GPIO functions
+        run: |
+          arm-linux-gnueabi-objdump -d bak/libtcu.so | awk '
+            /<(init_n303|stop_n303|SetExIOOutState|InitBDGPS|do_exit_gps|set_gpio|get_gpio)>:/ { p=1 }
+            /^$/ { p=0 }
+            p { print }
+          '
+          echo "=== STRINGS NEAR GPIO/SYSFS ==="
+          arm-linux-gnueabi-objdump -s -j .rodata bak/libtcu.so | grep -C 4 -E "gpio|class|value|direction|n303|N303"
+
+      
       - name: Disassemble BT functions
         run: |
           arm-linux-gnueabi-objdump -d bak/libtcu.so | awk '
