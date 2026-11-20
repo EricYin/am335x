@@ -24,7 +24,7 @@ jobs:
 
       - name: Checkout Linux 6.18 DTS Headers
         run: |
-          git clone --depth=1 --filter=blob:none --sparse --branch v6.18 https://github.com ksrc
+          git clone --depth=1 --filter=blob:none --sparse --branch master https://github.com/torvalds/linux ksrc
           cd ksrc
           git sparse-checkout set --no-cone \
             /include/dt-bindings \
