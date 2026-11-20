@@ -15,15 +15,14 @@ jobs:
         run: |
           dd if=bak/nmtd8_NAND.kernel.bin bs=1 skip=27136 2>/dev/null | gzip -dc > vmlinux_full.bin || true
           python3 - << 'EOF'
-          import struct, subprocess, re
+          import subprocess
           data = open("vmlinux_full.bin", "rb").read()
           
-          # 1. 找出所有引用 0x7f7e00 ~ 0x7f8300 的指令位置
           hits = []
           for off in range(4, len(data) - 4, 4):
-              w = struct.unpack_from("<I", data, off)
+              w = int.from_bytes(data[off:off+4], "little")
               if (w & 0xfff00fff) == 0xe3400080:
-                  prev = struct.unpack_from("<I", data, off - 4)
+                  prev = int.from_bytes(data[off-4:off], "little")
                   if (prev & 0xfff00000) == 0xe3000000:
                       imm16 = ((prev & 0xf0000) >> 4) | (prev & 0xfff)
                       if 0x7e00 <= imm16 <= 0x8300:
@@ -36,7 +35,6 @@ jobs:
           for off, s in hits:
               print(f"Code {hex(0xc0008000+off)} -> \"{s}\"")
           
-          # 2. 只针对每个命中点前后各 0x180 字节局部反汇编（绝不跨越中间无关代码）
           print("\n=== 2. Local Disassembly Around Each Custom Driver ===")
           printed_ranges = []
           for off, s in hits:
