@@ -11,7 +11,23 @@ jobs:
       - name: Install tools
         run: sudo apt-get update && sudo apt-get install -y binutils-arm-linux-gnueabi python3
 
-      - name: Get Exact GPIO Number at 0xc0386680
+      - name: Get Exact GPIO Number in am335x_sel_init
         run: |
           dd if=bak/nmtd8_NAND.kernel.bin bs=1 skip=27136 2>/dev/null | gzip -dc > vmlinux_full.bin || true
-          arm-linux-gnueabi-objdump -D -b binary -m arm --adjust-vma=0xc0008000 --start-address=0xc0386680 --stop-address=0xc0386780 vmlinux_full.bin
+          python3 - << 'EOF'
+          import subprocess
+          data = open("vmlinux_full.bin", "rb").read()
+          for off in range(0, len(data) - 4, 4):
+              w = int.from_bytes(data[off:off+4], "little")
+              # Match movw rX, #0xff40 -> (w & 0xfff00fff) == 0xe30f0f40
+              if (w & 0xfff00fff) == 0xe30f0f40:
+                  print("Found am335x_sel_init at:", hex(0xc0008000 + off))
+                  out = subprocess.check_output([
+                      "arm-linux-gnueabi-objdump", "-D", "-b", "binary", "-m", "arm",
+                      "--adjust-vma=0xc0008000",
+                      f"--start-address={hex(0xc0008000 + off - 0x40)}",
+                      f"--stop-address={hex(0xc0008000 + off + 0xc0)}",
+                      "vmlinux_full.bin"
+                  ], text=True)
+                  print(out)
+          EOF
