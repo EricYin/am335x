@@ -1,0 +1,48 @@
+name: Build AM335x C3000A DTB
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-dtb:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout OpenWrt Repository (am335x branch)
+        uses: actions/checkout@v4
+        with:
+          repository: EricYin/openwrt
+          ref: am335x
+          sparse-checkout: |
+            target/linux/omap/files/arch/arm/boot/dts/ti/omap/am335x-c3000a.dts
+          sparse-checkout-cone-mode: false
+
+      - name: Install DTC and Build Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y device-tree-compiler gcc wget xz-utils
+
+      - name: Download Linux 6.18 Headers & DTS Includes
+        run: |
+          mkdir -p ksrc
+          wget -qO- https://kernel.org | tar -xJ -C ksrc --strip-components=1 \
+            linux-6.18/include/dt-bindings \
+            linux-6.18/arch/arm/boot/dts/ti/omap/am33xx.dtsi \
+            linux-6.18/arch/arm/boot/dts/ti/omap/am33xx-clocks.dtsi \
+            linux-6.18/arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi \
+            linux-6.18/arch/arm/boot/dts/ti/omap/tps65910.dtsi
+
+      - name: Compile am335x-c3000a.dtb
+        run: |
+          mkdir -p out
+          cp target/linux/omap/files/arch/arm/boot/dts/ti/omap/am335x-c3000a.dts ksrc/arch/arm/boot/dts/ti/omap/
+          cpp -nostdinc -I ksrc/include -I ksrc/arch/arm/boot/dts/ti/omap -undef -x assembler-with-cpp \
+            ksrc/arch/arm/boot/dts/ti/omap/am335x-c3000a.dts > out/am335x-c3000a.dts.preprocessed
+          dtc -I dts -O dtb -o out/am335x-c3000a.dtb out/am335x-c3000a.dts.preprocessed
+          ls -lh out/am335x-c3000a.dtb
+
+      - name: Upload DTB Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: am335x-c3000a-dtb
+          path: out/am335x-c3000a.dtb
