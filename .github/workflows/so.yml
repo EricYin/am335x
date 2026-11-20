@@ -1,4 +1,4 @@
-name: Disassemble libtcu.so BT Functions
+name: Disassemble BT Functions
 
 on:
   workflow_dispatch:
@@ -13,28 +13,17 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y binutils-arm-linux-gnueabi
 
-      - name: Scan all compressed streams in kernel.bin
+      - name: Disassemble Custom Board Drivers in vmlinux
         run: |
           sudo apt-get update
-          sudo apt-get install -y binutils-arm-linux-gnueabi lzop xz-utils python3
-          python3 -c '
-          import zlib, subprocess, re
-          data = open("bak/nmtd8_NAND.kernel.bin", "rb").read()
+          sudo apt-get install -y binutils-arm-linux-gnueabi python3
+          dd if=bak/nmtd8_NAND.kernel.bin bs=1 skip=27136 2>/dev/null | gzip -dc > vmlinux_full.bin || true
           
-          # 搜索所有 gzip 魔数 (1f 8b 08)
-          for m in re.finditer(b"\x1f\x8b\x08", data):
-              off = m.start()
-              try:
-                  d = zlib.decompressobj(16 + zlib.MAX_WBITS)
-                  out = d.decompress(data[off:])
-                  if len(out) > 1000000:
-                      print(f"Found gzip vmlinux at {hex(off)}, size={len(out)}")
-                      open("vmlinux_full.bin", "wb").write(out)
-              except Exception:
-                  pass
-          '
-          ls -lh vmlinux_full.bin
-          strings -t x vmlinux_full.bin | grep -iE "am335x_sel|am335x_gprs|am335x_led|am335x_buzzer|sel_ioctl" || true
+          echo "=== 1. 查看 0x7f7d00 ~ 0x7f8600 区间的所有板级驱动字符串 ==="
+          strings -t x vmlinux_full.bin | awk '$1 ~ /^7f[78]/ { print }'
+          
+          echo "=== 2. 搜索内核中所有 gpio_request / gpio_direction 相关的板级函数 ==="
+          arm-linux-gnueabi-objdump -D -b binary -m arm vmlinux_full.bin | grep -B 10 -A 25 "0x4804c000\|0x481ac000\|0x481ae000\|0x44e07000" | head -n 120 || true
 
 
       - name: Disassemble GetDeviceType & M536x
