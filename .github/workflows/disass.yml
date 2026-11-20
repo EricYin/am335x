@@ -13,51 +13,30 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y binutils-arm-linux-gnueabi python3
 
-      - name: 1. Extract vmlinux & Dump All Custom Board Drivers
+      - name: Locate & Disassemble Custom Drivers via movt 0xc080
         run: |
           dd if=bak/nmtd8_NAND.kernel.bin bs=1 skip=27136 2>/dev/null | gzip -dc > vmlinux_full.bin || true
           python3 - << 'EOF'
-          import struct, subprocess, re
+          import struct, subprocess
           data = open("vmlinux_full.bin", "rb").read()
-          print("vmlinux size:", len(data))
-
-          # A. 定位定制板级驱动代码区 (引用 0x7f803d "6am335x_gprs: probe..." 的位置)
-          for base in (0xc0008000, 0xc0000000):
-              target = struct.pack("<I", base + 0x7f803d)
-              idx = data.find(target)
-              if idx != -1:
-                  print(f"=== Found board drivers literal pool at {hex(idx)} (base={hex(base)}) ===")
-                  start = max(0, idx - 0x1500)
-                  stop = min(len(data), idx + 0x1500)
-                  out = subprocess.check_output([
-                      "arm-linux-gnueabi-objdump", "-D", "-b", "binary", "-m", "arm",
-                      f"--adjust-vma={hex(base)}",
-                      f"--start-address={hex(base + start)}",
-                      f"--stop-address={hex(base + stop)}",
-                      "vmlinux_full.bin"
-                  ], text=True)
-                  open("board_drivers.asm", "w").write(out)
-                  print("Saved board_drivers.asm, lines:", len(out.splitlines()))
-
-          # B. 同时反汇编 0x53e400 ~ 0x53e800 区域确认之前的 GPIO 20 / GPIO 9 调用
-          out2 = subprocess.check_output([
-              "arm-linux-gnueabi-objdump", "-D", "-b", "binary", "-m", "arm",
-              "--adjust-vma=0xc0008000",
-              "--start-address=0xc0546400",
-              "--stop-address=0xc0546800",
-              "vmlinux_full.bin"
-          ], text=True)
-          open("gpio_area.asm", "w").write(out2)
-
-          # C. 搜索所有 am335x_ 开头的驱动字符串
-          for m in re.finditer(b"am335x[_-][a-zA-Z0-9_-]+", data):
-              print(f"String at {hex(m.start())}: {m.group(0).decode(errors='ignore')}")
+          hits = []
+          # Scan for ARMv7 movt r0..r12, #0xc080 -> word & 0xfff00fff == 0xe3400080
+          for off in range(0, len(data) - 4, 4):
+              word = struct.unpack_from("<I", data, off)[0]
+              if (word & 0xfff00fff) == 0xe3400080:
+                  hits.append(off)
+          print("Found movt #0xc080 hits at file offsets:", [hex(h) for h in hits])
+          if hits:
+              # Disassemble a wide window covering all hits (e.g., min-0x800 to max+0x800)
+              start = max(0, min(hits) - 0x800)
+              stop = min(len(data), max(hits) + 0x800)
+              out = subprocess.check_output([
+                  "arm-linux-gnueabi-objdump", "-D", "-b", "binary", "-m", "arm",
+                  "--adjust-vma=0xc0008000",
+                  f"--start-address={hex(0xc0008000 + start)}",
+                  f"--stop-address={hex(0xc0008000 + stop)}",
+                  "vmlinux_full.bin"
+              ], text=True)
+              print(f"Disassembled {hex(0xc0008000+start)} .. {hex(0xc0008000+stop)} ({len(out.splitlines())} lines)")
+              print(out)
           EOF
-          cat board_drivers.asm 2>/dev/null | head -n 450 || true
-
-      - name: 2. Dump Remaining Board Drivers & GPIO Area Assembly
-        run: |
-          echo "=== BOARD DRIVERS PART 2 ==="
-          cat board_drivers.asm 2>/dev/null | tail -n +451 || true
-          echo "=== GPIO 20 / 9 AREA ==="
-          cat gpio_area.asm 2>/dev/null || true
