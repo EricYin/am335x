@@ -10,75 +10,63 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install tools
         run: sudo apt-get update && sudo apt-get install -y binutils-arm-linux-gnueabi python3
-
-      - name: Strip NAND OOB & Extract Real vmlinux
+ 
+      - name: Disassemble uart_sel and Board GPIO Drivers
         run: |
-          sudo apt-get update && sudo apt-get install -y binutils-arm-linux-gnueabi xz-utils lzop python3
           python3 - << 'EOF'
-          import os, struct, subprocess, re
+          import struct, subprocess
 
           raw = open("bak/nmtd8_NAND.kernel.bin", "rb").read()
-          print("Raw file size:", len(raw))
+          vmlinux = subprocess.run(["gzip", "-dc"], input=raw[0x6a00:], capture_output=True).stdout
+          BASE = 0xc0008000
 
-          # 1. 自动检测并剥离 NAND OOB (常见 2048+64=2112 或 4096+128/224)
-          clean = raw
-          for page, oob in [(2048, 64), (4096, 128), (4096, 224), (512, 16)]:
-              stride = page + oob
-              if len(raw) % stride == 0 and raw[0:4] == b"\x27\x05\x19\x56":
-                  print(f"Detected NAND OOB format: {page}+{oob}, stripping OOB...")
-                  clean = b"".join(raw[i:i+page] for i in range(0, len(raw), stride))
-                  break
-              # 即使前几页是全FF坏块，只要 uImage magic 出现在页对齐处也剥离
-              if len(raw) % stride == 0:
-                  for p_idx in range(16):
-                      if raw[p_idx*stride : p_idx*stride+4] == b"\x27\x05\x19\x56":
-                          print(f"Detected uImage at page {p_idx} with {page}+{oob}, stripping OOB...")
-                          clean = b"".join(raw[i:i+page] for i in range(p_idx*stride, len(raw), stride))
-                          break
+          # 1. 打印 0xc07f7c00 - 0xc07f7d50 以及 0xc0800000 - 0xc0800300 的完整字符串表
+          print("=== Strings around uart_sel (0xc07f7c7c) ===")
+          print(vmlinux[0xc07f7c00 - BASE : 0xc07f7d50 - BASE])
+          print("\n=== Strings around am335x_* drivers (0xc0800000) ===")
+          print(vmlinux[0xc0800000 - BASE : 0xc0800300 - BASE])
 
-          open("kernel_clean.bin", "wb").write(clean)
-          print("Clean kernel image size:", len(clean))
-
-          # 2. 在剥离 OOB 后的镜像中定位压缩内核流并解压
-          vmlinux = b""
-          # 尝试 gzip
-          for i in range(len(clean) - 4):
-              if clean[i:i+3] == b"\x1f\x8b\x08":
-                  p = subprocess.run(["gzip", "-dc"], input=clean[i:], capture_output=True)
-                  if len(p.stdout) > 2_000_000:
-                      print(f"Decompressed gzip at {hex(i)} -> {len(p.stdout)} bytes")
-                      vmlinux = p.stdout
-                      break
-          # 尝试 xz
-          if not vmlinux:
-              for i in range(len(clean) - 6):
-                  if clean[i:i+6] == b"\xfd7zXZ\x00":
-                      p = subprocess.run(["xz", "-dc"], input=clean[i:], capture_output=True)
-                      if len(p.stdout) > 2_000_000:
-                          print(f"Decompressed xz at {hex(i)} -> {len(p.stdout)} bytes")
-                          vmlinux = p.stdout
-                          break
-          # 尝试 lzo
-          if not vmlinux:
-              for i in range(len(clean) - 9):
-                  if clean[i:i+9] == b"\x89LZO\x00\x0d\x0a\x1a\x0a":
-                      p = subprocess.run(["lzop", "-dc"], input=clean[i:], capture_output=True)
-                      if len(p.stdout) > 2_000_000:
-                          print(f"Decompressed lzo at {hex(i)} -> {len(p.stdout)} bytes")
-                          vmlinux = p.stdout
-                          break
-
-          if not vmlinux:
-              print("ERROR: Failed to decompress vmlinux. First 64 bytes:", clean[:64].hex())
-              exit(1)
+          def disasm_va(va, before=0x80, after=0x140):
+              start = max(BASE, va - before)
+              stop = min(BASE + len(vmlinux), va + after)
+              out = subprocess.check_output([
+                  "arm-linux-gnueabi-objdump", "-D", "-b", "binary", "-m", "arm",
+                  f"--adjust-vma={hex(BASE)}",
+                  f"--start-address={hex(start)}",
+                  f"--stop-address={hex(stop)}",
+                  "vmlinux_real.bin"
+              ], text=True)
+              print(out)
 
           open("vmlinux_real.bin", "wb").write(vmlinux)
 
-          # 3. 搜索所有包含 sel / bt / gpio / uart / am335 / c3000 的驱动字符串及引用地址
-          for m in re.finditer(b"[\x20-\x7e]{4,60}", vmlinux):
-              s = m.group()
-              sl = s.lower()
-              if any(k in sl for k in [b"am335x_", b"c3000", b"_sel", b"bt_", b"bluetooth", b"kim", b"uart3"]):
-                  if b" " not in s and len(s) < 40:
-                      print(f"VA {hex(0xc0008000 + m.start())}: {s.decode()}")
+          # 2. 查找所有引用 0xc07f7c7c (uart_sel) 的指针和指令
+          targets = [0xc07f7c7c]
+          # 同时把 0xc07f7c00..0xc07f7d50 范围内所有以 \x00 结尾的字符串起点都纳入搜索
+          chunk = vmlinux[0xc07f7c00 - BASE : 0xc07f7d50 - BASE]
+          for i in range(1, len(chunk)):
+              if chunk[i-1] == 0 and 0x20 <= chunk[i] <= 0x7e:
+                  targets.append(0xc07f7c00 + i)
+
+          for t in sorted(set(targets)):
+              s_end = vmlinux.find(b"\x00", t - BASE)
+              s_val = vmlinux[t - BASE : s_end].decode("ascii", errors="ignore")
+              # 搜 32位指针引用 (文字池 ldr 或结构体)
+              ptr = struct.pack("<I", t)
+              pos = 0
+              while (idx := vmlinux.find(ptr, pos)) != -1:
+                  ref_va = BASE + idx
+                  print(f"\n>>> Pointer to '{s_val}' ({hex(t)}) found at {hex(ref_va)} <<<")
+                  disasm_va(ref_va, before=0xc0, after=0x60)
+                  pos = idx + 4
+
+              # 搜 ARM movw rX, #(t & 0xffff)
+              low16 = t & 0xffff
+              movw_val = 0xe3000000 | (((low16 >> 12) & 0xf) << 16) | (low16 & 0xfff)
+              for off in range(0, len(vmlinux) - 4, 4):
+                  w = int.from_bytes(vmlinux[off:off+4], "little")
+                  if (w & 0xfff00fff) == movw_val:
+                      ref_va = BASE + off
+                      print(f"\n>>> ARM movw for '{s_val}' ({hex(t)}) at {hex(ref_va)} <<<")
+                      disasm_va(ref_va, before=0x40, after=0x140)
           EOF
