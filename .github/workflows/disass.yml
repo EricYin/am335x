@@ -1,19 +1,4 @@
-name: Full Kernel & Binary Reverse Engineering
-
-on:
-  workflow_dispatch:
-
-jobs:
-  full_extract:
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install Tools
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y binutils-arm-linux-gnueabi python3
-
-      name: Extract Custom Driver GPIO
+name: Extract Custom Driver GPIO
 
 on:
   workflow_dispatch:
