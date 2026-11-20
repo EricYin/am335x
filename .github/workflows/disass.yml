@@ -11,43 +11,48 @@ jobs:
       - name: Install tools
         run: sudo apt-get update && sudo apt-get install -y binutils-arm-linux-gnueabi python3
  
-      - name: Extract and Decompile Stock DTB to DTS
+      - name: Extract uart_sel Code and Stock DTB Together
         run: |
-          sudo apt-get update && sudo apt-get install -y device-tree-compiler python3
+          sudo apt-get update && sudo apt-get install -y binutils-arm-linux-gnueabi device-tree-compiler python3
+          ls -lh bak/
           python3 - << 'EOF'
-          import struct, subprocess
+          import struct, subprocess, glob
 
+          # 1. 解压内核并精确匹配加载 0xc07f7c7c ("uart_sel") 的 ARM movw/movt 指令
           raw = open("bak/nmtd8_NAND.kernel.bin", "rb").read()
-          magic = b"\xd0\x0d\xfe\xed"
-          pos = 0
-          idx = 0
-          while (off := raw.find(magic, pos)) != -1:
-              totalsize = struct.unpack(">I", raw[off+4:off+8])[0]
-              if 1024 < totalsize < 1024 * 1024 and off + totalsize <= len(raw):
-                  dtb_name = f"stock_{idx}.dtb"
-                  dts_name = f"stock_{idx}.dts"
-                  open(dtb_name, "wb").write(raw[off : off + totalsize])
-                  print(f"=== Found DTB #{idx} at offset {hex(off)}, size={totalsize} ===")
-                  res = subprocess.run(["dtc", "-I", "dtb", "-O", "dts", "-o", dts_name, dtb_name], capture_output=True, text=True)
-                  if res.returncode == 0:
-                      content = open(dts_name).read()
-                      # 直接打印 serial / uart / gpio / bt / gps / led 相关节点，并保存完整 dts 供查看
-                      for line in content.splitlines():
-                          if any(k in line.lower() for k in ["serial@", "uart", "uart_sel", "gpio", "bt", "gps", "kim", "led", "pca953"]):
-                              print(line)
-                      print(f"\n--- Full {dts_name} saved ({len(content)} chars) ---")
-                  else:
-                      print("dtc error:", res.stderr)
-                  idx += 1
-              pos = off + 4
-          EOF
-          # 直接输出提取到的第一个完整原厂 DTS 里的 serial 和 gpio 节点详情
-          python3 - << 'EOF'
-          import glob, re
-          for f in sorted(glob.glob("stock_*.dts")):
-              print(f"\n==================== {f} (Serial & Custom Nodes) ====================")
-              txt = open(f).read()
-              # 打印所有 serial@ 块以及根节点下的自定义节点
-              for m in re.finditer(r'(serial@[0-9a-f]+\s*\{[^}]*\}|am335x_[a-z0-9_]+\s*\{[^}]*\})', txt):
-                  print(m.group(0))
+          vmlinux = subprocess.run(["gzip", "-dc"], input=raw[0x6a00:], capture_output=True).stdout
+          open("vmlinux_real.bin", "wb").write(vmlinux)
+          BASE = 0xc0008000
+
+          # 0xc07f7c7c -> low16 = 0x7c7c -> imm4=0x7, imm12=0xc7c -> 0xe307X c7c
+          for i in range(0, len(vmlinux) - 4, 4):
+              w = int.from_bytes(vmlinux[i:i+4], "little")
+              if (w & 0xfff00fff) == 0xe3070c7c:
+                  va = BASE + i
+                  print(f"=== Found uart_sel (0xc07f7c7c) code ref at VA {hex(va)} ===")
+                  print(subprocess.check_output([
+                      "arm-linux-gnueabi-objdump", "-D", "-b", "binary", "-m", "arm",
+                      f"--adjust-vma={hex(BASE)}",
+                      f"--start-address={hex(va - 0x40)}",
+                      f"--stop-address={hex(va + 0x160)}",
+                      "vmlinux_real.bin"
+                  ], text=True))
+
+          # 2. 同时扫描 bak/ 下所有其他分区文件中的原厂 DTB (0xd00dfeed)，直接反编译出 serial/uart_sel 配置
+          for path in sorted(glob.glob("bak/*")):
+              if "kernel" in path or "file-system" in path:
+                  continue
+              b = open(path, "rb").read()
+              pos = 0
+              while (off := b.find(b"\xd0\x0d\xfe\xed", pos)) != -1:
+                  sz = struct.unpack(">I", b[off+4:off+8])[0]
+                  if 1024 < sz < 512 * 1024 and off + sz <= len(b):
+                      open("found.dtb", "wb").write(b[off:off+sz])
+                      res = subprocess.run(["dtc", "-I", "dtb", "-O", "dts", "found.dtb"], capture_output=True, text=True)
+                      if res.returncode == 0:
+                          print(f"\n=== Stock DTB in {path} @ {hex(off)} ===")
+                          for line in res.stdout.splitlines():
+                              if any(k in line.lower() for k in ["serial@", "uart", "gpio", "bt", "gps", "led", "pca953"]):
+                                  print(line)
+                  pos = off + 4
           EOF
