@@ -18,13 +18,12 @@ jobs:
           import struct, subprocess
           data = open("vmlinux_full.bin", "rb").read()
           
-          # 只找引用了 0x7f7f00 ~ 0x7f8250 (定制驱动字符串区) 的 movt #0xc080 指令
+          # 只找引用了 0x7f7e00 ~ 0x7f8300 (定制驱动字符串区) 的 movt #0xc080 指令
           hits = []
-          for off in range(0, len(data) - 4, 4):
-              w = struct.unpack_from("<I", data, off)
+          for off in range(4, len(data) - 4, 4):
+              w = struct.unpack_from("<I", data, off)[0]
               if (w & 0xfff00fff) == 0xe3400080:
-                  # 检查前一条指令是不是 movw rX, #0x7f00..0x8300
-                  prev = struct.unpack_from("<I", data, off - 4)
+                  prev = struct.unpack_from("<I", data, off - 4)[0]
                   if (prev & 0xfff00000) == 0xe3000000:
                       imm16 = ((prev & 0xf0000) >> 4) | (prev & 0xfff)
                       if 0x7e00 <= imm16 <= 0x8300:
