@@ -11,75 +11,74 @@ jobs:
       - name: Install tools
         run: sudo apt-get update && sudo apt-get install -y binutils-arm-linux-gnueabi python3
 
-      - name: Get Exact GPIO Number in am335x_sel_init
+      - name: Strip NAND OOB & Extract Real vmlinux
         run: |
-          ls -lh bak/nmtd8_NAND.kernel.bin
-          dd if=bak/nmtd8_NAND.kernel.bin bs=1 skip=27136 2>/dev/null | gzip -dc > vmlinux_full.bin || true
-          ls -lh vmlinux_full.bin
-          test -s vmlinux_full.bin || { echo "ERROR: vmlinux_full.bin is empty! Check compression/offset."; exit 1; }
-
+          sudo apt-get update && sudo apt-get install -y binutils-arm-linux-gnueabi xz-utils lzop python3
           python3 - << 'EOF'
-          import struct, subprocess
+          import os, struct, subprocess, re
 
-          data = open("vmlinux_full.bin", "rb").read()
-          BASE = 0xc0008000
+          raw = open("bak/nmtd8_NAND.kernel.bin", "rb").read()
+          print("Raw file size:", len(raw))
 
-          # 1. 动态确认 "am335x_sel" 字符串在文件中的真实虚拟地址
-          str_idx = data.find(b"am335x_sel\x00")
-          if str_idx == -1:
-              print("ERROR: 'am335x_sel' string not found in vmlinux_full.bin!")
+          # 1. 自动检测并剥离 NAND OOB (常见 2048+64=2112 或 4096+128/224)
+          clean = raw
+          for page, oob in [(2048, 64), (4096, 128), (4096, 224), (512, 16)]:
+              stride = page + oob
+              if len(raw) % stride == 0 and raw[0:4] == b"\x27\x05\x19\x56":
+                  print(f"Detected NAND OOB format: {page}+{oob}, stripping OOB...")
+                  clean = b"".join(raw[i:i+page] for i in range(0, len(raw), stride))
+                  break
+              # 即使前几页是全FF坏块，只要 uImage magic 出现在页对齐处也剥离
+              if len(raw) % stride == 0:
+                  for p_idx in range(16):
+                      if raw[p_idx*stride : p_idx*stride+4] == b"\x27\x05\x19\x56":
+                          print(f"Detected uImage at page {p_idx} with {page}+{oob}, stripping OOB...")
+                          clean = b"".join(raw[i:i+page] for i in range(p_idx*stride, len(raw), stride))
+                          break
+
+          open("kernel_clean.bin", "wb").write(clean)
+          print("Clean kernel image size:", len(clean))
+
+          # 2. 在剥离 OOB 后的镜像中定位压缩内核流并解压
+          vmlinux = b""
+          # 尝试 gzip
+          for i in range(len(clean) - 4):
+              if clean[i:i+3] == b"\x1f\x8b\x08":
+                  p = subprocess.run(["gzip", "-dc"], input=clean[i:], capture_output=True)
+                  if len(p.stdout) > 2_000_000:
+                      print(f"Decompressed gzip at {hex(i)} -> {len(p.stdout)} bytes")
+                      vmlinux = p.stdout
+                      break
+          # 尝试 xz
+          if not vmlinux:
+              for i in range(len(clean) - 6):
+                  if clean[i:i+6] == b"\xfd7zXZ\x00":
+                      p = subprocess.run(["xz", "-dc"], input=clean[i:], capture_output=True)
+                      if len(p.stdout) > 2_000_000:
+                          print(f"Decompressed xz at {hex(i)} -> {len(p.stdout)} bytes")
+                          vmlinux = p.stdout
+                          break
+          # 尝试 lzo
+          if not vmlinux:
+              for i in range(len(clean) - 9):
+                  if clean[i:i+9] == b"\x89LZO\x00\x0d\x0a\x1a\x0a":
+                      p = subprocess.run(["lzop", "-dc"], input=clean[i:], capture_output=True)
+                      if len(p.stdout) > 2_000_000:
+                          print(f"Decompressed lzo at {hex(i)} -> {len(p.stdout)} bytes")
+                          vmlinux = p.stdout
+                          break
+
+          if not vmlinux:
+              print("ERROR: Failed to decompress vmlinux. First 64 bytes:", clean[:64].hex())
               exit(1)
 
-          target_va = BASE + str_idx
-          print(f"Found 'am335x_sel' at file offset {hex(str_idx)}, VA = {hex(target_va)}")
+          open("vmlinux_real.bin", "wb").write(vmlinux)
 
-          def disasm(off, before=0x60, after=0x100, thumb=False):
-              start = max(0, off - before)
-              stop = min(len(data), off + after)
-              cmd = [
-                  "arm-linux-gnueabi-objdump", "-D", "-b", "binary", "-m", "arm",
-                  f"--adjust-vma={hex(BASE)}",
-                  f"--start-address={hex(BASE + start)}",
-                  f"--stop-address={hex(BASE + stop)}",
-              ]
-              if thumb:
-                  cmd += ["-M", "force-thumb"]
-              cmd.append("vmlinux_full.bin")
-              print(subprocess.check_output(cmd, text=True))
-
-          # 2. 搜索 32 位指针引用 (文字池 ldr 或 miscdevice/platform_driver 结构体)
-          ptr_bytes = struct.pack("<I", target_va)
-          pos = 0
-          while (idx := data.find(ptr_bytes, pos)) != -1:
-              print(f"\n=== [Pointer Ref] {hex(target_va)} at VA {hex(BASE + idx)} ===")
-              # 如果是函数末尾的文字池，往前反汇编 0x100 字节就能看到整个函数
-              disasm(idx, before=0x100, after=0x40)
-              pos = idx + 4
-
-          # 3. 搜索 ARM movw rX, #(target_va & 0xffff)
-          low16 = target_va & 0xffff
-          imm4 = (low16 >> 12) & 0xf
-          imm12 = low16 & 0xfff
-          arm_movw_mask = 0xfff00fff
-          arm_movw_val  = 0xe3000000 | (imm4 << 16) | imm12
-
-          for off in range(0, len(data) - 4, 4):
-              w = int.from_bytes(data[off:off+4], "little")
-              if (w & arm_movw_mask) == arm_movw_val:
-                  print(f"\n=== [ARM movw] at VA {hex(BASE + off)} ===")
-                  disasm(off, before=0x40, after=0xc0)
-
-          # 4. 搜索 Thumb-2 movw rX, #(target_va & 0xffff)
-          i_bit = (imm4 >> 3) & 1
-          t_imm4 = low16 >> 12
-          t_imm3 = (low16 >> 8) & 0x7
-          t_imm8 = low16 & 0xff
-          hw1_target = 0xf240 | (i_bit << 10) | t_imm4
-          for off in range(0, len(data) - 4, 2):
-              hw1, hw2 = struct.unpack_from("<HH", data, off)
-              if hw1 == hw1_target and (hw2 & 0x70ff) == ((t_imm3 << 12) | t_imm8):
-                  print(f"\n=== [Thumb-2 movw] at VA {hex(BASE + off)} ===")
-                  disasm(off, before=0x40, after=0xc0, thumb=True)
+          # 3. 搜索所有包含 sel / bt / gpio / uart / am335 / c3000 的驱动字符串及引用地址
+          for m in re.finditer(b"[\x20-\x7e]{4,60}", vmlinux):
+              s = m.group()
+              sl = s.lower()
+              if any(k in sl for k in [b"am335x_", b"c3000", b"_sel", b"bt_", b"bluetooth", b"kim", b"uart3"]):
+                  if b" " not in s and len(s) < 40:
+                      print(f"VA {hex(0xc0008000 + m.start())}: {s.decode()}")
           EOF
-
-    
