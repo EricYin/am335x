@@ -97,6 +97,7 @@ amixer sset 'HP DAC' 80% >/dev/null 2>&1
 amixer sset 'Line DAC' 80% >/dev/null 2>&1
 amixer sset 'HP' 3 >/dev/null 2>&1
 amixer sset 'Line' 3 >/dev/null 2>&1
+mkdir -p /var/lib/alsa
 alsactl store
 
 # 6. 重启 MPD 服务使配置生效
